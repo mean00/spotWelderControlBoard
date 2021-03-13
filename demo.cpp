@@ -41,25 +41,60 @@
 //
 
 #include <Wire.h>
+#include <SoftWire.h>
 
 #define HWIRE I2C1
 
 #include <OLED_I2C.h>
 
-OLED  myOLED(SDA, SCL, 8);
+OLED  myOLED(PB7, PB6, PB5);
 
 extern uint8_t SmallFont[];
+void drawVectors();
+void rotateX(int angle);
+void rotateY(int angle);
+void rotateZ(int angle);
 
 double vectors[8][3] = {{20, 20, 20},{-20, 20, 20},{-20, -20, 20},{20, -20, 20},{20, 20, -20},{-20, 20, -20},{-20, -20, -20},{20, -20, -20}};
 
 double perspective = 100.0f;
 int deltaX, deltaY, deltaZ, iter = 0;
 long stime, fps = 0, frames = 0;
+ 
 
+  int nDevices = 0;
+int found=0;
+
+void scanner()
+{
+    SoftWire s(PB6,PB7);
+   s.begin();
+   while(1)
+   {
+  for(int address = 1; address < 127; address++ )
+  {
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+    s.beginTransmission(address);
+    int error = s.endTransmission();
+ 
+    if (error == 0)
+    {
+      found=address; 
+      nDevices++;
+    }
+  }
+   }
+}
 void setup()
 {
   randomSeed(analogRead(0));
 
+  
+
+   // scanner();
+    
   myOLED.begin();
   myOLED.setFont(SmallFont);
   stime = micros();

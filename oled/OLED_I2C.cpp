@@ -62,7 +62,7 @@ void OLED::begin()
 		delay(10);
 		digitalWrite(_rst_pin, HIGH);
 	}
-
+#if 0
 #if defined(SDA1) & defined(SCL1)
 	if (((_sda_pin == SDA) and (_scl_pin == SCL)) or ((_sda_pin == SDA1) and (_scl_pin == SCL1)))
 #else
@@ -74,6 +74,7 @@ void OLED::begin()
 		_initTWI();
 	}
 	else
+#endif            
 	{
 		_use_hw = false;
 		pinMode(_scl_pin, OUTPUT);

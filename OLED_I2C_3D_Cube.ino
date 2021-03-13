@@ -42,7 +42,4 @@
 
 #include <Wire.h>
 
-#define HWIRE I2C1
-
-#include <OLED_I2C.h>
 
