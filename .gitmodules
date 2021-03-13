@@ -10,6 +10,6 @@
 [submodule "printf"]
 	path = printf
 	url = https://github.com/mpaland/printf
-[submodule "stm32duino_adc"]
-	path = stm32duino_adc
+[submodule "adc"]
+	path = adc
 	url = https://github.com/mean00/stm32duino_adc.git

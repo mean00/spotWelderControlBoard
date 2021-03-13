@@ -40,158 +40,83 @@
 // pull-up resistors on the data and clock signals.
 //
 
-#include <Wire.h>
-#include <SoftWire.h>
-
 #define HWIRE I2C1
 
-#include <OLED_I2C.h>
+#include <Wire.h>
+#include "adc/simpleADC.h"
+#include "OLED_I2C.h"
+#include "MapleFreeRTOS1000_pp.h"
 
-OLED  myOLED(PB7, PB6, PB5);
 
-extern uint8_t SmallFont[];
-void drawVectors();
-void rotateX(int angle);
-void rotateY(int angle);
-void rotateZ(int angle);
+void MainTask( void *a );
 
-double vectors[8][3] = {{20, 20, 20},{-20, 20, 20},{-20, -20, 20},{20, -20, 20},{20, 20, -20},{-20, 20, -20},{-20, -20, -20},{20, -20, -20}};
+#define DSO_MAIN_TASK_PRIORITY 10
 
-double perspective = 100.0f;
-int deltaX, deltaY, deltaZ, iter = 0;
-long stime, fps = 0, frames = 0;
- 
+#define PIN_VBAT   PA1
+#define PIN_DETECT PA2
+#define PIN_GATE   PA3
 
-  int nDevices = 0;
-int found=0;
 
-void scanner()
-{
-    SoftWire s(PB6,PB7);
-   s.begin();
-   while(1)
-   {
-  for(int address = 1; address < 127; address++ )
-  {
-    // The i2c_scanner uses the return value of
-    // the Write.endTransmisstion to see if
-    // a device did acknowledge to the address.
-    s.beginTransmission(address);
-    int error = s.endTransmission();
- 
-    if (error == 0)
-    {
-      found=address; 
-      nDevices++;
-    }
-  }
-   }
-}
+OLED  *myOLED;
+simpleAdc *adc;
+uint8_t ucHeap[configTOTAL_HEAP_SIZE];
+
+
+extern uint8_t MediumNumbers[];
+
 void setup()
 {
-  randomSeed(analogRead(0));
-
   
-
-   // scanner();
-    
-  myOLED.begin();
-  myOLED.setFont(SmallFont);
-  stime = micros();
+    afio_cfg_debug_ports( AFIO_DEBUG_SW_ONLY); // Unlock PB3 & PB4
+    Serial.end();
+  //Serial1.begin(115200);  //Wire.begin();
+  //Serial.end();
+  //Serial1.begin(115200);  
+  xTaskCreate( MainTask, "MainTask", 350, NULL, DSO_MAIN_TASK_PRIORITY, NULL );   
+  vTaskStartScheduler();      
 }
 
 void loop()
 {
-  myOLED.clrScr();
-  drawVectors();
-  if (iter == 0)
+
+}
+
+void MainTask(void *)
+{
+  pinMode(PIN_VBAT,INPUT_ANALOG);
+  pinMode(PIN_DETECT,INPUT_ANALOG);
+  digitalWrite(PIN_GATE,0);
+  pinMode(PIN_GATE,OUTPUT);
+  
+  myOLED=new  OLED(PB7, PB6, PB5);
+  myOLED->begin();
+  myOLED->setFont(MediumNumbers);    
+  myOLED->update();
+  adc=new simpleAdc(PA1);
+  int pins[2]={PIN_VBAT,PIN_DETECT};
+  adc->setPins(2,pins);
+  
+  while(1)
   {
-    deltaX = random(7) - 3;
-    deltaY = random(7) - 3;
-    deltaZ = random(7) - 3;
-    iter   = random(250) + 5;
+      int nb=16;
+      uint16_t *data;
+      adc->timeSample(nb, &data,1000);
+      int vbat=0, detect=0;
+      
+      for(int i=0;i<nb/2;i++)
+      {
+          vbat+=data[0];
+          detect+=data[1];
+          data+=2;
+      }
+      vbat=(vbat*2)/nb;
+      detect=(detect*2)/nb;
+      
+        myOLED->clrScr();
+        myOLED->printNumI(vbat, 0, 0, 3);  
+        myOLED->printNumI(detect, 0, 30, 3);  
+        myOLED->update();
   }
-  rotateX(deltaX);
-  rotateY(deltaY);
-  rotateZ(deltaZ);
-  iter--;
-  fps += 1000000 / (micros() - stime);
-  stime = micros();
-  frames++;
-  myOLED.printNumI(fps / frames, 0, 0, 3);  // Print average FPS on screen
-  myOLED.update();
+  
 }
 
-int translateX(double x, double z)
-{
-  return (int)((x + 64) + (z * (x / perspective)));
-}
-
-int translateY(double y, double z)
-{
-  return (int)((y + 32) + (z * (y / perspective)));
-}
-
-void rotateX(int angle)
-{
-  double rad, cosa, sina, Yn, Zn;
- 
-  rad = angle * PI / 180;
-  cosa = cos(rad);
-  sina = sin(rad);
-  for (int i = 0; i < 8; i++)
-  {
-    Yn = (vectors[i][1] * cosa) - (vectors[i][2] * sina);
-    Zn = (vectors[i][1] * sina) + (vectors[i][2] * cosa);
-    vectors[i][1] = Yn;
-    vectors[i][2] = Zn;
-  }
-}
-
-void rotateY(int angle)
-{
-  double rad, cosa, sina, Xn, Zn;
- 
-  rad = angle * PI / 180;
-  cosa = cos(rad);
-  sina = sin(rad);
-  for (int i = 0; i < 8; i++)
-  {
-    Xn = (vectors[i][0] * cosa) - (vectors[i][2] * sina);
-    Zn = (vectors[i][0] * sina) + (vectors[i][2] * cosa);
-    vectors[i][0] = Xn;
-    vectors[i][2] = Zn;
-  }
-}
-
-void rotateZ(int angle)
-{
-  double rad, cosa, sina, Xn, Yn;
- 
-  rad = angle * PI / 180;
-  cosa = cos(rad);
-  sina = sin(rad);
-  for (int i = 0; i < 8; i++)
-  {
-    Xn = (vectors[i][0] * cosa) - (vectors[i][1] * sina);
-    Yn = (vectors[i][0] * sina) + (vectors[i][1] * cosa);
-    vectors[i][0] = Xn;
-    vectors[i][1] = Yn;
-  }
-}
-
-void drawVectors()
-{
-  myOLED.drawLine(translateX(vectors[0][0], vectors[0][2]), translateY(vectors[0][1], vectors[0][2]), translateX(vectors[1][0], vectors[1][2]), translateY(vectors[1][1], vectors[1][2]));
-  myOLED.drawLine(translateX(vectors[1][0], vectors[1][2]), translateY(vectors[1][1], vectors[1][2]), translateX(vectors[2][0], vectors[2][2]), translateY(vectors[2][1], vectors[2][2]));
-  myOLED.drawLine(translateX(vectors[2][0], vectors[2][2]), translateY(vectors[2][1], vectors[2][2]), translateX(vectors[3][0], vectors[3][2]), translateY(vectors[3][1], vectors[3][2]));
-  myOLED.drawLine(translateX(vectors[3][0], vectors[3][2]), translateY(vectors[3][1], vectors[3][2]), translateX(vectors[0][0], vectors[0][2]), translateY(vectors[0][1], vectors[0][2]));
-  myOLED.drawLine(translateX(vectors[4][0], vectors[4][2]), translateY(vectors[4][1], vectors[4][2]), translateX(vectors[5][0], vectors[5][2]), translateY(vectors[5][1], vectors[5][2]));
-  myOLED.drawLine(translateX(vectors[5][0], vectors[5][2]), translateY(vectors[5][1], vectors[5][2]), translateX(vectors[6][0], vectors[6][2]), translateY(vectors[6][1], vectors[6][2]));
-  myOLED.drawLine(translateX(vectors[6][0], vectors[6][2]), translateY(vectors[6][1], vectors[6][2]), translateX(vectors[7][0], vectors[7][2]), translateY(vectors[7][1], vectors[7][2]));
-  myOLED.drawLine(translateX(vectors[7][0], vectors[7][2]), translateY(vectors[7][1], vectors[7][2]), translateX(vectors[4][0], vectors[4][2]), translateY(vectors[4][1], vectors[4][2]));
-  myOLED.drawLine(translateX(vectors[0][0], vectors[0][2]), translateY(vectors[0][1], vectors[0][2]), translateX(vectors[4][0], vectors[4][2]), translateY(vectors[4][1], vectors[4][2]));
-  myOLED.drawLine(translateX(vectors[1][0], vectors[1][2]), translateY(vectors[1][1], vectors[1][2]), translateX(vectors[5][0], vectors[5][2]), translateY(vectors[5][1], vectors[5][2]));
-  myOLED.drawLine(translateX(vectors[2][0], vectors[2][2]), translateY(vectors[2][1], vectors[2][2]), translateX(vectors[6][0], vectors[6][2]), translateY(vectors[6][1], vectors[6][2]));
-  myOLED.drawLine(translateX(vectors[3][0], vectors[3][2]), translateY(vectors[3][1], vectors[3][2]), translateX(vectors[7][0], vectors[7][2]), translateY(vectors[7][1], vectors[7][2]));
-}

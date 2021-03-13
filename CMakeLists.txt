@@ -40,11 +40,11 @@ SET(EXTENSION "${EXTENSION}_${MCU_SPEED_M}M")
 include_directories(MapleFreeRTOS1000//Source/include)
 include_directories(MapleFreeRTOS1000//)
 include_directories(.)
-#include_directories(adc)
+include_directories(adc)
 
 # FreeRTOS
 # Other modules
-#ADD_SUBDIRECTORY(adc) 
+ADD_SUBDIRECTORY(adc) 
 ADD_SUBDIRECTORY(MapleFreeRTOS1000/)
 #
 generate_arduino_firmware(Oled${EXTENSION} 
@@ -54,7 +54,7 @@ generate_arduino_firmware(Oled${EXTENSION}
                 BOARD_CPU ${ARDUINO_CPU}
                 )
 TARGET_LINK_LIBRARIES( Oled${EXTENSION}  ${libPrefix}FreeRTOS)
-#TARGET_LINK_LIBRARIES( Oled${EXTENSION}  ${libPrefix}adc)
+TARGET_LINK_LIBRARIES( Oled${EXTENSION}  ${libPrefix}adc)
 #TARGET_LINK_LIBRARIES( Oled${EXTENSION}  ${libPrefix}tests)
 
 
