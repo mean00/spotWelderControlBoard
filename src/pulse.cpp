@@ -7,20 +7,16 @@
 
 #include "Arduino.h"
 #include "MapleFreeRTOS1000_pp.h"
-
+#include "pulse.h"
 
 #define CYCLE_IN_MS 100
-
 /**
  * 
  * @param timer
  * @param channel
  * @param pin
  */
-class Pulse
-{
-public:
-    Pulse(int timer, int channel, int pin)
+ Pulse::Pulse(int timer, int channel, int pin)
     {
         _pin=pin;
         digitalWrite(_pin,0);
@@ -31,16 +27,6 @@ public:
         _timer->setPeriod(CYCLE_IN_MS*1000); // 50 ms end to end
         _channel=channel;
     }
-    void pulse(int durationMs);
-    void interrupt();
-protected:
-    
-    HardwareTimer *_timer;
-    int            _channel;
-    int            _pin;
-    
-};
-
 
 /**
  * 
