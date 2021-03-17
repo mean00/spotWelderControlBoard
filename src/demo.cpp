@@ -10,6 +10,9 @@
 #include "rotary.h"
 #include "pinMapping.h"
 #include "dso_debug.h"
+
+extern void pulseDemo();
+
 void MainTask( void *a );
 
 #define DSO_MAIN_TASK_PRIORITY 10
@@ -65,6 +68,8 @@ void MainTask(void *)
   vcc=vcc/4095.;
   
   Logger("Go !\n");
+  
+  pulseDemo();
   
   while(1)
   {
