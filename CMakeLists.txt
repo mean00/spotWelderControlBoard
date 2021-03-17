@@ -51,7 +51,7 @@ ADD_SUBDIRECTORY(MapleFreeRTOS1000/)
 #
 generate_arduino_firmware(Oled${EXTENSION} 
                 SKETCH OLED_I2C_3D_Cube.ino
-                SRCS    demo.cpp oled/DefaultFonts.c oled/OLED_I2C.cpp  embedded_printf/printf.c  rotary.cpp stubs/usb_stubs.cpp src/dso_logger.cpp
+                SRCS    src/demo.cpp oled/DefaultFonts.c oled/OLED_I2C.cpp  embedded_printf/printf.c  rotary.cpp stubs/usb_stubs.cpp src/dso_logger.cpp src/pulse.cpp
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}
                 )
