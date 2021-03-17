@@ -9,6 +9,7 @@
 #include "MapleFreeRTOS1000_pp.h"
 #include "rotary.h"
 #include "pinMapping.h"
+#include "dso_debug.h"
 void MainTask( void *a );
 
 #define DSO_MAIN_TASK_PRIORITY 10
@@ -41,6 +42,10 @@ void loop()
 int value=0;
 void MainTask(void *)
 {
+    
+    
+  LoggerInit();
+  
   pinMode(PIN_VBAT,INPUT_ANALOG);
   pinMode(PIN_DETECT,INPUT_ANALOG);
   digitalWrite(PIN_GATE,0);
@@ -58,6 +63,9 @@ void MainTask(void *)
   adc->setPins(2,pins);
   float vcc=adc->getVcc();
   vcc=vcc/4095.;
+  
+  Logger("Go !\n");
+  
   while(1)
   {
    
@@ -76,14 +84,18 @@ void MainTask(void *)
           data+=2;
       }
 
+      detect=(detect*2)/nb;
+      
       float f=vbat;
       f=f*vcc*5.7;
       f=(f*2.)/nb;
       f+=4200;
       int raw=(int)(f/100.);
       
+      myOLED->clrScr();
       myOLED->printNumI(raw, 0, 20, 3);  
       myOLED->printNumI(value, 0, 40, 3);  
+      myOLED->printNumI(detect, 80, 20, 3);  
       myOLED->update();
       xDelay(100);
   }
