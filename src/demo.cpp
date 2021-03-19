@@ -9,7 +9,9 @@
 #include "MapleFreeRTOS1000_pp.h"
 #include "rotary.h"
 #include "pinMapping.h"
+#include "printf.h"
 #include "dso_debug.h"
+#include "dso_eeprom.h"
 
 extern void pulseDemo();
 
@@ -22,9 +24,10 @@ OLED  *myOLED;
 simpleAdc *adc;
 Rotary *rotary;
 uint8_t ucHeap[configTOTAL_HEAP_SIZE];
+extern "C" unsigned char MediumNumbers[];
+int pulseWidth=5;
 
 
-extern uint8_t MediumNumbers[];
 
 void setup()
 {
@@ -43,11 +46,21 @@ void loop()
 
 }
 int value=0;
+/**
+ * 
+ * @param 
+ */
 void MainTask(void *)
 {
-    
-    
   LoggerInit();
+  
+  if(!DSOEeprom::read(pulseWidth))
+  {
+      Logger("Initializing eeprom\n");
+      pulseWidth=5;
+      DSOEeprom::format();
+      DSOEeprom::write(pulseWidth);
+  }  
   
   pinMode(PIN_VBAT,INPUT_ANALOG);
   pinMode(PIN_DETECT,INPUT_ANALOG);
