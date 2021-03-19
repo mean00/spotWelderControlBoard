@@ -9,6 +9,5 @@ class DSOEeprom
 public:
         static bool read(int &p);
         static bool write(int p);
-        static bool wipe();  
         static bool format(); 
 };

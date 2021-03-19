@@ -62,24 +62,14 @@ bool  DSOEeprom::write(int pulse)
     return true;
 }
 /**
- * 
- * @return 
- */
-bool  DSOEeprom::wipe()
-{
-    EEPROMClass e2;
-    addressInit(e2);
-    e2.format();
-    e2.write(PULSE_INDEX,5);
-    return true;
-}
-/**
  */
 bool  DSOEeprom::format()
 {
     EEPROMClass e2;
     addressInit(e2);
     e2.format();
+    e2.write(0,CURRENT_HASH);
+    e2.write(PULSE_INDEX,5);
     return true;
 }
 //

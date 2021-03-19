@@ -53,13 +53,13 @@ int value=0;
 void MainTask(void *)
 {
   LoggerInit();
-  
+  Logger("Initializing eeprom\n");
   if(!DSOEeprom::read(pulseWidth))
   {
-      Logger("Initializing eeprom\n");
-      pulseWidth=5;
-      DSOEeprom::format();
-      DSOEeprom::write(pulseWidth);
+    Logger("Formating eeprom\n");    
+    pulseWidth=5;
+    DSOEeprom::format();
+    DSOEeprom::write(pulseWidth);
   }  
   
   pinMode(PIN_VBAT,INPUT_ANALOG);
@@ -81,10 +81,10 @@ void MainTask(void *)
   vcc=vcc/4095.;
   
   Logger("Go !\n");
-      myOLED->clrScr();
-      myOLED->print("GO", 20, 3);  
-      myOLED->update();
-      pulseDemo();
+  myOLED->clrScr();
+  myOLED->print("GO", 20, 3);  
+  myOLED->update();
+    //  pulseDemo();
   
   while(1)
   {
