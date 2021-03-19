@@ -24,7 +24,7 @@
         _timer=new HardwareTimer(timer);
         _timer->init();
         _timer->pause();
-        _timer->setPeriod(CYCLE_IN_MS*1000); // 50 ms end to end
+        _timer->setPeriod(CYCLE_IN_MS*1000); // CYCLE_IN_MS ms end to end
         _channel=channel;
     }
 
@@ -57,12 +57,11 @@ void Pulse::pulse(int durationMs)
  */
 void pulseDemo()
 {    
-    Pulse *p=new Pulse(3,1,PA6); // Timer 3  channel 1 PA6
-    
+    Pulse *p=new Pulse(3,1,PA6); // Timer 3  channel 1 PA6    
     while(1)
     {
         p->pulse(30);
-        xDelay(200);
+        xDelay(10);
     }
     
 }

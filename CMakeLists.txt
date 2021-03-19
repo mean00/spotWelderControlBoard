@@ -1,10 +1,6 @@
 #-----------------------------------------------------------------------------
 #
-# CMAkeLists for DSO-STM32
-# An opensource firmware for the DSO SHELL 150
-# With optional hardware mods :
-#   - Alterntive rotary encoder wiring : MUCH Better, almost mandatory
-#   - Use GD32F303 as another MCU (much faster, better ADC, more memory)
+# CMakeLists for spotWelder-stm32
 #
 #-----------------------------------------------------------------------------
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -22,7 +18,7 @@ include_directories(oled)
 cmake_minimum_required(VERSION 2.8)
 #
 SET(CMAKE_TOOLCHAIN_FILE cmake/ArduinoToolchain.cmake)
-Project("dso_stm32" C CXX ASM)
+Project("spotWelder-stm32" C CXX ASM)
 
 set(ARDUINO_DEFAULT_BOARD ${X_ARDUINO_DEFAULT_BOARD})        # Default Board ID, when not specified
 set(ARDUINO_CPU           ${X_ARDUINO_CPU})
@@ -33,7 +29,7 @@ set(ARDUINO_DEFAULT_PORT ttyACM0) # Default Port, when not specified
 SET(libPrefix ${ARDUINO_DEFAULT_BOARD}_)
 
 
-MESSAGE(STATUS "Starting dso-stm32")
+MESSAGE(STATUS "Starting spotWelder-stm32")
 SET(EXTENSION "${EXTENSION}_${MCU_SPEED_M}M")
 
  
@@ -49,15 +45,21 @@ include_directories(src)
 ADD_SUBDIRECTORY(adc) 
 ADD_SUBDIRECTORY(MapleFreeRTOS1000/)
 #
-generate_arduino_firmware(Oled${EXTENSION} 
+generate_arduino_firmware(spotWelder${EXTENSION} 
                 SKETCH OLED_I2C_3D_Cube.ino
-                SRCS    src/demo.cpp oled/DefaultFonts.c oled/OLED_I2C.cpp  embedded_printf/printf.c  rotary.cpp stubs/usb_stubs.cpp src/dso_logger.cpp src/pulse.cpp
+                SRCS    src/demo.cpp 
+                        oled/DefaultFonts.c 
+                        oled/OLED_I2C.cpp  
+                        embedded_printf/printf.c  
+                        rotary.cpp stubs/usb_stubs.cpp
+                        src/dso_logger.cpp 
+                        src/pulse.cpp
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}
                 )
-TARGET_LINK_LIBRARIES( Oled${EXTENSION}  ${libPrefix}FreeRTOS)
-TARGET_LINK_LIBRARIES( Oled${EXTENSION}  ${libPrefix}adc)
-#TARGET_LINK_LIBRARIES( Oled${EXTENSION}  ${libPrefix}tests)
+TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}FreeRTOS)
+TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}adc)
+#TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}tests)
 
 
 # Summary

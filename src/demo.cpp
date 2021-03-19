@@ -68,8 +68,10 @@ void MainTask(void *)
   vcc=vcc/4095.;
   
   Logger("Go !\n");
-  
-  pulseDemo();
+      myOLED->clrScr();
+      myOLED->print("GO", 20, 3);  
+      myOLED->update();
+      pulseDemo();
   
   while(1)
   {
