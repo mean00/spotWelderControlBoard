@@ -12,6 +12,7 @@
 #include "printf.h"
 #include "dso_debug.h"
 #include "dso_eeprom.h"
+#include "measurement.h"
 
 extern void pulseDemo();
 
@@ -71,8 +72,8 @@ void MainTask(void *)
     DSOEeprom::write(pulseWidth);
   }  
   
-  pinMode(PIN_VBAT,INPUT_ANALOG);
-  pinMode(PIN_DETECT,INPUT_ANALOG);
+  Measurement measure(PIN_VBAT,PIN_DETECT);
+  
   digitalWrite(PIN_GATE,0);
   pinMode(PIN_GATE,OUTPUT);
   
@@ -83,41 +84,24 @@ void MainTask(void *)
   myOLED->begin();
   myOLED->setFont(MediumNumbers);    
   myOLED->update();
-  adc=new simpleAdc(PA1);
-  int pins[2]={PIN_VBAT,PIN_DETECT};
-  adc->setPins(2,pins);
-  float vcc=adc->getVcc();
-  vcc=vcc/4095.;
   
   Logger("Go !\n");
   myOLED->clrScr();
   myOLED->print("GO", 20, 3);  
   myOLED->update();
     //  pulseDemo();
-  
+  float vcc=measure.vcc();
   while(1)
   {
    
       int inc=rotary->getRotaryValue();
       value+=inc;
       
-      int nb=64;
-      uint16_t *data;
-      adc->timeSample(nb, &data,100);
-      int vbat=0, detect=0;
-      
-      for(int i=0;i<nb/2;i++)
-      {
-          vbat+=data[0];
-          detect+=data[1];
-          data+=2;
-      }
-
-      detect=(detect*2)/nb;
+      int vbat=measure.getPinV();
+      int detect=measure.getPinD();;
       
       float f=vbat;
       f=f*vcc*5.7;
-      f=(f*2.)/nb;
       f+=4200;
       int raw=(int)(f/100.);
       

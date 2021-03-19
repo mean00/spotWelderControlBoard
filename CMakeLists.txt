@@ -55,6 +55,7 @@ generate_arduino_firmware(spotWelder${EXTENSION}
                         src/dso_logger.cpp 
                         src/pulse.cpp
                         src/dso_eeprom.cpp
+                        src/measurement.cpp
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}
                 )
