@@ -37,6 +37,15 @@ void setup()
   //Serial1.begin(115200);  //Wire.begin();
   //Serial.end();
   //Serial1.begin(115200);  
+  
+  // shutdown usb & spi
+  rcc_clk_disable(RCC_SPI1);
+  rcc_clk_disable(RCC_SPI2);
+  rcc_clk_disable(RCC_USB);
+  
+  
+  //
+  
   xTaskCreate( MainTask, "MainTask", 350, NULL, DSO_MAIN_TASK_PRIORITY, NULL );   
   vTaskStartScheduler();      
 }
