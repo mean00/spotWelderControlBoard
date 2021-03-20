@@ -43,7 +43,7 @@ Navigate * spawnMainMenu()
 MainMenu::MainMenu(Navigate *p): Navigate(p)
 {
     menuItem *one=new menuItem;
-    one->str="Vbat calib";
+    one->str="xxx calib";
     menu.push_back(one);
 
     redraw();

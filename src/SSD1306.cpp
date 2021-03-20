@@ -3,9 +3,10 @@
 
 #define HWIRE I2C1
 
-#include <Wire.h>
+#include "Wire.h"
+#include "SoftWire.h"
 #include "adc/simpleADC.h"
-#include "ssd1306_i2c.h"
+#include "ssd1306_i2c_f1.h"
 #include "MapleFreeRTOS1000_pp.h"
 #include "pinMapping.h"
 #include "printf.h"
@@ -16,12 +17,36 @@ extern "C" unsigned char MediumNumbers[];
 extern "C" unsigned char SmallFont[];
 extern "C" unsigned char TinyFont[];
 
+#if 0
+    TwoWire wire(1,0,400*1000);
+    #define WIRE wire
+#else
+    SoftWire  softwire(SCREEN_SCL,SCREEN_DATA);
+    #define WIRE softwire
+#endif
+
+
 class Screen1306 : public MyScreen
 {
 public:
         Screen1306()
-        {
-            myOLED=new  OLED(SCREEN_DATA, SCREEN_SCL, SCREEN_RESET);
+        {            
+            pinMode(SCREEN_SCL, OUTPUT);
+            //pinMode(SCREEN_DATA, OUTPUT);
+            WIRE.begin();
+            WIRE.setClock(10*1000);
+           // while(1)
+            {
+            for(int address = 1; address < 127; address++ )
+            {
+                WIRE.beginTransmission(address);
+                int error = WIRE.endTransmission();
+                if(!error) Logger("Found at %d / %x\n",address,address);
+            }
+            }
+            
+            
+            myOLED=new  OLED_stm32duino(WIRE, SCREEN_RESET);
             myOLED->begin();
             myOLED->setFont(SmallFont);    
             myOLED->update();
@@ -47,7 +72,7 @@ public:
         }
         virtual      ~Screen1306() {}
 protected:        
-        OLED  *myOLED;
+        OLED_stm32duino  *myOLED;
 };
 
 MyScreen *createScreen()

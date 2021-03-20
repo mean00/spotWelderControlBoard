@@ -41,5 +41,6 @@
 //
 
 #include <Wire.h>
+#include <WireBase.h>
 
 
