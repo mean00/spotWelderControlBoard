@@ -1,20 +1,11 @@
 
-#define HWIRE I2C1
 
-#include <Wire.h>
-#include "screen.h"
-#include "MapleFreeRTOS1000_pp.h"
-#include "pinMapping.h"
-#include "printf.h"
-#include "dso_debug.h"
-#include "dso_eeprom.h"
 #include "navigate.h"
-#include "vector"
-#include "dso_eeprom.h"
 
+#include "dso_eeprom.h"
 #include "voltageCalibration.h"
 
-extern MyScreen *myScreen;
+
 
 
 
@@ -66,11 +57,24 @@ void  Calibration::handleRotary(int inc)
 
 Navigate *Calibration::handleEvent(Event evt,bool &subMenu)
 {
-    if(evt==Navigate::E_PUSH)
+    switch(evt)
     {
-        subMenu=true;
-        DSOEeprom::writeVoltageOffset(voltageCalibration);
-        return _parent;
+        case Navigate::E_PUSH:
+            DSOEeprom::writeVoltageOffset(voltageCalibration);
+            subMenu=true;
+            return _parent;
+        case Navigate::E_TIMER:
+            redraw();
+            return NULL;
+        default:
+            xAssert(0);
+            break;
+            
     }
     return NULL;
+}
+
+Navigate *spawnCalibration(Navigate *parent)
+{
+    return new Calibration(parent);
 }

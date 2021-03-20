@@ -20,9 +20,7 @@
   examples and tools supplied with the library.
 */
 
-#ifndef OLED_I2C_h
-#define OLED_I2C_h
-
+#pragma once
 #define SSD1306_ADDR		0x3C
 
 #define LEFT	0
@@ -159,4 +157,3 @@ class OLED
 #endif
 };
 
-#endif

@@ -9,15 +9,14 @@ public:
     void    interruptRE();
     void    interruptPush();
     int     getRotaryValue();
-    bool    getPush();
+    int     getPush();
 
 protected:
     int     _pinL, _pinR, _pinPush;
     int     _counter;
-    bool    _push;
     int     _state;
     int     _lastPush;
-    bool    _pushed;
+    int     _pushed;
 };
 // EOF
 

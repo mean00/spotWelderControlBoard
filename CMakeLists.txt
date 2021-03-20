@@ -44,14 +44,14 @@ include_directories(src)
 # Other modules
 ADD_SUBDIRECTORY(adc) 
 ADD_SUBDIRECTORY(MapleFreeRTOS1000/)
+ADD_SUBDIRECTORY(oled/)
 #
 generate_arduino_firmware(spotWelder${EXTENSION} 
                 SKETCH OLED_I2C_3D_Cube.ino
                 SRCS    src/demo.cpp 
-                        oled/DefaultFonts.c 
-                        oled/OLED_I2C.cpp  
                         embedded_printf/printf.c  
-                        rotary.cpp stubs/usb_stubs.cpp
+                        stubs/usb_stubs.cpp
+                        src/rotary.cpp 
                         src/dso_logger.cpp 
                         src/pulse.cpp
                         src/dso_eeprom.cpp
@@ -63,7 +63,7 @@ generate_arduino_firmware(spotWelder${EXTENSION}
                 BOARD_CPU ${ARDUINO_CPU}
                 )
 TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}FreeRTOS)
-TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}adc)
+TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}adc ${libPrefix}ssd1306)
 #TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}tests)
 
 

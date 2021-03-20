@@ -1,13 +1,22 @@
 
 #pragma once
 
+
+#include <Wire.h>
+#include "screen.h"
+#include "MapleFreeRTOS1000_pp.h"
+#include "printf.h"
+#include "dso_debug.h"
+#include "navigate.h"
+#include "vector"
+
 class Navigate
 {
 public:
     enum Event
     {
         E_PUSH=1,
-        E_TIMER
+        E_TIMER=2
     };
                 Navigate(Navigate *p)
                 {
@@ -20,3 +29,5 @@ public:
 protected:
     Navigate     *_parent;
 };
+
+extern MyScreen *myScreen;

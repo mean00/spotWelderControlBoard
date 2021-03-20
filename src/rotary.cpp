@@ -9,9 +9,10 @@
 #include <Wire.h>
 #include "MapleFreeRTOS1000_pp.h"
 #include "rotary.h"
+#include "dso_debug.h"
 
 #define ROTARY_FULL_STEP
-#define THRESHOLD 10
+#define THRESHOLD 40 // in ms
 
 
 #include "rotary_internal.h"
@@ -47,17 +48,16 @@ Rotary::Rotary(int left, int right, int push)
     _pinL=left;
     _pinR=right;
     _pinPush=push;
+    
     _state = R_START;
-    _pushed=false;
+    _pushed=0;
       
-    pinMode(_pinL,OUTPUT); // ok
-    digitalWrite(_pinL,1);
     
-    pinMode(_pinR,OUTPUT); // ok
-    digitalWrite(_pinR,1);    
+#define SETUP_PIN(x)    pinMode(x,OUTPUT); digitalWrite(x,1);pinMode(x,INPUT_PULLUP);
     
-    pinMode(_pinL,INPUT_PULLUP); // ok
-    pinMode(_pinR,INPUT_PULLUP);
+    SETUP_PIN(_pinL);
+    SETUP_PIN(_pinR);
+    SETUP_PIN(_pinPush);   
 }
 
 /**
@@ -68,7 +68,7 @@ bool Rotary::setup()
 {
     attachInterrupt(_pinL,_myInterruptRE,this,CHANGE );
     attachInterrupt(_pinR,_myInterruptRE,this,CHANGE );
-    attachInterrupt(_pinPush,_myInterruptPush,this,CHANGE );
+    attachInterrupt(_pinPush,_myInterruptPush,this,FALLING );
     return true;
 }
 /**
@@ -100,12 +100,17 @@ void Rotary::interruptRE()
 /**
  * 
  */
+#define ROUNDUP 0xffff
 void Rotary::interruptPush()
 {
-    int now=millis();
-    if(now-_lastPush<THRESHOLD) return;
+    int now=millis()&ROUNDUP;
+    if(now<_lastPush) now+=ROUNDUP+1;
+    if((now-_lastPush)<THRESHOLD) 
+    {
+        return;
+    }
     _lastPush=now;
-    _pushed=true;
+    _pushed++;
 }
 
 /**
@@ -122,11 +127,14 @@ int  Rotary::getRotaryValue()
  * 
  * @return 
  */
-bool    Rotary::getPush()
+int    Rotary::getPush()
 {
-    bool r=_pushed;
-    _pushed=false;
-    return r;
+    int evt = __atomic_exchange_n( &(_pushed), 0, __ATOMIC_SEQ_CST);
+    if(evt)
+    {
+        Logger("Pushed!\n");
+    }
+    return evt;
 }
 
 //

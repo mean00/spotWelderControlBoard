@@ -5,7 +5,7 @@
 
 #include <Wire.h>
 #include "adc/simpleADC.h"
-#include "OLED_I2C.h"
+#include "ssd1306_i2c.h"
 #include "MapleFreeRTOS1000_pp.h"
 #include "pinMapping.h"
 #include "printf.h"

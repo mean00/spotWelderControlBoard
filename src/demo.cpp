@@ -81,9 +81,9 @@ void MainTask(void *)
   rotary->setup();
   
   myScreen=createScreen();
- // Navigate *currentMenu= spawnMainMenu();
-  Navigate *currentMenu=new Calibration(NULL);
-  
+   Navigate *currentMenu= spawnMainMenu();
+  //Navigate *currentMenu=new Calibration(NULL);
+  interrupts();
   while(1)
   {
       bool dirty=false;
@@ -95,12 +95,18 @@ void MainTask(void *)
       }
       if(!dirty)
       {
+          Navigate::Event event;
           bool subMenu=false;
-          bool push=rotary->getPush();
-          Navigate::Event event=Navigate::E_TIMER;
+          bool push=(int)rotary->getPush();
+          Navigate *z;
           if(push)
+          {
               event=Navigate::E_PUSH;
-           Navigate *z=currentMenu->handleEvent(event,subMenu);
+          }else
+          {
+              event=Navigate::E_TIMER;
+          }
+           z=currentMenu->handleEvent(event,subMenu);
            if(z)
            {
                if(subMenu)

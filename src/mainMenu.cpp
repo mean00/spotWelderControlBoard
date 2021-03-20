@@ -1,18 +1,8 @@
 
-#define HWIRE I2C1
 
-#include <Wire.h>
-#include "OLED_I2C.h"
-#include "MapleFreeRTOS1000_pp.h"
-#include "pinMapping.h"
-#include "printf.h"
-#include "dso_debug.h"
-#include "dso_eeprom.h"
 #include "navigate.h"
-#include "vector"
 
-extern OLED  *myOLED;
-
+Navigate *spawnCalibration(Navigate *parent);
 /**
  * 
  * @param p
@@ -75,17 +65,29 @@ MainMenu::~MainMenu()
  */
 Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
 {
-    
+     switch(evt)
+    {
+        case Navigate::E_PUSH:            
+            subMenu=true;
+            return spawnCalibration(this);
+        case Navigate::E_TIMER:
+            redraw();
+            return NULL;
+        default:
+            xAssert(0);
+            break;
+            
+    }
 }
 /**
  * 
  */
 void MainMenu::redraw()
 {
-    myOLED->clrScr();
+    myScreen->clear();
     int dex=_dex % (menu.size());
-    myOLED->print(menu[dex]->str,20,35);
-    myOLED->update();
+    myScreen->print(menu[dex]->str,20,35);
+    myScreen->update();
 }
 /**
  * 

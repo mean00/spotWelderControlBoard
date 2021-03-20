@@ -20,7 +20,7 @@
   examples and tools supplied with the library.
 */
 
-#include "OLED_I2C.h"
+#include "ssd1306_i2c.h"
 #if defined(__AVR__)
 	#include <avr/pgmspace.h>
 	#include "hardware/avr/HW_AVR.h"
