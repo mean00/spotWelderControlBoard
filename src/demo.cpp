@@ -30,31 +30,25 @@ Rotary *rotary;
 uint8_t ucHeap[configTOTAL_HEAP_SIZE];
 
 int pulseWidth=5;
-
+int voltageOffset=1000;
 Measurement *measure;
 
 int getVBat10(int offset);
 
+/**
+ * 
+ */
 void setup()
 {
   // turn off gate asap
   digitalWrite(PIN_GATE,0);
-  pinMode(PIN_GATE,OUTPUT);
-  
+  pinMode(PIN_GATE,OUTPUT);  
   afio_cfg_debug_ports( AFIO_DEBUG_SW_ONLY); // Unlock PB3 & PB4
   Serial.end();
-  //Serial1.begin(115200);  //Wire.begin();
-  //Serial.end();
-  //Serial1.begin(115200);  
-  
   // shutdown usb & spi
   rcc_clk_disable(RCC_SPI1);
   rcc_clk_disable(RCC_SPI2);
   rcc_clk_disable(RCC_USB);
-  
-  
-  //
-  
   xTaskCreate( MainTask, "MainTask", 350, NULL, DSO_MAIN_TASK_PRIORITY, NULL );   
   vTaskStartScheduler();      
 }
@@ -63,7 +57,6 @@ void loop()
 {
 
 }
-int value=0;
 /**
  * 
  * @param 
@@ -76,10 +69,12 @@ void MainTask(void *)
   {
     Logger("Formating eeprom\n");    
     pulseWidth=5;
+    voltageOffset=1000;
     DSOEeprom::format();
     DSOEeprom::writePulse(pulseWidth);
+    DSOEeprom::writeVoltageOffset(voltageOffset);
   }  
-  
+  DSOEeprom::readVoltageOffset(voltageOffset);
   measure=new Measurement(PIN_VBAT,PIN_DETECT);
   
   rotary=new Rotary(ROTARY_LEFT,ROTARY_RIGHT,ROTARY_PUSH);

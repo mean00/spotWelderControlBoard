@@ -58,7 +58,6 @@ generate_arduino_firmware(spotWelder${EXTENSION}
                         src/measurement.cpp
                         src/mainMenu.cpp
                         src/voltageCalibration.cpp
-                        src/screen.cpp      
                         src/SSD1306.cpp
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}

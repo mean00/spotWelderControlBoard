@@ -46,10 +46,10 @@ void Calibration::redraw()
     float v= getVBat10(voltageCalibration);
     v=v/10.;
     char tmp[16];
-    sprintf(tmp,"%02.1f V",v);    
+    sprintf(tmp,"%02.1f",v);    
     myScreen->clear();
     myScreen->print("Adjust voltage",10,20);        
-    myScreen->print(tmp,4,40);
+    myScreen->printBigNumber(tmp,4,40);
     myScreen->update();
 }
 /**

@@ -38,7 +38,13 @@ public:
         {
             myOLED->print(st,x,y);
         }
-      
+        virtual void printBigNumber(const char *t, int x, int y)
+        {
+            
+            myOLED->setFont(MediumNumbers);    
+            myOLED->print(t,x,y);
+            myOLED->setFont(SmallFont);    
+        }
         virtual      ~Screen1306() {}
 protected:        
         OLED  *myOLED;
