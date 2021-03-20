@@ -17,23 +17,23 @@ extern "C" unsigned char MediumNumbers[];
 extern "C" unsigned char SmallFont[];
 extern "C" unsigned char TinyFont[];
 
-#if 0
-    TwoWire wire(1,0,10*1000);
-    #define WIRE wire
-#else
-    SoftWire  softwire(SCREEN_SCL,SCREEN_DATA);
-    #define WIRE softwire
-#endif
-
 
 class Screen1306 : public MyScreen
 {
 public:
         Screen1306()
         {            
-            pinMode(SCREEN_SCL, OUTPUT);
-            WIRE.begin();
-            myOLED=new  OLED_stm32duino(WIRE, SCREEN_RESET);
+#if 0
+           SoftWire *sw=new SoftWire(SCREEN_SCL,SCREEN_DATA);
+           // pinMode(SCREEN_SCL, OUTPUT);
+            myWire=sw;
+#else
+            TwoWire *tw=new TwoWire(1,0,100*1000);
+            myWire=tw;
+#endif            
+            
+            myWire->begin();
+            myOLED=new  OLED_stm32duino(*myWire, SCREEN_RESET);
             myOLED->begin();
             myOLED->setFont(SmallFont);    
             myOLED->update();
@@ -60,6 +60,7 @@ public:
         virtual      ~Screen1306() {}
 protected:        
         OLED_stm32duino  *myOLED;
+        WireBase         *myWire;
 };
 
 MyScreen *createScreen()
