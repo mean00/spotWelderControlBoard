@@ -66,5 +66,11 @@ void  Calibration::handleRotary(int inc)
 
 Navigate *Calibration::handleEvent(Event evt,bool &subMenu)
 {
+    if(evt==Navigate::E_PUSH)
+    {
+        subMenu=true;
+        DSOEeprom::writeVoltageOffset(voltageCalibration);
+        return _parent;
+    }
     return NULL;
 }

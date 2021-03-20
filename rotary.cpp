@@ -11,6 +11,8 @@
 #include "rotary.h"
 
 #define ROTARY_FULL_STEP
+#define THRESHOLD 10
+
 
 #include "rotary_internal.h"
 #define ButtonToPin(x)    (PB0+x)
@@ -31,6 +33,12 @@ static void _myInterruptRE(void *a)
     Rotary *r=(Rotary *)a;
     r->interruptRE();
 }
+static void _myInterruptPush(void *a)
+{
+    Rotary *r=(Rotary *)a;
+    r->interruptPush();
+}
+
 /**
  * 
  */
@@ -40,6 +48,7 @@ Rotary::Rotary(int left, int right, int push)
     _pinR=right;
     _pinPush=push;
     _state = R_START;
+    _pushed=false;
       
     pinMode(_pinL,OUTPUT); // ok
     digitalWrite(_pinL,1);
@@ -57,8 +66,9 @@ Rotary::Rotary(int left, int right, int push)
  */
 bool Rotary::setup()
 {
-     attachInterrupt(_pinL,_myInterruptRE,this,CHANGE );
-     attachInterrupt(_pinR,_myInterruptRE,this,CHANGE );
+    attachInterrupt(_pinL,_myInterruptRE,this,CHANGE );
+    attachInterrupt(_pinR,_myInterruptRE,this,CHANGE );
+    attachInterrupt(_pinPush,_myInterruptPush,this,CHANGE );
     return true;
 }
 /**
@@ -89,6 +99,17 @@ void Rotary::interruptRE()
 }
 /**
  * 
+ */
+void Rotary::interruptPush()
+{
+    int now=millis();
+    if(now-_lastPush<THRESHOLD) return;
+    _lastPush=now;
+    _pushed=true;
+}
+
+/**
+ * 
  * @return 
  */
 int  Rotary::getRotaryValue()
@@ -97,4 +118,15 @@ int  Rotary::getRotaryValue()
     int evt = __atomic_exchange_n( &(_counter), 0, __ATOMIC_SEQ_CST);
     return evt;
 }
+/**
+ * 
+ * @return 
+ */
+bool    Rotary::getPush()
+{
+    bool r=_pushed;
+    _pushed=false;
+    return r;
+}
+
 //

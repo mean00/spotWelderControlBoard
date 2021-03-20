@@ -96,7 +96,11 @@ void MainTask(void *)
       if(!dirty)
       {
           bool subMenu=false;
-           Navigate *z=currentMenu->handleEvent(Navigate::E_TIMER,subMenu);
+          bool push=rotary->getPush();
+          Navigate::Event event=Navigate::E_TIMER;
+          if(push)
+              event=Navigate::E_PUSH;
+           Navigate *z=currentMenu->handleEvent(event,subMenu);
            if(z)
            {
                if(subMenu)
