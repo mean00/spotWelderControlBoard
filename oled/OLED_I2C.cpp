@@ -63,11 +63,7 @@ void OLED::begin()
 		digitalWrite(_rst_pin, HIGH);
 	}
 #if 1
-#if defined(SDA1) & defined(SCL1)
-	if (((_sda_pin == SDA) and (_scl_pin == SCL)) or ((_sda_pin == SDA1) and (_scl_pin == SCL1)))
-#else
-	if ((_sda_pin == SDA) and (_scl_pin == SCL))
-#endif
+	if ((_sda_pin == PB7) && (_scl_pin == PB6))
 	{
 		_use_hw = true;
         #pragma message("I2C HW mode enabled")
