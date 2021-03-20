@@ -21,35 +21,13 @@
 */
 
 #include "ssd1306_i2c.h"
-#if defined(__AVR__)
-	#include <avr/pgmspace.h>
-	#include "hardware/avr/HW_AVR.h"
-#elif defined(__PIC32MX__)
-	#pragma message("Compiling for PIC32 Architecture...")
-	#include "hardware/pic32/HW_PIC32.h"
-/*
-#elif defined(__arm__)
-	#pragma message("Compiling for ARM Architecture...")
-	#include "hardware/arm/HW_ARM.h"
- */
-#elif defined (__STM32F1__)
-	#pragma message("Compiling for STM32F1 Architecture...")
-#include "hardware/arm/HW_STM32.h"
-#endif
+#include "Wire.h"
 
-OLED::OLED(uint8_t data_pin, uint8_t sclk_pin, uint8_t rst_pin)
+OLED::OLED( uint8_t rst_pin)
 { 
-	_sda_pin = data_pin;
-	_scl_pin = sclk_pin;
 	_rst_pin = rst_pin;
 }
 
-OLED::OLED(uint8_t data_pin, uint8_t sclk_pin)
-{ 
-	_sda_pin = data_pin;
-	_scl_pin = sclk_pin;
-	_rst_pin = RST_NOT_IN_USE;
-}
 
 void OLED::begin()
 {
@@ -62,50 +40,37 @@ void OLED::begin()
 		delay(10);
 		digitalWrite(_rst_pin, HIGH);
 	}
-#if 1
-	if ((_sda_pin == PB7) && (_scl_pin == PB6))
-	{
-		_use_hw = true;
-        #pragma message("I2C HW mode enabled")
-		_initTWI();
-	}
-	else
-#endif            
-	{
-		_use_hw = false;
-		pinMode(_scl_pin, OUTPUT);
-        #pragma message("SCL pinmode OUTPUT")
-	}
+	
 
-	_sendTWIcommand(SSD1306_DISPLAY_OFF);
-    _sendTWIcommand(SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO);
-    _sendTWIcommand(0x80);
-    _sendTWIcommand(SSD1306_SET_MULTIPLEX_RATIO);
-    _sendTWIcommand(0x3F);
-    _sendTWIcommand(SSD1306_SET_DISPLAY_OFFSET);
-    _sendTWIcommand(0x0);
-    _sendTWIcommand(SSD1306_SET_START_LINE | 0x0);
-    _sendTWIcommand(SSD1306_CHARGE_PUMP);
-	_sendTWIcommand(0x14);
-    _sendTWIcommand(SSD1306_MEMORY_ADDR_MODE);
-    _sendTWIcommand(0x00);
-    _sendTWIcommand(SSD1306_SET_SEGMENT_REMAP | 0x1);
-    _sendTWIcommand(SSD1306_COM_SCAN_DIR_DEC);
-    _sendTWIcommand(SSD1306_SET_COM_PINS);
-    _sendTWIcommand(0x12);
-    _sendTWIcommand(SSD1306_SET_CONTRAST_CONTROL);
-	_sendTWIcommand(0xCF);
-    _sendTWIcommand(SSD1306_SET_PRECHARGE_PERIOD);
-	_sendTWIcommand(0xF1);
-    _sendTWIcommand(SSD1306_SET_VCOM_DESELECT);
-    _sendTWIcommand(0x40);
-    _sendTWIcommand(SSD1306_DISPLAY_ALL_ON_RESUME);
-    _sendTWIcommand(SSD1306_NORMAL_DISPLAY);
-	_sendTWIcommand(SSD1306_DISPLAY_ON);
+    sendCommand(SSD1306_DISPLAY_OFF);
+    sendCommand(SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO);
+    sendCommand(0x80);
+    sendCommand(SSD1306_SET_MULTIPLEX_RATIO);
+    sendCommand(0x3F);
+    sendCommand(SSD1306_SET_DISPLAY_OFFSET);
+    sendCommand(0x0);
+    sendCommand(SSD1306_SET_START_LINE | 0x0);
+    sendCommand(SSD1306_CHARGE_PUMP);
+    sendCommand(0x14);
+    sendCommand(SSD1306_MEMORY_ADDR_MODE);
+    sendCommand(0x00);
+    sendCommand(SSD1306_SET_SEGMENT_REMAP | 0x1);
+    sendCommand(SSD1306_COM_SCAN_DIR_DEC);
+    sendCommand(SSD1306_SET_COM_PINS);
+    sendCommand(0x12);
+    sendCommand(SSD1306_SET_CONTRAST_CONTROL);
+    sendCommand(0xCF);
+    sendCommand(SSD1306_SET_PRECHARGE_PERIOD);
+    sendCommand(0xF1);
+    sendCommand(SSD1306_SET_VCOM_DESELECT);
+    sendCommand(0x40);
+    sendCommand(SSD1306_DISPLAY_ALL_ON_RESUME);
+    sendCommand(SSD1306_NORMAL_DISPLAY);
+    sendCommand(SSD1306_DISPLAY_ON);
 
-	clrScr();
-	update();
-	cfont.font=0;
+    clrScr();
+    update();
+    cfont.font=0;
 }
 
 void OLED::clrScr()
@@ -120,243 +85,243 @@ void OLED::fillScr()
 
 void OLED::setBrightness(uint8_t value)
 {
-	_sendTWIcommand(SSD1306_SET_CONTRAST_CONTROL);
-	_sendTWIcommand(value);
+    sendCommand(SSD1306_SET_CONTRAST_CONTROL);
+    sendCommand(value);
 }
 
 void OLED::invert(bool mode)
 {
-	if (mode==true)
-		_sendTWIcommand(SSD1306_INVERT_DISPLAY);
-	else
-		_sendTWIcommand(SSD1306_NORMAL_DISPLAY);
+    if (mode==true)
+        sendCommand(SSD1306_INVERT_DISPLAY);
+    else
+        sendCommand(SSD1306_NORMAL_DISPLAY);
 }
 
 void OLED::setPixel(uint16_t x, uint16_t y)
 {
-	int by, bi;
+    int by, bi;
 
-	if ((x>=0) and (x<128) and (y>=0) and (y<64))
-	{
-		by=((y/8)*128)+x;
-		bi=y % 8;
+    if ((x>=0) and (x<128) and (y>=0) and (y<64))
+    {
+        by=((y/8)*128)+x;
+        bi=y % 8;
 
-		scrbuf[by]=scrbuf[by] | (1<<bi);
-	}
+        scrbuf[by]=scrbuf[by] | (1<<bi);
+    }
 }
 
 void OLED::clrPixel(uint16_t x, uint16_t y)
 {
-	int by, bi;
+    int by, bi;
 
-	if ((x>=0) and (x<128) and (y>=0) and (y<64))
-	{
-		by=((y/8)*128)+x;
-		bi=y % 8;
+    if ((x>=0) and (x<128) and (y>=0) and (y<64))
+    {
+        by=((y/8)*128)+x;
+        bi=y % 8;
 
-		scrbuf[by]=scrbuf[by] & ~(1<<bi);
-	}
+        scrbuf[by]=scrbuf[by] & ~(1<<bi);
+    }
 }
 
 void OLED::invPixel(uint16_t x, uint16_t y)
 {
-	int by, bi;
+    int by, bi;
 
-	if ((x>=0) and (x<128) and (y>=0) and (y<64))
-	{
-		by=((y/8)*128)+x;
-		bi=y % 8;
+    if ((x>=0) and (x<128) and (y>=0) and (y<64))
+    {
+        by=((y/8)*128)+x;
+        bi=y % 8;
 
-		if ((scrbuf[by] & (1<<bi))==0)
-			scrbuf[by]=scrbuf[by] | (1<<bi);
-		else
-			scrbuf[by]=scrbuf[by] & ~(1<<bi);
-	}
+        if ((scrbuf[by] & (1<<bi))==0)
+            scrbuf[by]=scrbuf[by] | (1<<bi);
+        else
+            scrbuf[by]=scrbuf[by] & ~(1<<bi);
+    }
 }
 
 void OLED::invertText(bool mode)
 {
-	if (mode==true)
-		cfont.inverted=1;
-	else
-		cfont.inverted=0;
+    if (mode==true)
+        cfont.inverted=1;
+    else
+        cfont.inverted=0;
 }
 
 void OLED::print(char *st, int x, int y)
 {
-	unsigned char ch;
-	int stl;
+    unsigned char ch;
+    int stl;
 
-	stl = strlen(st);
-	if (x == RIGHT)
-		x = 128-(stl*cfont.x_size);
-	if (x == CENTER)
-		x = (128-(stl*cfont.x_size))/2;
+    stl = strlen(st);
+    if (x == RIGHT)
+        x = 128-(stl*cfont.x_size);
+    if (x == CENTER)
+        x = (128-(stl*cfont.x_size))/2;
 
-	for (int cnt=0; cnt<stl; cnt++)
-			_print_char(*st++, x + (cnt*(cfont.x_size)), y);
+    for (int cnt=0; cnt<stl; cnt++)
+        _print_char(*st++, x + (cnt*(cfont.x_size)), y);
 }
 
 void OLED::print(String st, int x, int y)
 {
-	char buf[st.length()+1];
+    char buf[st.length()+1];
 
-	st.toCharArray(buf, st.length()+1);
-	print(buf, x, y);
+    st.toCharArray(buf, st.length()+1);
+    print(buf, x, y);
 }
 
 void OLED::printNumI(long num, int x, int y, int length, char filler)
 {
-	char buf[25];
-	char st[27];
-	boolean neg=false;
-	int c=0, f=0;
-  
-	if (num==0)
-	{
-		if (length!=0)
-		{
-			for (c=0; c<(length-1); c++)
-				st[c]=filler;
-			st[c]=48;
-			st[c+1]=0;
-		}
-		else
-		{
-			st[0]=48;
-			st[1]=0;
-		}
-	}
-	else
-	{
-		if (num<0)
-		{
-			neg=true;
-			num=-num;
-		}
-	  
-		while (num>0)
-		{
-			buf[c]=48+(num % 10);
-			c++;
-			num=(num-(num % 10))/10;
-		}
-		buf[c]=0;
-	  
-		if (neg)
-		{
-			st[0]=45;
-		}
-	  
-		if (length>(c+neg))
-		{
-			for (int i=0; i<(length-c-neg); i++)
-			{
-				st[i+neg]=filler;
-				f++;
-			}
-		}
+    char buf[25];
+    char st[27];
+    boolean neg=false;
+    int c=0, f=0;
 
-		for (int i=0; i<c; i++)
-		{
-			st[i+neg+f]=buf[c-i-1];
-		}
-		st[c+neg+f]=0;
+    if (num==0)
+    {
+        if (length!=0)
+        {
+            for (c=0; c<(length-1); c++)
+                    st[c]=filler;
+            st[c]=48;
+            st[c+1]=0;
+        }
+        else
+        {
+            st[0]=48;
+            st[1]=0;
+        }
+    }
+    else
+    {
+        if (num<0)
+        {
+            neg=true;
+            num=-num;
+        }
 
-	}
+        while (num>0)
+        {
+            buf[c]=48+(num % 10);
+            c++;
+            num=(num-(num % 10))/10;
+        }
+        buf[c]=0;
 
-	print(st,x,y);
+        if (neg)
+        {
+                st[0]=45;
+        }
+
+        if (length>(c+neg))
+        {
+            for (int i=0; i<(length-c-neg); i++)
+            {
+                st[i+neg]=filler;
+                f++;
+            }
+        }
+
+        for (int i=0; i<c; i++)
+        {
+                st[i+neg+f]=buf[c-i-1];
+        }
+        st[c+neg+f]=0;
+
+    }
+
+    print(st,x,y);
 }
 
 void OLED::printNumF(double num, byte dec, int x, int y, char divider, int length, char filler)
 {
-	char st[27];
-	boolean neg=false;
+    char st[27];
+    boolean neg=false;
 
-	if (num<0)
-		neg = true;
+    if (num<0)
+            neg = true;
 
-	_convert_float(st, num, length, dec);
+    _convert_float(st, num, length, dec);
 
-	if (divider != '.')
-	{
-		for (size_t i=0; i<sizeof(st); i++)
-			if (st[i]=='.')
-				st[i]=divider;
-	}
+    if (divider != '.')
+    {
+            for (size_t i=0; i<sizeof(st); i++)
+                    if (st[i]=='.')
+                            st[i]=divider;
+    }
 
-	if (filler != ' ')
-	{
-		if (neg)
-		{
-			st[0]='-';
-			for (size_t i=1; i<sizeof(st); i++)
-				if ((st[i]==' ') || (st[i]=='-'))
-					st[i]=filler;
-		}
-		else
-		{
-			for (size_t i=0; i<sizeof(st); i++)
-				if (st[i]==' ')
-					st[i]=filler;
-		}
-	}
+    if (filler != ' ')
+    {
+            if (neg)
+            {
+                    st[0]='-';
+                    for (size_t i=1; i<sizeof(st); i++)
+                            if ((st[i]==' ') || (st[i]=='-'))
+                                    st[i]=filler;
+            }
+            else
+            {
+                    for (size_t i=0; i<sizeof(st); i++)
+                            if (st[i]==' ')
+                                    st[i]=filler;
+            }
+    }
 
-	print(st,x,y);
+    print(st,x,y);
 }
 
 void OLED::_print_char(unsigned char c, int x, int y)
 {
-	if ((cfont.y_size % 8) == 0)
-	{
-		int font_idx = ((c - cfont.offset)*(cfont.x_size*(cfont.y_size/8)))+4;
-		for (int rowcnt=0; rowcnt<(cfont.y_size/8); rowcnt++)
-		{
-			for(int cnt=0; cnt<cfont.x_size; cnt++)
-			{
-				for (int b=0; b<8; b++)
-					if ((fontbyte(font_idx+cnt+(rowcnt*cfont.x_size)) & (1<<b))!=0)
-						if (cfont.inverted==0)
-							setPixel(x+cnt, y+(rowcnt*8)+b);
-						else
-							clrPixel(x+cnt, y+(rowcnt*8)+b);
-					else
-						if (cfont.inverted==0)
-							clrPixel(x+cnt, y+(rowcnt*8)+b);
-						else
-							setPixel(x+cnt, y+(rowcnt*8)+b);
-			}
-		}
-	}
-	else
-	{
-		int font_idx = ((c - cfont.offset)*((cfont.x_size*cfont.y_size/8)))+4;
-		int cbyte=fontbyte(font_idx);
-		int cbit=7;
-		for (int cx=0; cx<cfont.x_size; cx++)
-		{
-			for (int cy=0; cy<cfont.y_size; cy++)
-			{
-				if ((cbyte & (1<<cbit)) != 0)
-					if (cfont.inverted==0)
-						setPixel(x+cx, y+cy);
-					else
-						clrPixel(x+cx, y+cy);
-				else
-					if (cfont.inverted==0)
-						clrPixel(x+cx, y+cy);
-					else
-						setPixel(x+cx, y+cy);
-				cbit--;
-				if (cbit<0)
-				{
-					cbit=7;
-					font_idx++;
-					cbyte=fontbyte(font_idx);
-				}
-			}
-		}
-	}
+    if ((cfont.y_size % 8) == 0)
+    {
+        int font_idx = ((c - cfont.offset)*(cfont.x_size*(cfont.y_size/8)))+4;
+        for (int rowcnt=0; rowcnt<(cfont.y_size/8); rowcnt++)
+        {
+                for(int cnt=0; cnt<cfont.x_size; cnt++)
+                {
+                    for (int b=0; b<8; b++)
+                        if ((fontbyte(font_idx+cnt+(rowcnt*cfont.x_size)) & (1<<b))!=0)
+                            if (cfont.inverted==0)
+                                    setPixel(x+cnt, y+(rowcnt*8)+b);
+                            else
+                                    clrPixel(x+cnt, y+(rowcnt*8)+b);
+                        else
+                            if (cfont.inverted==0)
+                                    clrPixel(x+cnt, y+(rowcnt*8)+b);
+                            else
+                                    setPixel(x+cnt, y+(rowcnt*8)+b);
+                }
+        }
+    }
+    else
+    {
+            int font_idx = ((c - cfont.offset)*((cfont.x_size*cfont.y_size/8)))+4;
+            int cbyte=fontbyte(font_idx);
+            int cbit=7;
+            for (int cx=0; cx<cfont.x_size; cx++)
+            {
+                for (int cy=0; cy<cfont.y_size; cy++)
+                {
+                    if ((cbyte & (1<<cbit)) != 0)
+                        if (cfont.inverted==0)
+                                setPixel(x+cx, y+cy);
+                        else
+                                clrPixel(x+cx, y+cy);
+                    else
+                        if (cfont.inverted==0)
+                                clrPixel(x+cx, y+cy);
+                        else
+                                setPixel(x+cx, y+cy);
+                    cbit--;
+                    if (cbit<0)
+                    {
+                        cbit=7;
+                        font_idx++;
+                        cbyte=fontbyte(font_idx);
+                    }
+                }
+            }
+    }
 }
 
 void OLED::setFont(uint8_t* font)
@@ -371,34 +336,34 @@ void OLED::setFont(uint8_t* font)
 
 void OLED::drawHLine(int x, int y, int l)
 {
-	int by, bi;
+    int by, bi;
 
-	if ((x>=0) and (x<128) and (y>=0) and (y<64))
-	{
-		for (int cx=0; cx<l; cx++)
-		{
-			by=((y/8)*128)+x;
-			bi=y % 8;
+    if ((x>=0) and (x<128) and (y>=0) and (y<64))
+    {
+        for (int cx=0; cx<l; cx++)
+        {
+            by=((y/8)*128)+x;
+            bi=y % 8;
 
-			scrbuf[by+cx] |= (1<<bi);
-		}
-	}
+            scrbuf[by+cx] |= (1<<bi);
+        }
+    }
 }
 
 void OLED::clrHLine(int x, int y, int l)
 {
-	int by, bi;
+    int by, bi;
 
-	if ((x>=0) and (x<128) and (y>=0) and (y<64))
-	{
-		for (int cx=0; cx<l; cx++)
-		{
-			by=((y/8)*128)+x;
-			bi=y % 8;
+    if ((x>=0) and (x<128) and (y>=0) and (y<64))
+    {
+        for (int cx=0; cx<l; cx++)
+        {
+            by=((y/8)*128)+x;
+            bi=y % 8;
 
-			scrbuf[by+cx] &= ~(1<<bi);
-		}
-	}
+            scrbuf[by+cx] &= ~(1<<bi);
+        }
+    }
 }
 
 void OLED::drawVLine(int x, int y, int l)
@@ -801,59 +766,3 @@ void OLED::drawBitmap(int x, int y, uint8_t* bitmap, int sx, int sy)
 		}
 	}      
 }
-
-// Private
-
-void OLED::_sendStart(byte addr)
-{
-	pinMode(_sda_pin, OUTPUT);
-	digitalWrite(_sda_pin, HIGH);
-	digitalWrite(_scl_pin, HIGH);
-	digitalWrite(_sda_pin, LOW);
-	digitalWrite(_scl_pin, LOW);
-	shiftOut(_sda_pin, _scl_pin, MSBFIRST, addr);
-}
-
-void OLED::_sendStop()
-{
-	pinMode(_sda_pin, OUTPUT);
-	digitalWrite(_sda_pin, LOW);
-	digitalWrite(_scl_pin, HIGH);
-	digitalWrite(_sda_pin, HIGH);
-	pinMode(_sda_pin, INPUT);
-}
-
-void OLED::_sendNack()
-{
-	pinMode(_sda_pin, OUTPUT);
-	digitalWrite(_scl_pin, LOW);
-	digitalWrite(_sda_pin, HIGH);
-	digitalWrite(_scl_pin, HIGH);
-	digitalWrite(_scl_pin, LOW);
-	pinMode(_sda_pin, INPUT);
-}
-
-void OLED::_sendAck()
-{
-	pinMode(_sda_pin, OUTPUT);
-	digitalWrite(_scl_pin, LOW);
-	digitalWrite(_sda_pin, LOW);
-	digitalWrite(_scl_pin, HIGH);
-	digitalWrite(_scl_pin, LOW);
-	pinMode(_sda_pin, INPUT);
-}
-
-void OLED::_waitForAck()
-{
-	pinMode(_sda_pin, INPUT);
-	digitalWrite(_scl_pin, HIGH);
-	while (digitalRead(_sda_pin)==HIGH) {}
-	digitalWrite(_scl_pin, LOW);
-}
-
-void OLED::_writeByte(uint8_t value)
-{
-	pinMode(_sda_pin, OUTPUT);
-	shiftOut(_sda_pin, _scl_pin, MSBFIRST, value);
-}
-
