@@ -7,7 +7,10 @@
 class DSOEeprom
 {
 public:
-        static bool read(int &p);
-        static bool write(int p);
+        static bool readPulse(int &p);
+        static bool writePulse(int p);
+        static bool readVoltageOffset(int &p);
+        static bool writeVoltageOffset(int p);
+        
         static bool format(); 
 };

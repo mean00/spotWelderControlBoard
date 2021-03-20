@@ -24,8 +24,7 @@ Measurement::Measurement(int pinV,int pinD) : xTask("MEASURE",  4, 300)
 void Measurement::run()
 {
   while(1)
-  {
-   
+  {   
       int nb=64;
       uint16_t *data;
       _adc->timeSample(nb, &data,100);

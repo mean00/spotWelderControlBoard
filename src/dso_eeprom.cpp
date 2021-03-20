@@ -16,6 +16,7 @@ static uint16_t pulseWidth=5;
 #endif
 
 #define PULSE_INDEX 1
+#define VOLTAGE_INDEX 2
 
 /**
  * 
@@ -31,7 +32,7 @@ static void addressInit(EEPROMClass &e2)
  * 
  * @return 
  */
-bool DSOEeprom::read(int &pulse)
+bool DSOEeprom::readPulse(int &pulse)
 {
     EEPROMClass e2;
     addressInit(e2);
@@ -52,7 +53,7 @@ bool DSOEeprom::read(int &pulse)
  * 
  * @return 
  */
-bool  DSOEeprom::write(int pulse)
+bool  DSOEeprom::writePulse(int pulse)
 {
     EEPROMClass e2;
     addressInit(e2);
@@ -61,6 +62,43 @@ bool  DSOEeprom::write(int pulse)
     
     return true;
 }
+
+/**
+ * 
+ * @return 
+ */
+bool DSOEeprom::readVoltageOffset(int &offset)
+{
+    EEPROMClass e2;
+    addressInit(e2);
+    calibrationHash=e2.read(0);
+    if(calibrationHash!=CURRENT_HASH)
+    {
+        return false;
+    }
+    uint16_t po;
+    if(EEPROM_OK==e2.read(VOLTAGE_INDEX,&po))
+    {
+        offset=po;
+        return true;
+    }
+    return false;
+}
+/**
+ * 
+ * @return 
+ */
+bool  DSOEeprom::writeVoltageOffset(int pulse)
+{
+    EEPROMClass e2;
+    addressInit(e2);
+    uint16_t p16=pulse;
+    e2.update(VOLTAGE_INDEX,p16);
+    
+    return true;
+}
+
+
 /**
  */
 bool  DSOEeprom::format()
