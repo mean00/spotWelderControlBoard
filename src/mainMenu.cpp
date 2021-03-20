@@ -43,9 +43,8 @@ Navigate * spawnMainMenu()
 MainMenu::MainMenu(Navigate *p): Navigate(p)
 {
     menuItem *one=new menuItem;
-    one->str="xxx calib";
+    one->str="BB calib";
     menu.push_back(one);
-
     redraw();
 }
 /**
@@ -85,8 +84,13 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
 void MainMenu::redraw()
 {
     myScreen->clear();
-    int dex=_dex % (menu.size());
-    myScreen->print(menu[dex]->str,20,35);
+    //int dex=_dex % (menu.size());
+    //myScreen->print(menu[dex]->str,20,35);
+    static int letter=0;
+    char st[2]={'A'+letter,0};
+    myScreen->print(st,20,35);
+    letter++;
+    letter%=24;
     myScreen->update();
 }
 /**

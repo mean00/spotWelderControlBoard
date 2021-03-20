@@ -41,7 +41,7 @@ void OLED::begin()
 		digitalWrite(_rst_pin, HIGH);
 	}
 	
-
+        
     sendCommand(SSD1306_DISPLAY_OFF);
     sendCommand(SSD1306_SET_DISPLAY_CLOCK_DIV_RATIO);
     sendCommand(0x80);

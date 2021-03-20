@@ -18,7 +18,7 @@ extern "C" unsigned char SmallFont[];
 extern "C" unsigned char TinyFont[];
 
 #if 0
-    TwoWire wire(1,0,400*1000);
+    TwoWire wire(1,0,10*1000);
     #define WIRE wire
 #else
     SoftWire  softwire(SCREEN_SCL,SCREEN_DATA);
@@ -32,20 +32,7 @@ public:
         Screen1306()
         {            
             pinMode(SCREEN_SCL, OUTPUT);
-            //pinMode(SCREEN_DATA, OUTPUT);
             WIRE.begin();
-            WIRE.setClock(10*1000);
-           // while(1)
-            {
-            for(int address = 1; address < 127; address++ )
-            {
-                WIRE.beginTransmission(address);
-                int error = WIRE.endTransmission();
-                if(!error) Logger("Found at %d / %x\n",address,address);
-            }
-            }
-            
-            
             myOLED=new  OLED_stm32duino(WIRE, SCREEN_RESET);
             myOLED->begin();
             myOLED->setFont(SmallFont);    

@@ -25,17 +25,13 @@ void    OLED_stm32duino::sendCommand(uint8_t cmd)
  * 
  * @param cmd
  */
+const uint8_t beginHeader[]={
+    SSD1306_COMMAND,SSD1306_SET_COLUMN_ADDR,0,127,SSD1306_SET_PAGE_ADDR,0,7
+};
 void    OLED_stm32duino::beginData()
 {    
     _wire.beginTransmission(SSD1306_ADDR);
-    _wire.write(SSD1306_COMMAND);
-    _wire.write(SSD1306_SET_COLUMN_ADDR);
-    _wire.write(0);
-    _wire.write(127);
-
-    _wire.write(SSD1306_SET_PAGE_ADDR);
-    _wire.write(0);
-    _wire.write(7); 
+    _wire.write((uint8_t *)beginHeader,sizeof(beginHeader));
     _wire.endTransmission();   
     
     _wire.beginTransmission(SSD1306_ADDR);
