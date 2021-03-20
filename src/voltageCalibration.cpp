@@ -2,7 +2,7 @@
 #define HWIRE I2C1
 
 #include <Wire.h>
-#include "OLED_I2C.h"
+#include "screen.h"
 #include "MapleFreeRTOS1000_pp.h"
 #include "pinMapping.h"
 #include "printf.h"
@@ -14,7 +14,7 @@
 
 #include "voltageCalibration.h"
 
-extern OLED  *myOLED;
+extern MyScreen *myScreen;
 
 
 
@@ -47,10 +47,10 @@ void Calibration::redraw()
     v=v/10.;
     char tmp[16];
     sprintf(tmp,"%02.1f V",v);    
-    myOLED->clrScr();
-    myOLED->print("Adjust voltage",10,20);        
-    myOLED->print(tmp,4,40);
-    myOLED->update();
+    myScreen->clear();
+    myScreen->print("Adjust voltage",10,20);        
+    myScreen->print(tmp,4,40);
+    myScreen->update();
 }
 /**
  * 

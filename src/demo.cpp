@@ -5,7 +5,6 @@
 
 #include <Wire.h>
 #include "adc/simpleADC.h"
-#include "OLED_I2C.h"
 #include "MapleFreeRTOS1000_pp.h"
 #include "rotary.h"
 #include "pinMapping.h"
@@ -15,6 +14,8 @@
 #include "measurement.h"
 #include "navigate.h"
 #include "voltageCalibration.h"
+#include "screen.h"
+
 
 extern void pulseDemo();
 
@@ -23,13 +24,10 @@ extern Navigate * spawnMainMenu();
 #define DSO_MAIN_TASK_PRIORITY 10
 
 
-OLED  *myOLED;
+MyScreen *myScreen;
 simpleAdc *adc;
 Rotary *rotary;
 uint8_t ucHeap[configTOTAL_HEAP_SIZE];
-extern "C" unsigned char MediumNumbers[];
-extern "C" unsigned char SmallFont[];
-extern "C" unsigned char TinyFont[];
 
 int pulseWidth=5;
 
@@ -87,12 +85,7 @@ void MainTask(void *)
   rotary=new Rotary(ROTARY_LEFT,ROTARY_RIGHT,ROTARY_PUSH);
   rotary->setup();
   
-  myOLED=new  OLED(SCREEN_DATA, SCREEN_SCL, SCREEN_RESET);
-  myOLED->begin();
-  myOLED->setFont(SmallFont);    
-  myOLED->update();
-  
-  
+  myScreen=createScreen();
  // Navigate *currentMenu= spawnMainMenu();
   Navigate *currentMenu=new Calibration(NULL);
   
@@ -126,28 +119,9 @@ void MainTask(void *)
       xDelay(20);
   }
   
-  Logger("Go !\n");
-  myOLED->clrScr();
-  myOLED->print("GO", 20, 3);  
-  myOLED->update();
+
     //  pulseDemo();
   
-  while(1)
-  {
-   
-      int inc=rotary->getRotaryValue();
-      value+=inc;
-      
-      int raw=getVBat10(1600);
-      
-      
-      myOLED->clrScr();
-      myOLED->printNumI(raw, 0, 20, 3);  
-      myOLED->printNumI(value, 0, 40, 3);  
-//      myOLED->printNumI(detect, 80, 20, 3);  
-      myOLED->update();
-      xDelay(100);
-  }
   
 }
 /**
