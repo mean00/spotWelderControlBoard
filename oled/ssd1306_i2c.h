@@ -52,7 +52,7 @@ struct _current_font
 #define bitmapbyte(x) bitmap[x]
 #define bitmapdatatype unsigned char*
 
-class OLED
+class OLEDCore
 {
 public:
         typedef enum FontSize
@@ -64,20 +64,25 @@ public:
         public:
           int               maxHeight;          
           int               maxWidth;
-          uint16_t         *filler;
           const GFXfont    *font;        
         };  
         FontInfo          fontInfo[3];
         
         FontInfo          *currentFont;
-        const GFXfont           *gfxFont;
+        const GFXfont     *gfxFont;
+        bool               inverted;
 public: // extra functions
                 void    drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgcolor, int bgcolor, const uint8_t *data)    ;
                 void    myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert) ;                
                 void    setFontSize(FontSize size);
                 void    setFontFamily(const GFXfont *small, const GFXfont *medium, const GFXfont *big);
+                void    print(int x,int y,const char *z);
+                
+                
+                
+                int     write(uint8_t c) ;
 	public:
-                        OLED( uint8_t rst_pin);
+                        OLEDCore( uint8_t rst_pin);
 		void	begin();
 		void	setBrightness(uint8_t value);
 		void	clrScr();
@@ -107,7 +112,8 @@ public: // extra functions
 		void	clrHLine(int x, int y, int l);
 		void	drawVLine(int x, int y, int l);
 		void	clrVLine(int x, int y, int l);
-                uint8_t                 scrbuf[1024];
+                uint8_t scrbuf[1024];
+                int     cursor_x,cursor_y;
 
                 
 };

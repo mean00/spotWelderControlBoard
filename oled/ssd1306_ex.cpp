@@ -4,7 +4,7 @@
  * \fn checkFont
  * \brief extract max width/ max height from the font
  */
-static void checkFont(const GFXfont *font, OLED::FontInfo *info)
+static void checkFont(const GFXfont *font, OLEDCore::FontInfo *info)
 {
     int mW=0,mH=0;
     int x,y;
@@ -21,7 +21,18 @@ static void checkFont(const GFXfont *font, OLED::FontInfo *info)
     info->font=font;
 }
 
-
+void  OLEDCore::print(int x, int y,const char *z)
+{
+    cursor_x=x;
+    cursor_y=y;
+   int l=strlen(z);
+   while(*z)
+   {
+       int inc=write(*z);
+       cursor_x+=inc;
+       z++;
+   }
+}
 
 /**
  * 
@@ -29,17 +40,12 @@ static void checkFont(const GFXfont *font, OLED::FontInfo *info)
  * @param medium
  * @param big
  */
-void  OLED::setFontFamily(const GFXfont *small, const GFXfont *medium, const GFXfont *big)
+void  OLEDCore::setFontFamily(const GFXfont *small, const GFXfont *medium, const GFXfont *big)
 {
     checkFont(small, fontInfo+0);
     checkFont(medium,fontInfo+1);
     checkFont(big,   fontInfo+2);
 }       
-
-
-// hooks
-static GFXglyph *pgm_read_glyph_ptr(const GFXfont *gfxFont, uint8_t c) {  return gfxFont->glyph + c;}
-static  uint8_t *pgm_read_bitmap_ptr(const GFXfont *gfxFont) {  return gfxFont->bitmap;}
 
 
 /**
@@ -50,7 +56,7 @@ static  uint8_t *pgm_read_bitmap_ptr(const GFXfont *gfxFont) {  return gfxFont->
  * @param color
  * @param bg
  */
-void OLED::myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert) 
+void OLEDCore::myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert) 
 {
     int cr=c;
     cr -= gfxFont->first;
@@ -63,8 +69,6 @@ void OLED::myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert)
     x+=glyph->xOffset;
     y+=glyph->yOffset;
    
-    #define OFFSET -1
-    bool first=true;
     int dex=0;
 
     int bits = 0, bit = 0;
@@ -73,28 +77,47 @@ void OLED::myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert)
     uint8_t *data=bitmap+bo;
     for(int hh=0;hh<h;hh++)
     {
-    for(int ww=0;ww<w;ww++)
-    {
-        if (!mask) 
+        int ty=64-(y+hh);   
+        int bi=ty%8;
+        int start=((ty/8)*128);
+        if(ty<0 || ty>128)
         {
-          bits = *data++;       
-          mask=0x80;
+            dex+=w/8; // this is incomplete ! should not happen though
         }
-        if (bits & mask) 
-        {          
-            setPixel(x+ww,y+hh);
-        }else
+        else
+        for(int ww=0;ww<w;ww++)
         {
-            clrPixel(x+ww,y+hh);
-        }
-        mask>>=1;
-        dex++;
-    }
-    }
-    return;
-}
+            if (!mask) 
+            {
+              bits = *data++;       
+              mask=0x80;
+            }
+            int tx=(x+ww);
 
-void  OLED::setFontSize(FontSize size)
+            if(tx<0 || tx>128 )
+            {
+                mask>>=1;
+                dex++;
+                continue;
+            }
+            bool set=!!   (bits & mask) ;
+            set^=invert;
+
+            int by=start+tx;
+            if(set)
+                scrbuf[by]=scrbuf[by] | (1<<bi);
+            else
+                scrbuf[by]=scrbuf[by] & ~(1<<bi);
+            mask>>=1;
+            dex++;
+        }
+    }
+}
+/**
+ * 
+ * @param size
+ */
+void  OLEDCore::setFontSize(FontSize size)
 {
     switch(size)
     {
@@ -105,7 +128,45 @@ void  OLED::setFontSize(FontSize size)
     }    
     gfxFont=currentFont->font;
 }
+ 
+/**
+ * 
+ * @param c
+ * @return 
+ */
+int OLEDCore::write(uint8_t c) 
+{
 
+    if (c == '\n') 
+    {
+      cursor_x = 0;
+      cursor_y +=           gfxFont->yAdvance;
+      return 1;
+    } 
+    if(c=='\r')
+      return 1;
+    uint8_t first = gfxFont->first;
+    if ((c < first) || (c > gfxFont->last)) 
+        return 1;
+    
+    GFXglyph *glyph = gfxFont->glyph + c-first;
+    int w = glyph->width,   h = glyph->height;
+    if ((w <= 0) || (h <= 0)) 
+    {
+        cursor_x += glyph->xAdvance ;    
+        return 1;
+    }
+
+    int xo = glyph->xOffset; // sic
+    if ( ((cursor_x +  (xo + w)) > 128)) 
+    {
+      cursor_x = 0;
+      cursor_y +=   gfxFont->yAdvance;
+    }
+    myDrawChar(cursor_x, cursor_y, c, false); 
+    cursor_x += glyph->xAdvance ;    
+    return 1;
+}
 #if 0
 /**
  * 
@@ -117,7 +178,7 @@ void  OLED::setFontSize(FontSize size)
  * @param bgcolor
  * @param data
  */
-void OLED::drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgcolor, int bgcolor, const uint8_t *data)
+void OLEDCore::drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgcolor, int bgcolor, const uint8_t *data)
 {    
     uint16_t *line=lineBuffer;
     bool first=true;
@@ -174,7 +235,7 @@ void OLED::drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgcol
  * 
  * @param z
  */
-void  OLED::print(const char *z)
+void  OLEDCore::print(const char *z)
 {
    int l=strlen(z);
    while(*z)
@@ -184,68 +245,16 @@ void  OLED::print(const char *z)
        z++;
    }
 }
-void  OLED::print(float f)
+void  OLEDCore::print(float f)
 {
     char st[50];
     sprintf(st,"%f",f);
     print(st);
 }
-   void  OLED::print(int f)
+   void  OLEDCore::print(int f)
 {
     char st[50];
     sprintf(st,"%d",f);
     print(st);
-}     
-/**
- * 
- * @param c
- * @return 
- */
-size_t OLED::write(uint8_t c) 
-{
-#if 0
-  if (!gfxFont)
-    { return Adafruit_ST7735::write(c);}// 'Classic' built-in font
-  if((textsize_x!=1 ) || (textsize_y!=1))  
-    { return Adafruit_ST7735::write(c);}
-#endif
-    xAssert(gfxFont);
-    xAssert(textsize_x==1 && textsize_y==1);
-  
-    if (c == '\n') 
-    {
-      cursor_x = 0;
-      cursor_y +=          textsize_y * gfxFont->yAdvance;
-      return 1;
-    } 
-    if(c=='\r')
-      return 1;
-    uint8_t first = gfxFont->first;
-    if ((c < first) || (c > gfxFont->last)) 
-        return 1;
-    
-    GFXglyph *glyph = gfxFont->glyph + c-first;
-    int w = glyph->width,   h = glyph->height;
-    if ((w <= 0) || (h <= 0)) 
-    {
-        cursor_x += glyph->xAdvance ;    
-        return 1;
-    }
-
-    int xo = glyph->xOffset; // sic
-    if (wrap && ((cursor_x +  (xo + w)) > _width)) 
-    {
-      cursor_x = 0;
-      cursor_y +=   gfxFont->yAdvance;
-    }
-#if 0        
-        drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize_x,  textsize_y);
-#else
-        // this one is about 10 times faster
-        myDrawChar(cursor_x, cursor_y, c, textcolor, textbgcolor); 
-#endif
-      
-    cursor_x += glyph->xAdvance ;    
-    return 1;
-}
+}    
 #endif

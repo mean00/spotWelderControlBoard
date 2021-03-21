@@ -1,7 +1,7 @@
 #include "Wire.h"
 #include "ssd1306_i2c.h"
 
-class OLED_stm32duino : public  OLED
+class OLED_stm32duino : public  OLEDCore
 {
     public:
                 OLED_stm32duino(WireBase &wire, int reset);

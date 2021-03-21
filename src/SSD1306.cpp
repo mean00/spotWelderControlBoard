@@ -48,7 +48,7 @@ public:
             myWire->begin();
             myOLED=new  OLED_stm32duino(*myWire, SCREEN_RESET);
             myOLED->setFontFamily(&FreeSansBold9pt7b,&FreeSansBold24pt7b,&FreeSansBold24pt7b);            
-            myOLED->setFontSize(OLED::MediumFont); //MediumFont); BigFont
+            myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
             myOLED->begin();
             int counter=0;
             while(1)
@@ -57,8 +57,7 @@ public:
                 counter%=25;
                 char c='A'+counter;
                 myOLED->clrScr();
-                myOLED->myDrawChar(5,56,c,true);
-                myOLED->myDrawChar(64,56,'9',true);
+                myOLED->print(1,48,"12.2");
                 myOLED->update();
                 xDelay(100);
             }

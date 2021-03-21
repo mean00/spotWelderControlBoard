@@ -23,13 +23,15 @@
 #include "ssd1306_i2c.h"
 #include "Wire.h"
 
-OLED::OLED( uint8_t rst_pin)
+OLEDCore::OLEDCore( uint8_t rst_pin)
 { 
 	_rst_pin = rst_pin;
+        cursor_x=0;
+        cursor_y=0;
 }
 
 
-void OLED::begin()
+void OLEDCore::begin()
 {
 	if (_rst_pin != RST_NOT_IN_USE)
 	{
@@ -73,23 +75,23 @@ void OLED::begin()
 
 }
 
-void OLED::clrScr()
+void OLEDCore::clrScr()
 {
 	memset(scrbuf, 0, 1024);
 }
 
-void OLED::fillScr()
+void OLEDCore::fillScr()
 {
 	memset(scrbuf, 255, 1024);
 }
 
-void OLED::setBrightness(uint8_t value)
+void OLEDCore::setBrightness(uint8_t value)
 {
     sendCommand(SSD1306_SET_CONTRAST_CONTROL);
     sendCommand(value);
 }
 
-void OLED::invert(bool mode)
+void OLEDCore::invert(bool mode)
 {
     if (mode==true)
         sendCommand(SSD1306_INVERT_DISPLAY);
@@ -97,7 +99,7 @@ void OLED::invert(bool mode)
         sendCommand(SSD1306_NORMAL_DISPLAY);
 }
 
-void OLED::setPixel(uint16_t x, uint16_t y)
+void OLEDCore::setPixel(uint16_t x, uint16_t y)
 {
     int by, bi;
 
@@ -110,7 +112,7 @@ void OLED::setPixel(uint16_t x, uint16_t y)
     }
 }
 
-void OLED::clrPixel(uint16_t x, uint16_t y)
+void OLEDCore::clrPixel(uint16_t x, uint16_t y)
 {
     int by, bi;
 
@@ -123,7 +125,7 @@ void OLED::clrPixel(uint16_t x, uint16_t y)
     }
 }
 
-void OLED::invPixel(uint16_t x, uint16_t y)
+void OLEDCore::invPixel(uint16_t x, uint16_t y)
 {
     int by, bi;
 
@@ -139,7 +141,7 @@ void OLED::invPixel(uint16_t x, uint16_t y)
     }
 }
 
-void OLED::drawHLine(int x, int y, int l)
+void OLEDCore::drawHLine(int x, int y, int l)
 {
     int by, bi;
 
@@ -155,7 +157,7 @@ void OLED::drawHLine(int x, int y, int l)
     }
 }
 
-void OLED::clrHLine(int x, int y, int l)
+void OLEDCore::clrHLine(int x, int y, int l)
 {
     int by, bi;
 
@@ -171,7 +173,7 @@ void OLED::clrHLine(int x, int y, int l)
     }
 }
 
-void OLED::drawVLine(int x, int y, int l)
+void OLEDCore::drawVLine(int x, int y, int l)
 {
 	int by, bi;
 
@@ -184,7 +186,7 @@ void OLED::drawVLine(int x, int y, int l)
 	}
 }
 
-void OLED::clrVLine(int x, int y, int l)
+void OLEDCore::clrVLine(int x, int y, int l)
 {
 	int by, bi;
 
@@ -197,7 +199,7 @@ void OLED::clrVLine(int x, int y, int l)
 	}
 }
 
-void OLED::drawLine(int x1, int y1, int x2, int y2)
+void OLEDCore::drawLine(int x1, int y1, int x2, int y2)
 {
 	int tmp;
 	double delta, tx, ty;
@@ -287,7 +289,7 @@ void OLED::drawLine(int x1, int y1, int x2, int y2)
 
 }
 
-void OLED::clrLine(int x1, int y1, int x2, int y2)
+void OLEDCore::clrLine(int x1, int y1, int x2, int y2)
 {
 	int tmp;
 	double delta, tx, ty;
@@ -377,7 +379,7 @@ void OLED::clrLine(int x1, int y1, int x2, int y2)
 
 }
 
-void OLED::drawRect(int x1, int y1, int x2, int y2)
+void OLEDCore::drawRect(int x1, int y1, int x2, int y2)
 {
 	int tmp;
 
@@ -400,7 +402,7 @@ void OLED::drawRect(int x1, int y1, int x2, int y2)
 	drawVLine(x2, y1, y2-y1+1);
 }
 
-void OLED::clrRect(int x1, int y1, int x2, int y2)
+void OLEDCore::clrRect(int x1, int y1, int x2, int y2)
 {
 	int tmp;
 
@@ -423,7 +425,7 @@ void OLED::clrRect(int x1, int y1, int x2, int y2)
 	clrVLine(x2, y1, y2-y1+1);
 }
 
-void OLED::drawRoundRect(int x1, int y1, int x2, int y2)
+void OLEDCore::drawRoundRect(int x1, int y1, int x2, int y2)
 {
 	int tmp;
 
@@ -452,7 +454,7 @@ void OLED::drawRoundRect(int x1, int y1, int x2, int y2)
 	}
 }
 
-void OLED::clrRoundRect(int x1, int y1, int x2, int y2)
+void OLEDCore::clrRoundRect(int x1, int y1, int x2, int y2)
 {
 	int tmp;
 
@@ -481,7 +483,7 @@ void OLED::clrRoundRect(int x1, int y1, int x2, int y2)
 	}
 }
 
-void OLED::drawCircle(int x, int y, int radius)
+void OLEDCore::drawCircle(int x, int y, int radius)
 {
 	int f = 1 - radius;
 	int ddF_x = 1;
@@ -517,7 +519,7 @@ void OLED::drawCircle(int x, int y, int radius)
 	}
 }
 
-void OLED::clrCircle(int x, int y, int radius)
+void OLEDCore::clrCircle(int x, int y, int radius)
 {
 	int f = 1 - radius;
 	int ddF_x = 1;
@@ -553,7 +555,7 @@ void OLED::clrCircle(int x, int y, int radius)
 	}
 }
 
-void OLED::drawBitmap(int x, int y, uint8_t* bitmap, int sx, int sy)
+void OLEDCore::drawBitmap(int x, int y, uint8_t* bitmap, int sx, int sy)
 {
 	int bit;
 	byte data;

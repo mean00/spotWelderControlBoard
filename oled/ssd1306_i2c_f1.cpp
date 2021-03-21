@@ -11,7 +11,7 @@
  * @param wire
  * @param reset
  */
-OLED_stm32duino::OLED_stm32duino(WireBase &wire, int reset) : OLED(reset),_wire(wire)
+OLED_stm32duino::OLED_stm32duino(WireBase &wire, int reset) : OLEDCore(reset),_wire(wire)
 {
     
 }
