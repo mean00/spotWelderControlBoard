@@ -1,6 +1,5 @@
 
 SET(SRCS 
-                DefaultFonts.c  
                 ssd1306_i2c.cpp
                 ssd1306_ex.cpp
                 ssd1306_i2c_f1.cpp

@@ -73,7 +73,7 @@ public:
         const GFXfont           *gfxFont;
 public: // extra functions
                 void    drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgcolor, int bgcolor, const uint8_t *data)    ;
-                void    myDrawChar(int16_t x, int16_t y, unsigned char c,  uint16_t color, uint16_t bg) ;                
+                void    myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert) ;                
                 void    setFontSize(FontSize size);
                 void    setFontFamily(const GFXfont *small, const GFXfont *medium, const GFXfont *big);
 	public:
@@ -87,11 +87,6 @@ public: // extra functions
 		void	clrPixel(uint16_t x, uint16_t y);
 		void	invPixel(uint16_t x, uint16_t y);
 		void	invertText(bool mode);
-		void	print(char *st, int x, int y);
-		void	print(String st, int x, int y);
-		void	printNumI(long num, int x, int y, int length=0, char filler=' ');
-		void	printNumF(double num, byte dec, int x, int y, char divider='.', int length=0, char filler=' ');
-		void	setFont(uint8_t* font);
 		void	drawBitmap(int x, int y, uint8_t* bitmap, int sx, int sy);
 		void	drawLine(int x1, int y1, int x2, int y2);
 		void	clrLine(int x1, int y1, int x2, int y2);
@@ -107,14 +102,13 @@ public: // extra functions
        //
 	protected:
 		uint8_t			_rst_pin;
-		_current_font           cfont;
-		uint8_t			scrbuf[1024];
 
-		void	_print_char(unsigned char c, int x, int row);
-		void	_convert_float(char *buf, double num, int width, byte prec);
 		void	drawHLine(int x, int y, int l);
 		void	clrHLine(int x, int y, int l);
 		void	drawVLine(int x, int y, int l);
 		void	clrVLine(int x, int y, int l);
+                uint8_t                 scrbuf[1024];
+
+                
 };
 

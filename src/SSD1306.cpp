@@ -48,7 +48,6 @@ public:
             myWire->begin();
             myOLED=new  OLED_stm32duino(*myWire, SCREEN_RESET);
             myOLED->setFontFamily(&FreeSansBold9pt7b,&FreeSansBold24pt7b,&FreeSansBold24pt7b);            
-            myOLED->setFont(SmallFont); 
             myOLED->setFontSize(OLED::MediumFont); //MediumFont); BigFont
             myOLED->begin();
             int counter=0;
@@ -58,7 +57,8 @@ public:
                 counter%=25;
                 char c='A'+counter;
                 myOLED->clrScr();
-                myOLED->myDrawChar(5,56,c,1,0);
+                myOLED->myDrawChar(5,56,c,true);
+                myOLED->myDrawChar(64,56,'9',true);
                 myOLED->update();
                 xDelay(100);
             }
@@ -73,14 +73,14 @@ public:
         }
         virtual void print(const char *st, int x, int y)
         {
-            myOLED->print(st,x,y);
+            //myOLED->print(st,x,y);
         }
         virtual void printBigNumber(const char *t, int x, int y)
         {
             
-            myOLED->setFont(BigNumbers);    
-            myOLED->print(t,x,y);
-            myOLED->setFont(SmallFont);    
+         //   myOLED->setFont(BigNumbers);    
+           // myOLED->print(t,x,y);
+            //myOLED->setFont(SmallFont);    
         }
         virtual      ~Screen1306() {}
 protected:        

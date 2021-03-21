@@ -50,7 +50,7 @@ static  uint8_t *pgm_read_bitmap_ptr(const GFXfont *gfxFont) {  return gfxFont->
  * @param color
  * @param bg
  */
-void OLED::myDrawChar(int16_t x, int16_t y, unsigned char c,  uint16_t color, uint16_t bg) 
+void OLED::myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert) 
 {
     int cr=c;
     cr -= gfxFont->first;
