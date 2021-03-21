@@ -12,7 +12,8 @@
 #include "printf.h"
 #include "dso_debug.h"
 #include "screen.h"
-#include "oled/fonts/Fonts/FreeSansBold9pt7b.h"
+//#include "oled/fonts/Fonts/FreeSansBold9pt7b.h"
+#include "oled/fonts/Fonts/FreeSans9pt7b.h"
 #include "oled/fonts/Fonts/FreeSansBold24pt7b.h"
 
 
@@ -47,17 +48,25 @@ public:
             
             myWire->begin();
             myOLED=new  OLED_stm32duino(*myWire, SCREEN_RESET);
-            myOLED->setFontFamily(&FreeSansBold9pt7b,&FreeSansBold24pt7b,&FreeSansBold24pt7b);            
+            myOLED->setFontFamily(&FreeSans9pt7b,&FreeSansBold24pt7b,&FreeSansBold24pt7b);            
             myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
             myOLED->begin();
             int counter=0;
+            char st[5];
             while(1)
             {
                 counter++;
-                counter%=25;
-                char c='A'+counter;
+                counter%=100;
+                sprintf(st,"%02d",counter);
                 myOLED->clrScr();
-                myOLED->print(1,48,"12.2");
+                myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
+                myOLED->print(1,40,st);
+                
+                myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
+                sprintf(st,"%02d.2V",counter);
+                myOLED->print(2,63,st);                 
+                myOLED->print(60,30,"Manual");
+                myOLED->print(60,60,"Setting");
                 myOLED->update();
                 xDelay(100);
             }
