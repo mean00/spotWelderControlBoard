@@ -21,6 +21,12 @@
 */
 
 #pragma once
+
+#include "ssd1306_cmd.h"
+#include "Arduino.h"
+#include "gfxfont.h"
+
+
 #define SSD1306_ADDR		0x3C
 
 #define LEFT	0
@@ -32,8 +38,6 @@
 #define SSD1306_DATA_CONTINUE           0x40
 
 #define RST_NOT_IN_USE	255
-#include "ssd1306_cmd.h"
-#include "Arduino.h"
 
 struct _current_font
 {
@@ -50,6 +54,28 @@ struct _current_font
 
 class OLED
 {
+public:
+        typedef enum FontSize
+        {
+            SmallFont,MediumFont,BigFont
+        };
+        class FontInfo
+        {
+        public:
+          int               maxHeight;          
+          int               maxWidth;
+          uint16_t         *filler;
+          const GFXfont    *font;        
+        };  
+        FontInfo          fontInfo[3];
+        
+        FontInfo          *currentFont;
+        const GFXfont           *gfxFont;
+public: // extra functions
+                void    drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgcolor, int bgcolor, const uint8_t *data)    ;
+                void    myDrawChar(int16_t x, int16_t y, unsigned char c,  uint16_t color, uint16_t bg) ;                
+                void    setFontSize(FontSize size);
+                void    setFontFamily(const GFXfont *small, const GFXfont *medium, const GFXfont *big);
 	public:
                         OLED( uint8_t rst_pin);
 		void	begin();

@@ -8,7 +8,6 @@ include(select_mcu_stm32)
 include(applyPatch)
 # Patch Arduino_stm32 if needed to add gd32f303 support
 #
-ADD_DEFINITIONS(-DHWIRE=Wire)
 include(./platformConfig.cmake)
 APPLY_PATCH_IF_NEEDED(patched gd32_patch.diff              "add gd32f303 support") 
 APPLY_PATCH_IF_NEEDED(patchedm4 m4_activate_fpu.diff       "activate m4 fpu (gd32f303)") 

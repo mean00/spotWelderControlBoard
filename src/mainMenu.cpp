@@ -86,11 +86,12 @@ void MainMenu::redraw()
     myScreen->clear();
     //int dex=_dex % (menu.size());
     //myScreen->print(menu[dex]->str,20,35);
-    static int letter=0;
-    char st[2]={'A'+letter,0};
-    myScreen->print(st,20,35);
-    letter++;
-    letter%=24;
+   // static int letter=0;
+    //char st[2]={'A'+letter,0};
+    //myScreen->print(st,20,35);
+    //letter++;
+    //letter%=24;
+    myScreen->printBigNumber("30",2,32);
     myScreen->update();
 }
 /**
