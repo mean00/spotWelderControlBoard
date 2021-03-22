@@ -51,7 +51,7 @@ L Converter_DCDC:ATA00A18S-L U?
 U 1 1 60534A8D
 P 4750 6350
 F 0 "U?" H 4750 6817 50  0000 C CNN
-F 1 "ATA00A18S-L" H 4750 6726 50  0000 C CNN
+F 1 "DC/DC converter" H 4750 6726 50  0000 C CNN
 F 2 "Converter_DCDC:Converter_DCDC_Artesyn_ATA_SMD" H 4750 6000 50  0001 C CIN
 F 3 "https://www.artesyn.com/power/assets/ata_series_ds_01apr2015_79c25814fd.pdf" H 4750 5900 50  0001 C CNN
 	1    4750 6350
@@ -120,19 +120,6 @@ F 3 "" H 2050 1850 50  0001 C CNN
 	1    2050 1850
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:+3.3V #PWR?
-U 1 1 6053D62C
-P 5350 6050
-F 0 "#PWR?" H 5350 5900 50  0001 C CNN
-F 1 "+3.3V" H 5365 6223 50  0000 C CNN
-F 2 "" H 5350 6050 50  0001 C CNN
-F 3 "" H 5350 6050 50  0001 C CNN
-	1    5350 6050
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5350 6050 5350 6150
 Wire Wire Line
 	5350 6150 5250 6150
 Wire Wire Line
@@ -260,7 +247,7 @@ L pspice:DIODE D?
 U 1 1 6059A68B
 P 2650 6150
 F 0 "D?" H 2650 6415 50  0000 C CNN
-F 1 "DIODE" H 2650 6324 50  0000 C CNN
+F 1 "DIODE schottky" H 2650 6324 50  0000 C CNN
 F 2 "" H 2650 6150 50  0001 C CNN
 F 3 "~" H 2650 6150 50  0001 C CNN
 	1    2650 6150
@@ -329,4 +316,166 @@ Wire Wire Line
 Connection ~ 4000 6150
 Wire Wire Line
 	4000 6150 4250 6150
+$Comp
+L Device:Buzzer BZ?
+U 1 1 60584C9C
+P 900 5150
+F 0 "BZ?" H 1052 5179 50  0000 L CNN
+F 1 "Buzzer" H 1052 5088 50  0000 L CNN
+F 2 "" V 875 5250 50  0001 C CNN
+F 3 "~" V 875 5250 50  0001 C CNN
+	1    900  5150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60585A6D
+P 800 5850
+F 0 "#PWR?" H 800 5600 50  0001 C CNN
+F 1 "GND" H 805 5677 50  0000 C CNN
+F 2 "" H 800 5850 50  0001 C CNN
+F 3 "" H 800 5850 50  0001 C CNN
+	1    800  5850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Display_Graphic:EA_DOGXL160-7 U?
+U 1 1 6058DB7E
+P 4000 1500
+F 0 "U?" H 4644 1496 50  0000 L CNN
+F 1 "SSD1306-I2C-OLED-128x64" H 4644 1405 50  0000 L CNN
+F 2 "Display:EA_DOGXL160-7" H 4000 500 50  0001 C CNN
+F 3 "http://www.lcd-module.com/eng/pdf/grafik/dogxl160-7e.pdf" H 1650 2650 50  0001 C CNN
+	1    4000 1500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1500 3900 1800 3900
+$Comp
+L power:GND #PWR?
+U 1 1 60593E03
+P 3700 2400
+F 0 "#PWR?" H 3700 2150 50  0001 C CNN
+F 1 "GND" H 3705 2227 50  0000 C CNN
+F 2 "" H 3700 2400 50  0001 C CNN
+F 3 "" H 3700 2400 50  0001 C CNN
+	1    3700 2400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3700 2300 3700 2400
+$Comp
+L power:+3.3V #PWR?
+U 1 1 605967BF
+P 3200 700
+F 0 "#PWR?" H 3200 550 50  0001 C CNN
+F 1 "+3.3V" H 3215 873 50  0000 C CNN
+F 2 "" H 3200 700 50  0001 C CNN
+F 3 "" H 3200 700 50  0001 C CNN
+	1    3200 700 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 4200 1150 4200
+$Comp
+L Device:R R?
+U 1 1 605B195B
+P 800 4750
+F 0 "R?" H 870 4796 50  0000 L CNN
+F 1 "100" H 870 4705 50  0000 L CNN
+F 2 "" V 730 4750 50  0001 C CNN
+F 3 "~" H 800 4750 50  0001 C CNN
+	1    800  4750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR?
+U 1 1 605BD90E
+P 5350 5950
+F 0 "#PWR?" H 5350 5800 50  0001 C CNN
+F 1 "+5V" H 5365 6123 50  0000 C CNN
+F 2 "" H 5350 5950 50  0001 C CNN
+F 3 "" H 5350 5950 50  0001 C CNN
+	1    5350 5950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5350 5950 5350 6150
+Wire Wire Line
+	3700 2300 3900 2300
+Connection ~ 3900 2300
+Wire Wire Line
+	3900 2300 4000 2300
+Wire Wire Line
+	4000 800  4000 700 
+Wire Wire Line
+	4000 700  3200 700 
+Wire Wire Line
+	1500 3900 1500 1200
+Wire Wire Line
+	1500 1200 3400 1200
+Wire Wire Line
+	3400 1600 1350 1600
+Wire Wire Line
+	1350 1600 1350 4000
+Wire Wire Line
+	1350 4000 1800 4000
+Wire Wire Line
+	3400 1500 1250 1500
+Wire Wire Line
+	1250 1500 1250 4100
+Wire Wire Line
+	1250 4100 1800 4100
+$Comp
+L power:+5V #PWR?
+U 1 1 605E35CF
+P 800 4500
+F 0 "#PWR?" H 800 4350 50  0001 C CNN
+F 1 "+5V" H 815 4673 50  0000 C CNN
+F 2 "" H 800 4500 50  0001 C CNN
+F 3 "" H 800 4500 50  0001 C CNN
+	1    800  4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:BSS214NW Q?
+U 1 1 605F3E69
+P 900 5550
+F 0 "Q?" H 1105 5596 50  0000 L CNN
+F 1 "Generic Logic N" H 250 5650 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-323_SC-70" H 1100 5475 50  0001 L CIN
+F 3 "https://www.infineon.com/dgdl/Infineon-BSS214NW-DS-v02_02-en.pdf?fileId=db3a30431b3e89eb011b695aebc01bde" H 900 5550 50  0001 L CNN
+	1    900  5550
+	-1   0    0    -1  
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 605F82FD
+P 1150 5700
+F 0 "R?" H 1220 5746 50  0000 L CNN
+F 1 "10k" H 1220 5655 50  0000 L CNN
+F 2 "" V 1080 5700 50  0001 C CNN
+F 3 "~" H 1150 5700 50  0001 C CNN
+	1    1150 5700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	800  4600 800  4500
+Wire Wire Line
+	800  5050 800  4900
+Wire Wire Line
+	850  5350 800  5350
+Wire Wire Line
+	800  5350 800  5250
+Connection ~ 800  5350
+Wire Wire Line
+	1100 5550 1150 5550
+Wire Wire Line
+	1150 5850 800  5850
+Connection ~ 800  5850
+Wire Wire Line
+	1150 4200 1150 5550
+Wire Wire Line
+	800  5750 800  5850
+Connection ~ 1150 5550
 $EndSCHEMATC
