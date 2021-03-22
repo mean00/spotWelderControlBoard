@@ -9,6 +9,8 @@
 #define SCREEN_SCL   PB6
 #define SCREEN_RESET PB5
 
+#define BUZZER_GATE  PB8
+
 
 #define ROTARY_LEFT  PA10
 #define ROTARY_RIGHT PA9
