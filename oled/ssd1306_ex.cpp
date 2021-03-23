@@ -163,7 +163,7 @@ int OLEDCore::write(uint8_t c)
       cursor_x = 0;
       cursor_y +=   gfxFont->yAdvance;
     }
-    myDrawChar(cursor_x, cursor_y, c, false); 
+    myDrawChar(cursor_x, cursor_y, c, inverted); 
     cursor_x += glyph->xAdvance ;    
     return 1;
 }

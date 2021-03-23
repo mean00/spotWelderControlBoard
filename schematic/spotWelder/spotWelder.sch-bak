@@ -438,17 +438,6 @@ F 3 "" H 800 4500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Transistor_FET:BSS214NW Q?
-U 1 1 605F3E69
-P 900 5550
-F 0 "Q?" H 1105 5596 50  0000 L CNN
-F 1 "BSS214NW" H 1105 5505 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-323_SC-70" H 1100 5475 50  0001 L CIN
-F 3 "https://www.infineon.com/dgdl/Infineon-BSS214NW-DS-v02_02-en.pdf?fileId=db3a30431b3e89eb011b695aebc01bde" H 900 5550 50  0001 L CNN
-	1    900  5550
-	-1   0    0    -1  
-$EndComp
-$Comp
 L Device:R R?
 U 1 1 605F82FD
 P 1150 5700
@@ -464,10 +453,7 @@ Wire Wire Line
 Wire Wire Line
 	800  5050 800  4900
 Wire Wire Line
-	850  5350 800  5350
-Wire Wire Line
 	800  5350 800  5250
-Connection ~ 800  5350
 Wire Wire Line
 	1100 5550 1150 5550
 Wire Wire Line
@@ -478,4 +464,15 @@ Wire Wire Line
 Wire Wire Line
 	800  5750 800  5850
 Connection ~ 1150 5550
+$Comp
+L Device:Q_NPN_BCE Q?
+U 1 1 60591CD0
+P 900 5550
+F 0 "Q?" H 1091 5596 50  0000 L CNN
+F 1 "Q_NPN_BCE" H 1091 5505 50  0000 L CNN
+F 2 "" H 1100 5650 50  0001 C CNN
+F 3 "~" H 900 5550 50  0001 C CNN
+	1    900  5550
+	-1   0    0    -1  
+$EndComp
 $EndSCHEMATC

@@ -66,13 +66,7 @@ void MainTask(void *)
   LoggerInit();
   Logger("Initializing eeprom\n");
   
-  Buzzer bzer(PB8);
-  bzer.buzz(1000,200);
-  while(1)
-  {
-      
-  }
-          
+  
   
   if(!DSOEeprom::readPulse(pulseWidth))
   {

@@ -26,6 +26,8 @@ extern "C" unsigned char BigNumbers[];
 class Screen1306 : public MyScreen
 {
 public:
+      
+    
         Screen1306()
         {            
 #if 0
@@ -50,27 +52,9 @@ public:
             myOLED=new  OLED_stm32duino(*myWire, SCREEN_RESET);
             myOLED->setFontFamily(&FreeSans9pt7b,&FreeSansBold24pt7b,&FreeSansBold24pt7b);            
             myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
-            myOLED->begin();
-            int counter=0;
-            char st[5];
-            while(1)
-            {
-                counter++;
-                counter%=100;
-                sprintf(st,"%02d",counter);
-                myOLED->clrScr();
-                myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
-                myOLED->print(1,40,st);
-                
-                myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
-                sprintf(st,"%02d.2V",counter);
-                myOLED->print(2,63,st);                 
-                myOLED->print(60,30,"Manual");
-                myOLED->print(60,60,"Setting");
-                myOLED->update();
-                xDelay(100);
-            }
+            myOLED->begin();           
         }
+        void redrawStockScreen(Selection sel, float voltage, TriggerType triggerType, int durationMs);
         virtual void clear()
         {
             myOLED->clrScr();
@@ -99,4 +83,45 @@ protected:
 MyScreen *createScreen()
 {
     return new Screen1306;
+}
+
+#define SEL(x) if(sel==x) myOLED->invertText(true);
+#define ENDSEL() myOLED->invertText(false);
+
+/**
+ * 
+ * @param sel
+ * @param voltage
+ * @param triggerType
+ * @param durationMs
+ */
+void Screen1306::redrawStockScreen(Selection sel, float voltage, TriggerType triggerType, int durationMs)
+{
+    char st[5];
+    sprintf(st,"%02d",durationMs);
+    myOLED->clrScr();
+    myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
+    
+    SEL( Duration);    
+    myOLED->print(1,40,st);
+    ENDSEL();
+
+    myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
+    sprintf(st,"%02.1fV",voltage);
+    myOLED->print(2,63,st);    
+    const char *lb;    
+    switch(triggerType)
+    {
+        case Auto: lb="Manual";
+        case Pedal: lb="Pedal";
+    }
+    SEL( Trigger);
+    myOLED->print(60,30,lb);
+    ENDSEL();
+    SEL( Settings);    
+    myOLED->print(60,60,"Setting");
+    ENDSEL();
+    myOLED->update();
+    xDelay(100);
+    
 }

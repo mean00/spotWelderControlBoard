@@ -1,8 +1,11 @@
 
 
 #include "navigate.h"
-
+#include "screen.h"
 Navigate *spawnCalibration(Navigate *parent);
+
+
+
 /**
  * 
  * @param p
@@ -24,7 +27,11 @@ protected:
         const char *str;
     };
     std::vector<menuItem *>menu;
-    int _dex;
+    int                     _dex;
+    MyScreen::Selection     _selection;
+    float                   _voltage;
+    MyScreen::TriggerType   _triggerType;
+    int                     _durationMs;
     
 };
 /**
@@ -45,6 +52,10 @@ MainMenu::MainMenu(Navigate *p): Navigate(p)
     menuItem *one=new menuItem;
     one->str="BB calib";
     menu.push_back(one);
+    _selection=MyScreen::None;
+    _triggerType=MyScreen::Pedal;
+    _voltage=12.;
+    _durationMs=5;
     redraw();
 }
 /**
@@ -67,15 +78,23 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
      switch(evt)
     {
         case Navigate::E_PUSH:            
-            subMenu=true;
-            return spawnCalibration(this);
+    
+            switch(_selection)
+            {
+                case   MyScreen::Duration: break;
+                case   MyScreen::Trigger: break;
+                case   MyScreen::Settings: 
+                    subMenu=true;
+                    return spawnCalibration(this);
+                    break;
+            }
+            
         case Navigate::E_TIMER:
             redraw();
             return NULL;
         default:
             xAssert(0);
-            break;
-            
+            break;            
     }
 }
 /**
@@ -83,16 +102,7 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
  */
 void MainMenu::redraw()
 {
-    myScreen->clear();
-    //int dex=_dex % (menu.size());
-    //myScreen->print(menu[dex]->str,20,35);
-   // static int letter=0;
-    //char st[2]={'A'+letter,0};
-    //myScreen->print(st,20,35);
-    //letter++;
-    //letter%=24;
-    myScreen->printBigNumber("30",2,32);
-    myScreen->update();
+    myScreen->redrawStockScreen(_selection, _voltage,_triggerType,_durationMs);
 }
 /**
  * 
@@ -100,5 +110,11 @@ void MainMenu::redraw()
  */
 void  MainMenu::handleRotary(int inc)
 {
-    
+    int s=(int)_selection;
+    s--;
+    s+=inc;
+    s%=(MyScreen::Max);
+    s++;
+    _selection=(MyScreen::Selection)s;
 }
+// EOF

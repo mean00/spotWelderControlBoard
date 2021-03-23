@@ -1,13 +1,6 @@
-
-
 #include "navigate.h"
-
 #include "dso_eeprom.h"
 #include "voltageCalibration.h"
-
-
-
-
 
 
 /**
@@ -61,7 +54,7 @@ Navigate *Calibration::handleEvent(Event evt,bool &subMenu)
     {
         case Navigate::E_PUSH:
             DSOEeprom::writeVoltageOffset(voltageCalibration);
-            subMenu=true;
+            subMenu=false;
             return _parent;
         case Navigate::E_TIMER:
             redraw();

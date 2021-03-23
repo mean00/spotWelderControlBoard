@@ -91,7 +91,7 @@ public: // extra functions
 		void	setPixel(uint16_t x, uint16_t y);
 		void	clrPixel(uint16_t x, uint16_t y);
 		void	invPixel(uint16_t x, uint16_t y);
-		void	invertText(bool mode);
+		void	invertText(bool doInvert) {inverted=doInvert;}
 		void	drawBitmap(int x, int y, uint8_t* bitmap, int sx, int sy);
 		void	drawLine(int x1, int y1, int x2, int y2);
 		void	clrLine(int x1, int y1, int x2, int y2);
