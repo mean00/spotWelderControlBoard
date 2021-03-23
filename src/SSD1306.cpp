@@ -54,7 +54,7 @@ public:
             myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
             myOLED->begin();           
         }
-        void redrawStockScreen(Selection sel, float voltage, TriggerType triggerType, int durationMs);
+        void redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerType triggerType, int durationMs);
         virtual void clear()
         {
             myOLED->clrScr();
@@ -85,7 +85,7 @@ MyScreen *createScreen()
     return new Screen1306;
 }
 
-#define SEL(x) if(sel==x) myOLED->invertText(true);
+#define SEL(x) if(sel==Welder::x) myOLED->invertText(true);
 #define ENDSEL() myOLED->invertText(false);
 
 /**
@@ -95,7 +95,7 @@ MyScreen *createScreen()
  * @param triggerType
  * @param durationMs
  */
-void Screen1306::redrawStockScreen(Selection sel, float voltage, TriggerType triggerType, int durationMs)
+void Screen1306::redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerType triggerType, int durationMs)
 {
     char st[5];
     sprintf(st,"%02d",durationMs);
@@ -112,8 +112,8 @@ void Screen1306::redrawStockScreen(Selection sel, float voltage, TriggerType tri
     const char *lb;    
     switch(triggerType)
     {
-        case Auto: lb="Manual";
-        case Pedal: lb="Pedal";
+        case Welder::Auto: lb="Manual";
+        case Welder::Pedal: lb="Pedal";
     }
     SEL( Trigger);
     myOLED->print(60,30,lb);

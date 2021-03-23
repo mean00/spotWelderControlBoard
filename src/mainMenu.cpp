@@ -1,6 +1,7 @@
 
 
 #include "navigate.h"
+#include "welderUi.h"
 #include "screen.h"
 Navigate *spawnCalibration(Navigate *parent);
 
@@ -28,9 +29,9 @@ protected:
     };
     std::vector<menuItem *>menu;
     int                     _dex;
-    MyScreen::Selection     _selection;
+    Welder::Selection     _selection;
     float                   _voltage;
-    MyScreen::TriggerType   _triggerType;
+    Welder::TriggerType   _triggerType;
     int                     _durationMs;
     
 };
@@ -52,8 +53,8 @@ MainMenu::MainMenu(Navigate *p): Navigate(p)
     menuItem *one=new menuItem;
     one->str="BB calib";
     menu.push_back(one);
-    _selection=MyScreen::None;
-    _triggerType=MyScreen::Pedal;
+    _selection=Welder::Duration;
+    _triggerType=Welder::Pedal;
     _voltage=12.;
     _durationMs=5;
     redraw();
@@ -81,9 +82,9 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
     
             switch(_selection)
             {
-                case   MyScreen::Duration: break;
-                case   MyScreen::Trigger: break;
-                case   MyScreen::Settings: 
+                case   Welder::Duration: break;
+                case   Welder::Trigger: break;
+                case   Welder::Settings: 
                     subMenu=true;
                     return spawnCalibration(this);
                     break;
@@ -113,8 +114,9 @@ void  MainMenu::handleRotary(int inc)
     int s=(int)_selection;
     s--;
     s+=inc;
-    s%=(MyScreen::Max);
+    while(s<0) s+=Welder::Max;
+    s%=(Welder::Max);
     s++;
-    _selection=(MyScreen::Selection)s;
+    _selection=(Welder::Selection)s;
 }
 // EOF
