@@ -5,8 +5,8 @@
 #include "screen.h"
 Navigate *spawnCalibration(Navigate *parent);
 
-
-
+extern int voltageOffset;
+int getVBat10(int offset);
 /**
  * 
  * @param p
@@ -28,11 +28,11 @@ protected:
         const char *str;
     };
     std::vector<menuItem *>menu;
-    int                     _dex;
+    int                   _dex;
     Welder::Selection     _selection;
-    float                   _voltage;
+    float                 _voltage;
     Welder::TriggerType   _triggerType;
-    int                     _durationMs;
+    int                   _durationMs;
     
 };
 /**
@@ -76,6 +76,7 @@ MainMenu::~MainMenu()
  */
 Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
 {
+    _voltage= (0.5+getVBat10(voltageOffset))/10.;
      switch(evt)
     {
         case Navigate::E_PUSH:            
