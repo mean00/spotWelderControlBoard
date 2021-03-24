@@ -51,6 +51,7 @@ Rotary::Rotary(int left, int right, int push)
     
     _state = R_START;
     _pushed=0;
+    _lastPush=0;
       
     
 #define SETUP_PIN(x)    pinMode(x,OUTPUT); digitalWrite(x,1);pinMode(x,INPUT_PULLUP);
@@ -110,7 +111,7 @@ void Rotary::interruptPush()
         return;
     }
     _lastPush=now;
-    _pushed++;
+    this->_pushed++;
 }
 
 /**
@@ -129,7 +130,7 @@ int  Rotary::getRotaryValue()
  */
 int    Rotary::getPush()
 {
-    int evt = __atomic_exchange_n( &(_pushed), 0, __ATOMIC_SEQ_CST);
+    int evt = __atomic_exchange_n( &(this->_pushed), 0, __ATOMIC_SEQ_CST);
     if(evt)
     {
         Logger("Pushed!\n");

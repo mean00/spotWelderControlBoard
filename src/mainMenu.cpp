@@ -90,7 +90,7 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
                     return spawnCalibration(this);
                     break;
             }
-            
+            break;
         case Navigate::E_TIMER:
             redraw();
             return NULL;

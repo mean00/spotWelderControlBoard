@@ -35,6 +35,7 @@ public:
            // pinMode(SCREEN_SCL, OUTPUT);
             myWire=sw;
 #else
+#if 0
             // Bug somwhere when using hw i2c
             // need to init it first as sw, then switch to hw
             // missing pinmode ?
@@ -42,6 +43,7 @@ public:
             sw->begin();
             sw->end();
             delete sw;
+#endif            
             TwoWire *tw=new TwoWire(1,0,400*1000);
             myWire=tw;
 #endif            

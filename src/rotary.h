@@ -16,7 +16,7 @@ protected:
     int     _counter;
     int     _state;
     int     _lastPush;
-    int     _pushed;
+    volatile int     _pushed;
 };
 // EOF
 
