@@ -10,7 +10,7 @@ namespace Welder
             
             Max=Settings
         };
-        enum TriggerType
+        enum TriggerSource
         {
             Auto,
             Pedal

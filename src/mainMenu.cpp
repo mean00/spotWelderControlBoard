@@ -3,14 +3,14 @@
 #include "navigate.h"
 #include "welderUi.h"
 #include "screen.h"
-#include "welderTypes.h"
+#include "welderUi.h"
 Navigate *spawnCalibration(Navigate *parent);
 Navigate *spawnTrigger(Navigate *parent);
 Navigate *spawnPulseWidth(Navigate *parent);
 extern int voltageOffset;
 int getVBat10(int offset);
 
-TriggerSource triggerSource=Pedal;
+Welder::TriggerSource triggerSource=Welder::Pedal;
 
 /**
  * 
@@ -36,7 +36,7 @@ protected:
     int                   _dex;
     Welder::Selection     _selection;
     float                 _voltage;
-    Welder::TriggerType   _triggerType;
+    Welder::TriggerSource _triggerType;
     int                   _durationMs;
     
 };

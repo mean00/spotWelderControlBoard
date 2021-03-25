@@ -57,7 +57,7 @@ public:
             myOLED->begin();     
             
         }
-        void redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerType triggerType, int durationMs);
+        void redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerSource triggerType, int durationMs);
         virtual void clear()
         {
             myOLED->clrScr();
@@ -98,7 +98,7 @@ MyScreen *createScreen()
  * @param triggerType
  * @param durationMs
  */
-void Screen1306::redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerType triggerType, int durationMs)
+void Screen1306::redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerSource triggerType, int durationMs)
 {
     char st[5];
     sprintf(st,"%02d",durationMs);

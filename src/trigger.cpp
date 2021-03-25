@@ -1,8 +1,8 @@
 #include "navigate.h"
 #include "dso_eeprom.h"
 #include "trigger.h"
-#include "welderTypes.h"
-extern TriggerSource triggerSource;
+#include "welderUi.h"
+extern Welder::TriggerSource triggerSource;
 /**
  * 
  * @param p
@@ -27,7 +27,7 @@ void TriggerSelection::redraw()
 {
     myScreen->clear();
     myScreen->print("Input",2,20);        
-    if(_source==Pedal)
+    if(_source==Welder::Pedal)
         myScreen->printBig("Pedal",2,60);
     else
         myScreen->printBig("Auto",2,60);
@@ -42,7 +42,7 @@ void  TriggerSelection::handleRotary(int inc)
     int s=(int )_source;
     s+=inc;
     s=(s+256)&1;
-    _source=(TriggerSource)s;
+    _source=(Welder::TriggerSource)s;
     redraw();
 }
 

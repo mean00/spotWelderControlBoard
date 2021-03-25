@@ -1,7 +1,7 @@
 
 #pragma once
 #include "navigate.h"
-#include "welderTypes.h"
+#include "welderUi.h"
 /**
  * 
  * @param p

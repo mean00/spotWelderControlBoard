@@ -1,7 +1,7 @@
 
 #pragma once
 #include "navigate.h"
-#include "welderTypes.h"
+#include "welderUi.h"
 /**
  * 
  * @param p
@@ -17,6 +17,6 @@ public:
     virtual void redraw();
     virtual void  handleRotary(int inc);
 
-    TriggerSource   _source;
+    Welder::TriggerSource   _source;
     
 };
