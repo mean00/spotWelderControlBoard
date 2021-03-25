@@ -12,7 +12,7 @@
 #include "dso_debug.h"
 
 #define ROTARY_FULL_STEP
-#define THRESHOLD 40 // in ms
+#define THRESHOLD 200 // in ms
 
 
 #include "rotary_internal.h"

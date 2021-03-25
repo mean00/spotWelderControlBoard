@@ -6,6 +6,7 @@
 #include "welderTypes.h"
 Navigate *spawnCalibration(Navigate *parent);
 Navigate *spawnTrigger(Navigate *parent);
+Navigate *spawnPulseWidth(Navigate *parent);
 extern int voltageOffset;
 int getVBat10(int offset);
 
@@ -88,7 +89,8 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
             switch(_selection)
             {
                 case   Welder::Duration:  
-                    break;
+                    subMenu=true;
+                    return spawnPulseWidth(this);
                 case   Welder::Trigger: 
                     subMenu=true;
                     return spawnTrigger(this);
