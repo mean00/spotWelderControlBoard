@@ -2,7 +2,7 @@
 #include "dso_eeprom.h"
 #include "voltageCalibration.h"
 
-
+extern int voltageOffset;
 /**
  * 
  * @param p
@@ -32,8 +32,8 @@ void Calibration::redraw()
     char tmp[16];
     sprintf(tmp,"%02.1f",v);    
     myScreen->clear();
-    myScreen->print("Adjust voltage",10,20);        
-    myScreen->printBigNumber(tmp,4,40);
+    myScreen->print("Adjust voltage",2,20);        
+    myScreen->printBig(tmp,4,60);
     myScreen->update();
 }
 /**
@@ -54,6 +54,7 @@ Navigate *Calibration::handleEvent(Event evt,bool &subMenu)
     {
         case Navigate::E_PUSH:
             DSOEeprom::writeVoltageOffset(voltageCalibration);
+            voltageOffset=voltageCalibration;
             subMenu=false;
             return _parent;
         case Navigate::E_TIMER:

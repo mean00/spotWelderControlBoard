@@ -56,6 +56,30 @@ void  OLEDCore::setFontFamily(const GFXfont *small, const GFXfont *medium, const
  * @param color
  * @param bg
  */
+
+void OLEDCore::square(int x,int y,int w, int h, bool color)
+{
+    
+    if(color)
+    {
+        for(int xx=x;xx<x+w;xx++)
+        for(int yy=y;yy<y+h;yy++)
+            
+            {
+        	setPixel(xx,64-yy);
+            }
+    }else
+    {
+        for(int xx=x;xx<x+w;xx++)
+        for(int yy=y;yy<y+h;yy++)
+            
+            {
+        	clrPixel(xx,64-yy);
+            }
+        
+    }
+}
+
 void OLEDCore::myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert) 
 {
     int cr=c;
@@ -66,9 +90,17 @@ void OLEDCore::myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert)
     int bo = glyph->bitmapOffset;
     int w = glyph->width;
     int h = glyph->height;
-    x+=glyph->xOffset;
+  
+    
     y+=glyph->yOffset;
-   
+
+    // fill left and right
+    square(x,y,glyph->xOffset,h,invert);    
+    x+=glyph->xOffset;
+    square(x+w,y,glyph->xAdvance-w,h,invert);
+    
+    // fill top &and bottom
+    
     int dex=0;
 
     int bits = 0, bit = 0;

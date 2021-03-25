@@ -74,6 +74,7 @@ public:
 public: // extra functions
                 void    drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int fgcolor, int bgcolor, const uint8_t *data)    ;
                 void    myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert) ;                
+                void    square(int x,int y,int w, int h, bool color);
                 void    setFontSize(FontSize size);
                 void    setFontFamily(const GFXfont *small, const GFXfont *medium, const GFXfont *big);
                 void    print(int x,int y,const char *z);

@@ -16,6 +16,7 @@
 #include "voltageCalibration.h"
 #include "screen.h"
 #include "buzzer.h"
+#include "trigger.h"
 
 extern void pulseDemo();
 
@@ -121,6 +122,8 @@ void MainTask(void *)
                    delete currentMenu;                   
                }
                currentMenu=z;
+               // Purge pending push button if any
+               rotary->getPush();
                    
            }
       }

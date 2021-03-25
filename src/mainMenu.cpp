@@ -3,10 +3,14 @@
 #include "navigate.h"
 #include "welderUi.h"
 #include "screen.h"
+#include "welderTypes.h"
 Navigate *spawnCalibration(Navigate *parent);
-
+Navigate *spawnTrigger(Navigate *parent);
 extern int voltageOffset;
 int getVBat10(int offset);
+
+TriggerSource triggerSource=Pedal;
+
 /**
  * 
  * @param p
@@ -83,8 +87,12 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
     
             switch(_selection)
             {
-                case   Welder::Duration: break;
-                case   Welder::Trigger: break;
+                case   Welder::Duration:  
+                    break;
+                case   Welder::Trigger: 
+                    subMenu=true;
+                    return spawnTrigger(this);
+                    break;
                 case   Welder::Settings: 
                     subMenu=true;
                     return spawnCalibration(this);
@@ -98,6 +106,7 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
             xAssert(0);
             break;            
     }
+    return NULL;
 }
 /**
  * 

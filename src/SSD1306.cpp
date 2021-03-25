@@ -35,7 +35,7 @@ public:
            // pinMode(SCREEN_SCL, OUTPUT);
             myWire=sw;
 #else
-#if 0
+#if 1
             // Bug somwhere when using hw i2c
             // need to init it first as sw, then switch to hw
             // missing pinmode ?
@@ -54,7 +54,8 @@ public:
             myOLED=new  OLED_stm32duino(*myWire, SCREEN_RESET);
             myOLED->setFontFamily(&FreeSans9pt7b,&FreeSansBold24pt7b,&FreeSansBold24pt7b);            
             myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
-            myOLED->begin();           
+            myOLED->begin();     
+            
         }
         void redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerType triggerType, int durationMs);
         virtual void clear()
@@ -67,15 +68,15 @@ public:
         }
         virtual void print(const char *st, int x, int y)
         {
-            //myOLED->print(st,x,y);
+             myOLED->print(x,y,st);
         }
-        virtual void printBigNumber(const char *t, int x, int y)
+        virtual void printBig(const char *t, int x, int y)
         {
-            
-         //   myOLED->setFont(BigNumbers);    
-           // myOLED->print(t,x,y);
-            //myOLED->setFont(SmallFont);    
+             myOLED->setFontSize(OLEDCore::MediumFont); 
+             myOLED->print(x,y,t);
+             myOLED->setFontSize(OLEDCore::SmallFont); 
         }
+              
         virtual      ~Screen1306() {}
 protected:        
         OLED_stm32duino  *myOLED;
@@ -114,8 +115,8 @@ void Screen1306::redrawStockScreen(Welder::Selection sel, float voltage, Welder:
     const char *lb;    
     switch(triggerType)
     {
-        case Welder::Auto: lb="Manual";
-        case Welder::Pedal: lb="Pedal";
+        case Welder::Auto: lb="Manual";break;
+        case Welder::Pedal: lb="Pedal";break;
     }
     SEL( Trigger);
     myOLED->print(60,30,lb);
