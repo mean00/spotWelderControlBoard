@@ -61,6 +61,8 @@ generate_arduino_firmware(spotWelder${EXTENSION}
                         src/buzzer.cpp
                         src/trigger.cpp
                         src/pulseWidth.cpp
+                        src/goAuto.cpp
+                        src/go.cpp
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}
                 )

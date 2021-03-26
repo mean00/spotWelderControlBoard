@@ -7,6 +7,7 @@
 Navigate *spawnCalibration(Navigate *parent);
 Navigate *spawnTrigger(Navigate *parent);
 Navigate *spawnPulseWidth(Navigate *parent);
+Navigate *spawnGoAuto(Navigate *parent);
 
 extern int voltageOffset;
 extern int pulseWidth;
@@ -59,7 +60,7 @@ MainMenu::MainMenu(Navigate *p): Navigate(p)
     menuItem *one=new menuItem;
     one->str="BB calib";
     menu.push_back(one);
-    _selection=Welder::Duration;
+    _selection=Welder::GO;
     _triggerType=Welder::Pedal;
     _voltage=12.;
     redraw();
@@ -88,6 +89,9 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
     
             switch(_selection)
             {
+                case Welder::GO:
+                    subMenu=true;
+                    return spawnGoAuto(this);
                 case   Welder::Duration:  
                     subMenu=true;
                     return spawnPulseWidth(this);
