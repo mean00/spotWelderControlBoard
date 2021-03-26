@@ -54,6 +54,7 @@ Navigate *PulseWidth::handleEvent(Event evt,bool &subMenu)
     {
         case Navigate::E_PUSH:
             pulseWidth=_pulseWidth;
+            DSOEeprom::writePulse(pulseWidth);
             subMenu=false;
             return _parent;
         case Navigate::E_TIMER:
