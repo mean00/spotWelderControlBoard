@@ -28,6 +28,7 @@ OLEDCore::OLEDCore( uint8_t rst_pin)
 	_rst_pin = rst_pin;
         cursor_x=0;
         cursor_y=0;
+        inverted=false;
 }
 
 
