@@ -14,7 +14,6 @@
 #define ROTARY_FULL_STEP
 #define THRESHOLD 200 // in ms
 
-
 #include "rotary_internal.h"
 #define ButtonToPin(x)    (PB0+x)
 #define pinAsInput(x)     pinMode(ButtonToPin(x),INPUT_PULLUP);

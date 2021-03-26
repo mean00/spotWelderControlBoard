@@ -30,6 +30,7 @@ void PulseWidth::redraw()
     char tmp[16];
     sprintf(tmp,"%02d",_pulseWidth);    
     myScreen->clear();
+    myScreen->print("PulseWidth",20,20);
     myScreen->printBig(tmp,4,60);
     myScreen->update();
 }
@@ -39,6 +40,11 @@ void PulseWidth::redraw()
  */
 void  PulseWidth::handleRotary(int inc)
 {
+    int tmp=_pulseWidth;
+    tmp+=inc;
+    if(tmp<5) tmp=5;
+    if(tmp>30) tmp=30;
+    _pulseWidth=tmp;
     redraw();
 }
 

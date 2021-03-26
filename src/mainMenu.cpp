@@ -7,7 +7,9 @@
 Navigate *spawnCalibration(Navigate *parent);
 Navigate *spawnTrigger(Navigate *parent);
 Navigate *spawnPulseWidth(Navigate *parent);
+
 extern int voltageOffset;
+extern int pulseWidth;
 int getVBat10(int offset);
 
 Welder::TriggerSource triggerSource=Welder::Pedal;
@@ -36,8 +38,7 @@ protected:
     int                   _dex;
     Welder::Selection     _selection;
     float                 _voltage;
-    Welder::TriggerSource _triggerType;
-    int                   _durationMs;
+    Welder::TriggerSource _triggerType;    
     
 };
 /**
@@ -61,7 +62,6 @@ MainMenu::MainMenu(Navigate *p): Navigate(p)
     _selection=Welder::Duration;
     _triggerType=Welder::Pedal;
     _voltage=12.;
-    _durationMs=5;
     redraw();
 }
 /**
@@ -115,7 +115,7 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
  */
 void MainMenu::redraw()
 {
-    myScreen->redrawStockScreen(_selection, _voltage,_triggerType,_durationMs);
+    myScreen->redrawStockScreen(_selection, _voltage,_triggerType,pulseWidth);
 }
 /**
  * 

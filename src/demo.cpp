@@ -1,7 +1,6 @@
 // 
 //
-
-#define HWIRE I2C1
+//
 
 #include <Wire.h>
 #include "adc/simpleADC.h"
@@ -21,7 +20,7 @@
 extern void pulseDemo();
 
 void MainTask( void *a );
-extern Navigate * spawnMainMenu();
+extern Navigate * spawnMainMenu(void);
 #define DSO_MAIN_TASK_PRIORITY 10
 
 
