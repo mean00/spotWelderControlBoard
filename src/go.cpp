@@ -2,7 +2,7 @@
 #include "buzzer.h"
 #include "pulse.h"
 
-
+extern bool detectConnection();
 
 extern int pulseWidth;
 /**
@@ -20,20 +20,26 @@ void    GoBase::sendPulse()
  */
 void GoBase::errorBuzz()
 {
-    for(int i=0;i<3;i++)
-    {
-         bz.buzz(8*1000,60);
-         xDelay(60);
-    }
+    bz.buzz(600,800);
+}
+/**
+ * 
+ */
+void GoBase::armingBuzz()
+{
+    bz.buzz(1*1000,300);
+   
 }
 /**
  * 
  */
 void GoBase::pulseBuzz()
 {
+    
+   
     for(int i=0;i<3;i++)
     {
-        bz.buzz(2*1000,100);
+        bz.buzz(3*1000,100);
         xDelay(100);
     }
 }
@@ -55,7 +61,7 @@ void   GoBase::automaton()
         {
             Logger("Arming =%d\n",_countDown);
             myScreen->redrawArmScreen( _countDown, _triggerSource, pulseWidth);
-            bz.buzz(2*1000,300);
+            armingBuzz();
             int confirmed=0;
             for(int i=0;i<5;i++)
             {
@@ -73,6 +79,13 @@ void   GoBase::automaton()
             _countDown--;
             if(!_countDown)
             {
+                if(!contact())
+                {
+                    _state=Idle;
+                    errorBuzz();
+                    Logger("unconfirmed =%d\n",confirmed);
+                    return;
+                }
                 myScreen->redrawArmScreen( 0, _triggerSource, pulseWidth);                
                 _state=Pulsing;
                 pulseBuzz();                
@@ -84,19 +97,27 @@ void   GoBase::automaton()
             _state=Pulsed;
             break;
         case  Pulsed:
-            _state=Idle;
-            xDelay(2000);
+            if(detectConnection())
+            {
+                myScreen->disconnectMessage();
+                return;
+            }
+            _state=Idle;            
+            break;
+        case WaitingToRearm:
+            xDelay(200);
             break;
         default:
             break;
     }
+    myScreen->redrawArmScreen( -1,  _triggerSource, pulseWidth);
 }
 /**
  * 
  */
 void GoBase::redraw()
 {
-    myScreen->redrawArmScreen( -1,  _triggerSource, pulseWidth);
+    
 }
 
 Navigate *GoBase::handleEvent(Event evt,bool &subMenu)

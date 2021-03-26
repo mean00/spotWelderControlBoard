@@ -154,3 +154,7 @@ float getCurrentVbat()
 {
      return (0.5+getVBat10(voltageOffset))/10.;
 }
+bool detectConnection()
+{
+    return measure->detected();
+}

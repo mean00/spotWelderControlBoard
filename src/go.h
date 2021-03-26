@@ -16,7 +16,8 @@ public:
                 Idle,
                 Arming,
                 Pulsing,
-                Pulsed
+                Pulsed,
+                WaitingToRearm
             };
   
     
@@ -40,6 +41,7 @@ protected:
     void        sendPulse();
     void        errorBuzz();
     void        pulseBuzz();
+    void        armingBuzz();
     State   _state;
     int     _countDown;
     Buzzer  bz;

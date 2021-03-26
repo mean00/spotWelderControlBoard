@@ -77,7 +77,12 @@ public:
              myOLED->print(x,y,t);
              myOLED->setFontSize(OLEDCore::SmallFont); 
         }
-              
+        virtual void disconnectMessage()
+        {
+             myOLED->clrScr();
+             print("Move pins!", 2,32+10);
+             myOLED->update();
+        }
         virtual      ~Screen1306() {}
 protected:
         void setText(int dex, const char *txt);
