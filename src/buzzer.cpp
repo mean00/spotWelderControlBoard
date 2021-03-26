@@ -29,6 +29,7 @@ bool Buzzer::buzz(int frequency, int durationMs)
     pwmWrite(_pin,127*256);
     xDelay(durationMs);
     pwmWrite(_pin,0);
+    return true;
 }
 
 // EOF

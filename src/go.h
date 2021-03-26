@@ -11,13 +11,13 @@
 class GoBase : public Navigate
 {
 public:
-    enum State
-    {
-        Idle,
-        Arming,
-        Pulsing,
-        Pulsed
-    };
+            enum State
+            {
+                Idle,
+                Arming,
+                Pulsing,
+                Pulsed
+            };
   
     
             GoBase(Navigate *p, Welder::TriggerSource  source) : Navigate(p), bz(BUZZER_GATE)
@@ -29,15 +29,17 @@ public:
             {
 
             }
-    virtual bool triggered()=0;
-    virtual Navigate *handleEvent(Event evt,bool &subMenu);
-    virtual void  handleRotary(int inc) {}
-            void  automaton();
-    virtual bool contact()=0;
-    virtual void redraw();
+    virtual bool        triggered()=0;
+    virtual Navigate    *handleEvent(Event evt,bool &subMenu);
+    virtual void        handleRotary(int inc) {}
+            void        automaton();
+    virtual bool        contact()=0;
+    virtual void        redraw();
 
 protected:
-    void    sendPulse();
+    void        sendPulse();
+    void        errorBuzz();
+    void        pulseBuzz();
     State   _state;
     int     _countDown;
     Buzzer  bz;

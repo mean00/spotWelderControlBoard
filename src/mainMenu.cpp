@@ -119,7 +119,7 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
  */
 void MainMenu::redraw()
 {
-    myScreen->redrawStockScreen(_selection, _voltage,_triggerType,pulseWidth);
+    myScreen->redrawStockScreen(_selection, _triggerType,pulseWidth);
 }
 /**
  * 

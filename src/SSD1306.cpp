@@ -16,7 +16,7 @@
 #include "oled/fonts/Fonts/FreeSans9pt7b.h"
 #include "oled/fonts/Fonts/FreeSansBold24pt7b.h"
 
-
+extern float getCurrentVbat();
 extern "C" unsigned char MediumNumbers[];
 extern "C" unsigned char SmallFont[];
 extern "C" unsigned char TinyFont[];
@@ -57,8 +57,8 @@ public:
             myOLED->begin();     
             
         }
-        void redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerSource triggerType, int durationMs);
-        void redrawArmScreen( float voltage, Welder::TriggerSource triggerType, int durationMs);
+        void redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource triggerType, int durationMs);
+        void redrawArmScreen( int count,  Welder::TriggerSource triggerType, int durationMs);
         virtual void clear()
         {
             myOLED->clrScr();
@@ -148,7 +148,7 @@ void Screen1306::setSelection(int dex)
  * @param triggerType
  * @param durationMs
  */
-void Screen1306::redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerSource triggerType, int durationMs)
+void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource triggerType, int durationMs)
 {
     char st[5];
     sprintf(st,"%02d",durationMs);
@@ -158,7 +158,7 @@ void Screen1306::redrawStockScreen(Welder::Selection sel, float voltage, Welder:
     myOLED->print(1,40,st);
     
     myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
-    sprintf(st,"%02.1fV",voltage);
+    sprintf(st,"%02.1fV",getCurrentVbat());
     myOLED->print(2,63,st);    
     const char *lb;    
     switch(triggerType)
@@ -184,14 +184,28 @@ void Screen1306::redrawStockScreen(Welder::Selection sel, float voltage, Welder:
 
     myOLED->update();
 }
-
-void Screen1306::redrawArmScreen( float voltage, Welder::TriggerSource triggerType, int durationMs)
+/**
+ * 
+ * @param voltage
+ * @param triggerType
+ * @param durationMs
+ */
+void Screen1306::redrawArmScreen( int count, Welder::TriggerSource triggerType, int durationMs)
 {
     char st[5];
-    sprintf(st,"%02d",durationMs);
+
     myOLED->clrScr();
+    
     myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
     
+    if(count>=0)
+    {
+        sprintf(st,"%02d",count);  
+        myOLED->invertText(true);
+        myOLED->print(1,40,st);
+        myOLED->invertText(false);
+    }
+    sprintf(st,"%02d",durationMs);
     myOLED->print(64,40,st);
     
     myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
@@ -203,7 +217,7 @@ void Screen1306::redrawArmScreen( float voltage, Welder::TriggerSource triggerTy
     }
     myOLED->print(64,48,lb);
     
-    sprintf(st,"%02.1fV",voltage);
+    sprintf(st,"%02.1fV",getCurrentVbat());
     myOLED->print(64,64,st);    
 
     
