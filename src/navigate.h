@@ -10,6 +10,8 @@
 #include "navigate.h"
 #include "vector"
 
+extern float getCurrentVbat();
+
 class Navigate
 {
 public:

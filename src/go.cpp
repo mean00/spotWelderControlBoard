@@ -75,7 +75,7 @@ void   GoBase::automaton()
  */
 void GoBase::redraw()
 {
-    
+    myScreen->redrawArmScreen( getCurrentVbat(), _triggerSource, pulseWidth);
 }
 
 Navigate *GoBase::handleEvent(Event evt,bool &subMenu)

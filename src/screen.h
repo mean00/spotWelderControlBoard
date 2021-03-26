@@ -11,6 +11,7 @@ public:
         virtual void print(const char *t, int x, int y)=0;
         virtual void printBig(const char *t, int x, int y)=0;
         virtual void redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerSource triggerType, int durationMs)=0;
+        virtual void redrawArmScreen( float voltage, Welder::TriggerSource triggerType, int durationMs)=0;
         virtual      ~MyScreen() {}
 protected:        
         MyScreen() {};

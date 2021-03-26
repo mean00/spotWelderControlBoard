@@ -149,3 +149,8 @@ int getVBat10(int offset)
       int raw=(int)((f+49.)/100.);
       return raw;
 }
+
+float getCurrentVbat()
+{
+     return (0.5+getVBat10(voltageOffset))/10.;
+}

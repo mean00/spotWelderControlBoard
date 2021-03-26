@@ -58,6 +58,7 @@ public:
             
         }
         void redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerSource triggerType, int durationMs);
+        void redrawArmScreen( float voltage, Welder::TriggerSource triggerType, int durationMs);
         virtual void clear()
         {
             myOLED->clrScr();
@@ -183,4 +184,32 @@ void Screen1306::redrawStockScreen(Welder::Selection sel, float voltage, Welder:
 
     myOLED->update();
 }
+
+void Screen1306::redrawArmScreen( float voltage, Welder::TriggerSource triggerType, int durationMs)
+{
+    char st[5];
+    sprintf(st,"%02d",durationMs);
+    myOLED->clrScr();
+    myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
+    
+    myOLED->print(64,40,st);
+    
+    myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
+    const char *lb;    
+    switch(triggerType)
+    {
+        case Welder::Auto: lb="Manual";break;
+        case Welder::Pedal: lb="Pedal";break;
+    }
+    myOLED->print(64,48,lb);
+    
+    sprintf(st,"%02.1fV",voltage);
+    myOLED->print(64,64,st);    
+
+    
+    myOLED->update();
+}
+
+
+
 // EOF

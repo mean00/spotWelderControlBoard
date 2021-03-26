@@ -3,7 +3,7 @@
 class GoAuto : public GoBase
 {
     public:
-        GoAuto(Navigate *n) : GoBase(n)
+        GoAuto(Navigate *n) : GoBase(n,Welder::Auto)
         {
             
         }
