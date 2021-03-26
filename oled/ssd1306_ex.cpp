@@ -90,10 +90,12 @@ void OLEDCore::myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert)
     int bo = glyph->bitmapOffset;
     int w = glyph->width;
     int h = glyph->height;
-  
+    int yAdvance=currentFont->maxHeight;
     
+    
+   
     y+=glyph->yOffset;
-
+    
     // fill left and right
     square(x,y,glyph->xOffset,h,invert);    
     x+=glyph->xOffset;

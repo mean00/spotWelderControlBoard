@@ -5,6 +5,7 @@ namespace Welder
         {
             None,
             Duration,
+            GO,
             Trigger,
             Settings,
             
