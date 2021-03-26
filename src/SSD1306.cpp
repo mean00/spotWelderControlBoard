@@ -22,12 +22,12 @@ extern "C" unsigned char SmallFont[];
 extern "C" unsigned char TinyFont[];
 extern "C" unsigned char BigNumbers[];
 
-
+/**
+ * 
+ */
 class Screen1306 : public MyScreen
 {
 public:
-      
-    
         Screen1306()
         {            
 #if 0
@@ -86,7 +86,10 @@ protected:
         OLED_stm32duino  *myOLED;
         WireBase         *myWire;
 };
-
+/**
+ * 
+ * @return 
+ */
 MyScreen *createScreen()
 {
     return new Screen1306;
@@ -101,8 +104,9 @@ MyScreen *createScreen()
  * @param durationMs
  */
 #define TEXTHEIGHT 19
-#define TEXTOFFSET 4
+#define TEXTOFFSET 3
 #define TEXTBORDER 1
+#define BORDEROFFSET 8
 /**
  * 
  * @param x
@@ -117,17 +121,32 @@ void Screen1306::myRoundSquare(int x, int y, int w, int h)
     int x2=x+w;
      myOLED->drawRoundRect(x,y1,x2,y2);
 }
+/**
+ * 
+ * @param dex
+ * @param txt
+ */
 void Screen1306::setText(int dex, const char *txt)
 {
      myOLED->print(60,TEXTOFFSET+TEXTHEIGHT*dex+TEXTHEIGHT,txt);
 }
-
+/**
+ * 
+ * @param dex
+ */
 void Screen1306::setSelection(int dex)
 {
-     myRoundSquare(58,TEXTOFFSET+TEXTHEIGHT*dex-TEXTBORDER,
-                          62,TEXTHEIGHT+2*TEXTBORDER
+     myRoundSquare(58,TEXTHEIGHT*dex-TEXTBORDER+BORDEROFFSET,
+                          62,TEXTHEIGHT+2*TEXTBORDER-1
                           );
 }
+/**
+ * 
+ * @param sel
+ * @param voltage
+ * @param triggerType
+ * @param durationMs
+ */
 void Screen1306::redrawStockScreen(Welder::Selection sel, float voltage, Welder::TriggerSource triggerType, int durationMs)
 {
     char st[5];
@@ -163,7 +182,5 @@ void Screen1306::redrawStockScreen(Welder::Selection sel, float voltage, Welder:
 
 
     myOLED->update();
-
-    xDelay(100);
-    
 }
+// EOF
