@@ -4,3 +4,4 @@
 #include "generated/c2_compressed.h"
 #include "generated/c3_compressed.h"
 #include "generated/c4_compressed.h"
+#include "generated/splash_compressed.h"
