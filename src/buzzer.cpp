@@ -26,9 +26,10 @@ Buzzer::~Buzzer()
  * @return 
  */
 bool Buzzer::buzz(int frequency, int durationMs)
-{    
+{   
+#if 0
     int halfCyle=500000/frequency; // number of us
-    
+    if(!halfCyle) halfCyle=1;
     int m=millis();
     m&=0xffff;
     while(1)
@@ -42,6 +43,13 @@ bool Buzzer::buzz(int frequency, int durationMs)
         if((t-m)>durationMs)
             return true;
     }
+#else
+     pinMode(_pin,PWM);
+     myPwm(_pin,frequency);
+     pwmRestart(_pin);
+     xDelay(durationMs);
+     pwmWrite(_pin,0);
+#endif
     return true;
 }
 

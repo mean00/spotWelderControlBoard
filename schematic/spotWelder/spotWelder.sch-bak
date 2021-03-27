@@ -415,13 +415,13 @@ Wire Wire Line
 Wire Wire Line
 	1500 1200 3400 1200
 Wire Wire Line
-	3400 1600 1350 1600
+	3400 1600 3100 1600
 Wire Wire Line
 	1350 1600 1350 4000
 Wire Wire Line
 	1350 4000 1800 4000
 Wire Wire Line
-	3400 1500 1250 1500
+	3400 1500 2750 1500
 Wire Wire Line
 	1250 1500 1250 4100
 Wire Wire Line
@@ -475,4 +475,50 @@ F 3 "~" H 900 5550 50  0001 C CNN
 	1    900  5550
 	-1   0    0    -1  
 $EndComp
+$Comp
+L Device:R R?
+U 1 1 605B4BC9
+P 2750 1650
+F 0 "R?" V 2900 1650 50  0000 C CNN
+F 1 "10k" H 2800 1800 50  0000 C CNN
+F 2 "" V 2680 1650 50  0001 C CNN
+F 3 "~" H 2750 1650 50  0001 C CNN
+	1    2750 1650
+	-1   0    0    1   
+$EndComp
+Connection ~ 2750 1500
+Wire Wire Line
+	2750 1500 1250 1500
+$Comp
+L Device:R R?
+U 1 1 605B7597
+P 3100 1750
+F 0 "R?" V 3250 1750 50  0000 C CNN
+F 1 "10k" H 3100 1950 50  0000 C CNN
+F 2 "" V 3030 1750 50  0001 C CNN
+F 3 "~" H 3100 1750 50  0001 C CNN
+	1    3100 1750
+	-1   0    0    1   
+$EndComp
+Connection ~ 3100 1600
+Wire Wire Line
+	3100 1600 1350 1600
+$Comp
+L power:+3.3V #PWR?
+U 1 1 605B7DBA
+P 2350 1900
+F 0 "#PWR?" H 2350 1750 50  0001 C CNN
+F 1 "+3.3V" H 2365 2073 50  0000 C CNN
+F 2 "" H 2350 1900 50  0001 C CNN
+F 3 "" H 2350 1900 50  0001 C CNN
+	1    2350 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2750 1800 2750 1900
+Connection ~ 2750 1900
+Wire Wire Line
+	2750 1900 3100 1900
+Wire Wire Line
+	2350 1900 2750 1900
 $EndSCHEMATC

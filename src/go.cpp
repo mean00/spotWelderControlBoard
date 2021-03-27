@@ -11,7 +11,7 @@ extern int pulseWidth;
 void    GoBase::sendPulse()
 {
     // Send pulse
-    Pulse pulse(3,1,PIN_GATE); 
+    Pulse pulse(GATE_TIMER,GATE_CHANNEL,PIN_GATE); 
     pulse.pulse(pulseWidth);    
 }
 /**

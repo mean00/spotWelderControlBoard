@@ -154,10 +154,6 @@ Wire Wire Line
 Wire Wire Line
 	3100 4000 3500 4000
 Wire Wire Line
-	3500 4000 3500 6450
-Wire Wire Line
-	3500 6450 2950 6450
-Wire Wire Line
 	2350 6350 3350 6350
 Wire Wire Line
 	3350 6350 3350 3600
@@ -375,8 +371,6 @@ F 3 "" H 3200 700 50  0001 C CNN
 	1    3200 700 
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	1800 4200 1150 4200
 $Comp
 L Device:R R1
 U 1 1 605B195B
@@ -460,8 +454,6 @@ Wire Wire Line
 	1150 5850 800  5850
 Connection ~ 800  5850
 Wire Wire Line
-	1150 4200 1150 5550
-Wire Wire Line
 	800  5750 800  5850
 Connection ~ 1150 5550
 $Comp
@@ -521,4 +513,57 @@ Wire Wire Line
 	2750 1900 3100 1900
 Wire Wire Line
 	2350 1900 2750 1900
+Wire Wire Line
+	1800 3400 1150 3400
+Wire Wire Line
+	1150 3400 1150 5550
+$Comp
+L Transistor_FET:ZXMN2A01F Q?
+U 1 1 605F4463
+P 3350 6750
+F 0 "Q?" H 3555 6796 50  0000 L CNN
+F 1 "SI2300 N-MOSFET" H 3555 6705 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23" H 3550 6675 50  0001 L CIN
+F 3 "http://www.diodes.com/assets/Datasheets/ZXMN2A01F.pdf" H 3350 6750 50  0001 L CNN
+	1    3350 6750
+	-1   0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 605FAC56
+P 3250 7050
+F 0 "#PWR?" H 3250 6800 50  0001 C CNN
+F 1 "GND" H 3255 6877 50  0000 C CNN
+F 2 "" H 3250 7050 50  0001 C CNN
+F 3 "" H 3250 7050 50  0001 C CNN
+	1    3250 7050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3250 6550 3250 6450
+Wire Wire Line
+	3250 6450 2950 6450
+Wire Wire Line
+	3250 7050 3250 6950
+$Comp
+L Device:R R?
+U 1 1 606079F6
+P 3650 6900
+F 0 "R?" H 3550 6900 50  0000 C CNN
+F 1 "10k" H 3550 7000 50  0000 C CNN
+F 2 "" V 3580 6900 50  0001 C CNN
+F 3 "~" H 3650 6900 50  0001 C CNN
+	1    3650 6900
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	3550 6750 3650 6750
+Wire Wire Line
+	3650 7050 3250 7050
+Connection ~ 3250 7050
+Wire Wire Line
+	3500 4000 3500 6750
+Wire Wire Line
+	3500 6750 3550 6750
+Connection ~ 3550 6750
 $EndSCHEMATC
