@@ -250,9 +250,9 @@ void OLEDCore::drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int f
                         color=false;
                     mask>>=1;                
                     if(color) 
-                        setPixel(wx+xx,wy+yy);
+                        setPixel(wx+xx,64-(wy+yy));
                     else 
-                        clrPixel(wx+xx,wy+yy);
+                        clrPixel(wx+xx,64-(wy+yy));
                     xx++;
                 }
                     

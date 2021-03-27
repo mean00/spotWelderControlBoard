@@ -1,3 +1,3 @@
-#define splash_width 68
-#define splash_height 58
+#define splash_width 64
+#define splash_height 55
 extern const unsigned char splash[];

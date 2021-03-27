@@ -17,6 +17,7 @@
 #include "buzzer.h"
 #include "trigger.h"
 #include "assets.h"
+#include "welderVersion.h"
 extern void pulseDemo();
 
 void MainTask( void *a );
@@ -87,13 +88,18 @@ void MainTask(void *)
   rotary->setup();
   
   myScreen=createScreen();
-  Navigate *currentMenu= spawnMainMenu();
-  //Navigate *currentMenu=new Calibration(NULL);
-  
-  
-  
-  
   interrupts();
+  
+  myScreen->clear();
+  myScreen->rleDisplay(splash_width, splash_height, 2 , 6, splash);
+  myScreen->print(WELDER_VERSION,70,20);
+  myScreen->update();
+  xDelay(1000);
+  
+  Navigate *currentMenu= spawnMainMenu();
+  
+  
+  
   while(1)
   {
       bool dirty=false;

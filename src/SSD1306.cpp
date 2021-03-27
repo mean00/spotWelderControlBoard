@@ -53,7 +53,7 @@ public:
             myWire->begin();
             myOLED=new  OLED_stm32duino(*myWire, SCREEN_RESET);
             myOLED->setFontFamily(&FreeSans9pt7b,&FreeSansBold24pt7b,&FreeSansBold24pt7b);            
-            myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
+            myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
             myOLED->begin();     
             
         }
