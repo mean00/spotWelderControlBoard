@@ -25,6 +25,7 @@ public:
             {
                 _state=Idle;
                 _triggerSource=source;
+                _animationStep=0;
             }
     virtual ~GoBase()
             {
@@ -42,9 +43,11 @@ protected:
     void        errorBuzz();
     void        pulseBuzz();
     void        armingBuzz();
+    void        goToIdle();
     State   _state;
     int     _countDown;
     Buzzer  bz;
     Welder::TriggerSource _triggerSource;
+    int         _animationStep,_animationSkip;
     
 };

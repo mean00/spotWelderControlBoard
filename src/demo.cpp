@@ -16,7 +16,7 @@
 #include "screen.h"
 #include "buzzer.h"
 #include "trigger.h"
-
+#include "assets.h"
 extern void pulseDemo();
 
 void MainTask( void *a );
@@ -68,6 +68,9 @@ void MainTask(void *)
   
   
   
+  
+  
+  
   if(!DSOEeprom::readPulse(pulseWidth))
   {
     Logger("Formating eeprom\n");    
@@ -84,8 +87,12 @@ void MainTask(void *)
   rotary->setup();
   
   myScreen=createScreen();
-   Navigate *currentMenu= spawnMainMenu();
+  Navigate *currentMenu= spawnMainMenu();
   //Navigate *currentMenu=new Calibration(NULL);
+  
+  
+  
+  
   interrupts();
   while(1)
   {

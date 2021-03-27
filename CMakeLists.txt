@@ -38,6 +38,7 @@ include_directories(MapleFreeRTOS1000//)
 include_directories(.)
 include_directories(adc)
 include_directories(src)
+include_directories(assets)
 
 # FreeRTOS
 # Other modules
@@ -63,6 +64,7 @@ generate_arduino_firmware(spotWelder${EXTENSION}
                         src/pulseWidth.cpp
                         src/goAuto.cpp
                         src/go.cpp
+                        assets/assets.cpp
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}
                 )

@@ -83,6 +83,10 @@ public:
              print("Move pins!", 2,32+10);
              myOLED->update();
         }
+        virtual void rleDisplay(int width, int height,int at_x, int at_y, const uint8_t *data)
+        {
+            myOLED->drawRLEBitmap(width,height, at_x,at_y,1,0,data);
+        }
         virtual      ~Screen1306() {}
 protected:
         void setText(int dex, const char *txt);
@@ -224,9 +228,6 @@ void Screen1306::redrawArmScreen( int count, Welder::TriggerSource triggerType, 
     
     sprintf(st,"%02.1fV",getCurrentVbat());
     myOLED->print(64,64,st);    
-
-    
-    myOLED->update();
 }
 
 
