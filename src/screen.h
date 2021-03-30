@@ -8,6 +8,7 @@ public:
 public:
         virtual void clear()=0;
         virtual void update()=0;
+        virtual void invertText(bool invert)=0;
         virtual void print(const char *t, int x, int y)=0;
         virtual void printBig(const char *t, int x, int y)=0;
         virtual void redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource triggerType, int durationMs)=0;

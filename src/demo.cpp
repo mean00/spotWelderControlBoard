@@ -23,7 +23,7 @@ extern void pulseDemo();
 void MainTask( void *a );
 extern Navigate * spawnMainMenu(void);
 #define DSO_MAIN_TASK_PRIORITY 10
-
+extern void bench();
 
 MyScreen *myScreen;
 simpleAdc *adc;
@@ -89,6 +89,8 @@ void MainTask(void *)
   
   myScreen=createScreen();
   interrupts();
+  
+  bench();
   
   myScreen->clear();
   myScreen->rleDisplay(splash_width, splash_height, 2 , 6, splash);

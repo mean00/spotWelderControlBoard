@@ -44,7 +44,7 @@ public:
             sw->end();
             delete sw;
 #endif            
-            TwoWire *tw=new TwoWire(1,0,400*1000);
+            TwoWire *tw=new TwoWire(1,0,800*1000);
             myWire=tw;
 #endif            
             
@@ -59,6 +59,10 @@ public:
         }
         void redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource triggerType, int durationMs);
         void redrawArmScreen( int count,  Welder::TriggerSource triggerType, int durationMs);
+        virtual void invertText(bool t)
+        {
+            myOLED->invertText(t);
+        }
         virtual void clear()
         {
             myOLED->clrScr();

@@ -113,6 +113,8 @@ void OLEDCore::myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert)
     {
         int ty=64-(y+hh);   
         int bi=ty%8;
+        int bimask=1<<bi;
+        int notbimask=~bimask;
         int start=((ty/8)*128);
         if(ty<0 || ty>128)
         {
@@ -126,22 +128,18 @@ void OLEDCore::myDrawChar(int16_t x, int16_t y, unsigned char c,  bool invert)
               bits = *data++;       
               mask=0x80;
             }
-            int tx=(x+ww);
-
-            if(tx<0 || tx>128 )
-            {
-                mask>>=1;
-                dex++;
-                continue;
-            }
             bool set=!!   (bits & mask) ;
             set^=invert;
-
-            int by=start+tx;
-            if(set)
-                scrbuf[by]=scrbuf[by] | (1<<bi);
-            else
-                scrbuf[by]=scrbuf[by] & ~(1<<bi);
+            
+            int tx=(x+ww);
+            if(tx>=0 && tx<128 )
+            {
+                int by=start+tx;
+                if(set)
+                    scrbuf[by]|=bimask;
+                else
+                    scrbuf[by]&=notbimask;                
+            }
             mask>>=1;
             dex++;
         }
