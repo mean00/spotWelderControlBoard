@@ -1,5 +1,5 @@
 #include "Wire.h"
-#include "ssd1306_i2c.h"
+#include "ssd1306_base.h"
 
 class OLED_stm32duino : public  OLEDCore
 {

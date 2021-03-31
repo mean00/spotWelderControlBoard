@@ -1,6 +1,6 @@
 
 SET(SRCS 
-                ssd1306_i2c.cpp
+                ssd1306_base.cpp
                 ssd1306_ex.cpp
                 ssd1306_i2c_f1.cpp
         )

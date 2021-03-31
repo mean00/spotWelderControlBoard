@@ -1,4 +1,4 @@
-#include "ssd1306_i2c.h"
+#include "ssd1306_base.h"
 
 /**
  * \fn checkFont

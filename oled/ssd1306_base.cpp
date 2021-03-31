@@ -20,7 +20,7 @@
   examples and tools supplied with the library.
 */
 
-#include "ssd1306_i2c.h"
+#include "ssd1306_base.h"
 #include "Wire.h"
 
 OLEDCore::OLEDCore( uint8_t rst_pin)
