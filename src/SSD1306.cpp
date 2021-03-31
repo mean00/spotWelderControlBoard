@@ -13,8 +13,8 @@
 #include "dso_debug.h"
 #include "screen.h"
 //#include "oled/fonts/Fonts/FreeSansBold9pt7b.h"
-#include "oled/fonts/Fonts/FreeSans9pt7b.h"
-#include "oled/fonts/Fonts/FreeSansBold24pt7b.h"
+#include "assets/fonts/Fonts/FreeSans9pt7b.h"
+#include "assets/fonts/Fonts/FreeSansBold24pt7b.h"
 
 extern float getCurrentVbat();
 extern "C" unsigned char MediumNumbers[];
