@@ -3,6 +3,7 @@
 
 #define PIN_VBAT     PA1
 #define PIN_DETECT   PA2
+#define PIN_PEDAL    PA3
 #define PIN_GATE     PA6
 
 

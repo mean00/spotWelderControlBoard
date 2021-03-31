@@ -67,10 +67,7 @@ void MainTask(void *)
   LoggerInit();
   Logger("Initializing eeprom\n");
   
-  
-  
-  
-  
+  pinMode(PIN_PEDAL, INPUT);
   
   if(!DSOEeprom::readPulse(pulseWidth))
   {
@@ -99,8 +96,6 @@ void MainTask(void *)
   xDelay(1000);
   
   Navigate *currentMenu= spawnMainMenu();
-  
-  
   
   while(1)
   {
