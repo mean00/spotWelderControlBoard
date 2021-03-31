@@ -16,3 +16,6 @@
 [submodule "embedded_printf"]
 	path = embedded_printf
 	url = https://github.com/mpaland/printf
+[submodule "simpler_SSD1306"]
+	path = simpler_SSD1306
+	url = https://github.com/mean00/simpler_SSD1306.git

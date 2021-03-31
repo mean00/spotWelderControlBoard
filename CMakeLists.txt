@@ -13,7 +13,7 @@ APPLY_PATCH_IF_NEEDED(patched gd32_patch.diff              "add gd32f303 support
 APPLY_PATCH_IF_NEEDED(patchedm4 m4_activate_fpu.diff       "activate m4 fpu (gd32f303)") 
 
 include_directories(Arduino_STM32/STM32F1/libraries/Wire/)
-include_directories(oled)
+include_directories(simpler_SSD1306)
 cmake_minimum_required(VERSION 2.8)
 #
 SET(CMAKE_TOOLCHAIN_FILE cmake/ArduinoToolchain.cmake)
@@ -43,8 +43,8 @@ include_directories(assets)
 # FreeRTOS
 # Other modules
 ADD_SUBDIRECTORY(adc) 
-ADD_SUBDIRECTORY(MapleFreeRTOS1000/)
-ADD_SUBDIRECTORY(oled/)
+ADD_SUBDIRECTORY(MapleFreeRTOS1000)
+ADD_SUBDIRECTORY(simpler_SSD1306)
 #
 generate_arduino_firmware(spotWelder${EXTENSION} 
                 SKETCH OLED_I2C_3D_Cube.ino
