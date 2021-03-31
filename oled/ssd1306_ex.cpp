@@ -213,16 +213,17 @@ void OLEDCore::drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int f
 {    
 
     bool first=true;
-    int nbPixel=widthInPixel*height;
-    int pixel=0;
-    
+    int nbPixel=widthInPixel*height;    
     int mask=0;
-    int cur;   
-    
-    int ready=0;
+    int cur;       
     int repeat;
     bool color;
-    for( int yy=0;yy<height;yy++)      
+    for( int yy=0;yy<height;yy++)    
+    {
+        int column=64-(wy+yy);        
+        int bitToChange=1<<(column%8);
+        column=128*(column/8);
+        int pack=wx;
         for(int xx=0;xx<widthInPixel;)
         {
             // load next
@@ -247,15 +248,22 @@ void OLEDCore::drawRLEBitmap(int widthInPixel, int height, int wx, int wy, int f
                     }else
                         color=false;
                     mask>>=1;                
+                    pack++;
+                    xx++;                   
                     if(color) 
-                        setPixel(wx+xx,64-(wy+yy));
+                    {
+                        scrbuf[column+pack] |=bitToChange;                        
+                    }
                     else 
-                        clrPixel(wx+xx,64-(wy+yy));
-                    xx++;
+                    {
+                        scrbuf[column+pack] &=~bitToChange;                        
+                    }
+                    
                 }
                     
             }
             
         }
+    }
 }
- 
+// EOF

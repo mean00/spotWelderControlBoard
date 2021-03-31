@@ -87,7 +87,7 @@ void MainTask(void *)
   myScreen=createScreen();
   interrupts();
   
-  bench();
+  //bench();
   
   myScreen->clear();
   myScreen->rleDisplay(splash_width, splash_height, 2 , 6, splash);

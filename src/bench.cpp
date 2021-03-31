@@ -8,6 +8,7 @@
 extern MyScreen *myScreen;
 
 // RLE : Base = 18 ms
+//       optim = 16 ms
 
 void bench2()
 {
