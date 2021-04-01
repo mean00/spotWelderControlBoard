@@ -65,6 +65,8 @@ generate_arduino_firmware(spotWelder${EXTENSION}
                         src/goAuto.cpp
                         src/go.cpp
                         src/bench.cpp
+                        src/pedal.cpp
+                        src/goPedal.cpp
                         assets/assets.cpp
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}

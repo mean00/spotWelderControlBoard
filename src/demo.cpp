@@ -18,6 +18,7 @@
 #include "trigger.h"
 #include "assets.h"
 #include "welderVersion.h"
+#include "pedal.h"
 extern void pulseDemo();
 
 void MainTask( void *a );
@@ -28,6 +29,7 @@ extern void bench();
 MyScreen *myScreen;
 simpleAdc *adc;
 Rotary *rotary;
+Pedal *myPedal;
 uint8_t ucHeap[configTOTAL_HEAP_SIZE];
 
 int pulseWidth=5;
@@ -67,7 +69,6 @@ void MainTask(void *)
   LoggerInit();
   Logger("Initializing eeprom\n");
   
-  pinMode(PIN_PEDAL, INPUT);
   
   if(!DSOEeprom::readPulse(pulseWidth))
   {
@@ -80,6 +81,10 @@ void MainTask(void *)
   }  
   DSOEeprom::readVoltageOffset(voltageOffset);
   measure=new Measurement(PIN_VBAT,PIN_DETECT);
+  
+  
+  myPedal=new Pedal(PIN_PEDAL);
+  
   
   rotary=new Rotary(ROTARY_LEFT,ROTARY_RIGHT,ROTARY_PUSH);
   rotary->setup();

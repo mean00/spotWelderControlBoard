@@ -3,15 +3,18 @@
 #include "navigate.h"
 #include "welderUi.h"
 #include "screen.h"
+#include "pedal.h"
 #include "welderUi.h"
 Navigate *spawnCalibration(Navigate *parent);
 Navigate *spawnTrigger(Navigate *parent);
 Navigate *spawnPulseWidth(Navigate *parent);
 Navigate *spawnGoAuto(Navigate *parent);
+Navigate *spawnGoPedal(Navigate *parent, Pedal &p);
 
 extern int voltageOffset;
 extern int pulseWidth;
 int getVBat10(int offset);
+extern Pedal *myPedal;
 
 Welder::TriggerSource triggerSource=Welder::Pedal;
 
@@ -91,7 +94,13 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
             {
                 case Welder::GO:
                     subMenu=true;
-                    return spawnGoAuto(this);
+                    switch(triggerSource)
+                    {
+                        case  Welder::Pedal: return spawnGoPedal(this,*myPedal);break;
+                        case  Welder::Auto:  return spawnGoAuto(this);break;
+                        default: xAssert(0);break;
+                    }
+                    break;
                 case   Welder::Duration:  
                     subMenu=true;
                     return spawnPulseWidth(this);
