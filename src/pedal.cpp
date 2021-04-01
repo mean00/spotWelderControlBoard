@@ -32,7 +32,7 @@ Pedal::Pedal(int pin)
  */
 bool Pedal::setup()
 {
-    attachInterrupt(_pin,_myInterruptPedal,this,FALLING );
+    attachInterrupt(_pin,_myInterruptPedal,this,RISING );
     return true;
 }
 /**
