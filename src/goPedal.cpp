@@ -3,7 +3,13 @@ extern bool detectConnection();
 
 Navigate *spawnGoPedal(Navigate *parent, Pedal &p)
 {
-    return new GoPedal(parent,p);
+    Navigate *gp= new GoPedal(parent,p);
+    return gp;
+}
+bool GoPedal::start()
+{
+    _pedal.arm();
+    return true;
 }
 
 bool GoPedal::triggered()

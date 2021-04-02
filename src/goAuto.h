@@ -13,6 +13,7 @@ class GoAuto : public GoBase
         }
         bool triggered()       ;
         bool contact()       ;
+        bool start();
         int _detectionCounter;
        
 };

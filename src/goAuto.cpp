@@ -5,7 +5,11 @@ Navigate *spawnGoAuto(Navigate *parent)
 {
     return new GoAuto(parent);
 }
-
+bool GoAuto::start()
+{
+    detectConnection();
+    return true;
+}
 bool GoAuto::triggered()
 {
     bool detected=detectConnection();

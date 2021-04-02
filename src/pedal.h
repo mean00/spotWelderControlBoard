@@ -1,9 +1,12 @@
 #pragma once
+/**
+ * \brief Single shot pedal managemen
+ */
 class Pedal
 {
 public:
             Pedal(int pin);
-    bool    setup();
+    bool    arm();
     bool    pushed();
     void    interrupt();
 protected:

@@ -58,9 +58,9 @@ void GoBase::pulseBuzz()
     }
 }
 
-void GoBase::goToIdle()
+void GoBase::goToStart()
 {
-    _state=Idle;
+    _state=Start;
     _animationStep=0;
     _animationSkip=NB_ANIMATISKIP;
 }
@@ -72,6 +72,11 @@ void   GoBase::automaton()
 {
     switch(_state)
     {
+        case Start:
+            start();
+            _state=Idle;
+            return;
+            break;
         case  Idle:
             if(triggered())
             {
@@ -105,7 +110,7 @@ void   GoBase::automaton()
             Logger("confirmed =%d\n",confirmed);
             if(confirmed<4)
             {
-                goToIdle();
+                goToStart();
                 errorBuzz();
                 Logger("unconfirmed =%d\n",confirmed);
                 return;
@@ -115,7 +120,7 @@ void   GoBase::automaton()
             {
                 if(!contact())
                 {
-                    goToIdle();
+                    goToStart();
                     errorBuzz();
                     Logger("unconfirmed =%d\n",confirmed);
                     return;
@@ -137,7 +142,7 @@ void   GoBase::automaton()
                 myScreen->disconnectMessage();
                 return;
             }
-            goToIdle();           
+            goToStart();           
             break;
         case WaitingToRearm:
             xDelay(200);

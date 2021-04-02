@@ -23,24 +23,26 @@ Pedal::Pedal(int pin)
     _state = 0;
     _pushed=0;
     _lastPush=0;
-    pinMode(_pin,INPUT_PULLDOWN);
+    pinMode(_pin,INPUT);
 }
 
 /**
  * 
  * @return 
  */
-bool Pedal::setup()
+bool Pedal::arm()
 {
-    attachInterrupt(_pin,_myInterruptPedal,this,RISING );
+    attachInterrupt(_pin,_myInterruptPedal,this,RISING ); //void attachInterrupt(uint8 pin, voidArgumentFuncPtr handler, void *arg, ExtIntTriggerMode mode) {
     return true;
 }
 /**
  * 
  */
 #define ROUNDUP 0xffff
+bool rd;
 void Pedal::interrupt()
 {
+    rd=digitalRead(_pin);
     int now=millis()&ROUNDUP;
     if(now<_lastPush) now+=ROUNDUP+1;
     if((now-_lastPush)<THRESHOLD) 
@@ -48,7 +50,8 @@ void Pedal::interrupt()
         return;
     }
     _lastPush=now;
-    this->_pushed++;
+    detachInterrupt(_pin);
+    this->_pushed=1;
 }
 
 /**
