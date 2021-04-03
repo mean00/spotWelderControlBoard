@@ -22,4 +22,46 @@ bool GoPedal::contact()
     return detectConnection();
 }
 
+/**
+ * 
+ */
+void   GoPedal::automaton()
+{
+    switch(_state)
+    {
+        case Start:
+            start();
+            _state=Idle;
+            return;
+            break;   
+        case  Idle:
+            if(triggered())
+            {
+                _state=Pulsing; 
+            }
+            animate();
+            return;
+            break;            
+        case  Pulsing:
+            pulseBuzz();             
+            sendPulse();
+            _state=Pulsed;
+            break;
+        case  Pulsed:
+            if(detectConnection())
+            {
+                myScreen->disconnectMessage();
+                return;
+            }
+            goToStart();           
+            break;
+        case WaitingToRearm:
+            xDelay(200);
+            break;
+        default:
+            break;
+    }
+    myScreen->redrawArmScreen( -1,  _triggerSource, pulseWidth);
+    myScreen->update();
+}
 // EOF

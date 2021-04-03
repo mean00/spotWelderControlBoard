@@ -15,6 +15,7 @@ class GoPedal : public GoBase
         {
             
         }
+        void automaton();
         bool triggered()       ;
         bool contact()       ;
         bool start();

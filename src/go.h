@@ -35,17 +35,18 @@ public:
     virtual bool        triggered()=0;
     virtual Navigate    *handleEvent(Event evt,bool &subMenu);
     virtual void        handleRotary(int inc) {}
-            void        automaton();
     virtual bool        contact()=0;
     virtual bool        start()=0;
     virtual void        redraw();
 
 protected:
+    void        animate();
     void        sendPulse();
     void        errorBuzz();
     void        pulseBuzz();
     void        armingBuzz();
     void        goToStart();
+ virtual void   automaton()=0;
     State       _state;
     int         _countDown;
     Buzzer      bz;
@@ -53,3 +54,5 @@ protected:
     int         _animationStep,_animationSkip;
     
 };
+
+extern int pulseWidth;

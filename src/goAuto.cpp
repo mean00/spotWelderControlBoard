@@ -29,4 +29,84 @@ bool GoAuto::contact()
     return detectConnection();
 }
 
+/**
+ * 
+ */
+void   GoAuto::automaton()
+{
+    switch(_state)
+    {
+        case Start:
+            start();
+            _state=Idle;
+            return;
+            break;
+        case  Idle:
+            if(triggered())
+            {
+                _state=Arming;
+                _countDown=3;            
+            }
+            animate();
+            return;
+            break;
+        case  Arming:
+        {
+            Logger("Arming =%d\n",_countDown);
+            myScreen->redrawArmScreen( _countDown, _triggerSource, pulseWidth);
+            myScreen->update();
+            armingBuzz();
+            int confirmed=0;
+            for(int i=0;i<5;i++)
+            {
+                xDelay(100);
+                confirmed+=contact();
+            }
+            Logger("confirmed =%d\n",confirmed);
+            if(confirmed<4)
+            {
+                goToStart();
+                errorBuzz();
+                Logger("unconfirmed =%d\n",confirmed);
+                return;
+            }
+            _countDown--;
+            if(!_countDown)
+            {
+                if(!contact())
+                {
+                    goToStart();
+                    errorBuzz();
+                    Logger("unconfirmed =%d\n",confirmed);
+                    return;
+                }
+                myScreen->redrawArmScreen( 0, _triggerSource, pulseWidth);                
+                myScreen->update();
+                _state=Pulsing;
+                  
+            }
+        }
+            break;
+        case  Pulsing:
+            pulseBuzz();             
+            sendPulse();
+            _state=Pulsed;
+            break;
+        case  Pulsed:
+            if(detectConnection())
+            {
+                myScreen->disconnectMessage();
+                return;
+            }
+            goToStart();           
+            break;
+        case WaitingToRearm:
+            xDelay(200);
+            break;
+        default:
+            break;
+    }
+    myScreen->redrawArmScreen( -1,  _triggerSource, pulseWidth);
+    myScreen->update();
+}
 // EOF

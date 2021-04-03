@@ -15,5 +15,6 @@ class GoAuto : public GoBase
         bool contact()       ;
         bool start();
         int _detectionCounter;
+        void   automaton();
        
 };

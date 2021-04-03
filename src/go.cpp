@@ -68,99 +68,23 @@ void GoBase::goToStart()
 /**
  * 
  */
-void   GoBase::automaton()
-{
-    switch(_state)
-    {
-        case Start:
-            start();
-            _state=Idle;
-            return;
-            break;
-        case  Idle:
-            if(triggered())
-            {
-                _state=Arming;
-                _countDown=3;            
-            }
-            _animationSkip--;
-            if(_animationSkip<=0)
-            {
-                _animationSkip=NB_ANIMATISKIP;
-                myScreen->clear();
-                myScreen->redrawArmScreen( -1,  _triggerSource, pulseWidth);
-                myScreen->rleDisplay(c1_width,c1_height,1,1,animation[_animationStep]);
-                myScreen->update();
-                _animationStep=(_animationStep+1)%NB_ANIMATION_STEP;
-            }
-            return;
-            break;
-        case  Arming:
-        {
-            Logger("Arming =%d\n",_countDown);
-            myScreen->redrawArmScreen( _countDown, _triggerSource, pulseWidth);
-            myScreen->update();
-            armingBuzz();
-            int confirmed=0;
-            for(int i=0;i<5;i++)
-            {
-                xDelay(100);
-                confirmed+=contact();
-            }
-            Logger("confirmed =%d\n",confirmed);
-            if(confirmed<4)
-            {
-                goToStart();
-                errorBuzz();
-                Logger("unconfirmed =%d\n",confirmed);
-                return;
-            }
-            _countDown--;
-            if(!_countDown)
-            {
-                if(!contact())
-                {
-                    goToStart();
-                    errorBuzz();
-                    Logger("unconfirmed =%d\n",confirmed);
-                    return;
-                }
-                myScreen->redrawArmScreen( 0, _triggerSource, pulseWidth);                
-                myScreen->update();
-                _state=Pulsing;
-                pulseBuzz();                
-            }
-        }
-            break;
-        case  Pulsing:
-            sendPulse();
-            _state=Pulsed;
-            break;
-        case  Pulsed:
-            if(detectConnection())
-            {
-                myScreen->disconnectMessage();
-                return;
-            }
-            goToStart();           
-            break;
-        case WaitingToRearm:
-            xDelay(200);
-            break;
-        default:
-            break;
-    }
-    myScreen->redrawArmScreen( -1,  _triggerSource, pulseWidth);
-    myScreen->update();
-}
-/**
- * 
- */
 void GoBase::redraw()
 {
     
 }
-
+void GoBase::animate()
+{
+     _animationSkip--;
+    if(_animationSkip<=0)
+    {
+        _animationSkip=NB_ANIMATISKIP;
+        myScreen->clear();
+        myScreen->redrawArmScreen( -1,  _triggerSource, pulseWidth);
+        myScreen->rleDisplay(c1_width,c1_height,1,1,animation[_animationStep]);
+        myScreen->update();
+        _animationStep=(_animationStep+1)%NB_ANIMATION_STEP;
+    }
+}
 Navigate *GoBase::handleEvent(Event evt,bool &subMenu)
 {
     switch(evt)
