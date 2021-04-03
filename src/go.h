@@ -4,6 +4,10 @@
 #include "welderUi.h"
 #include "buzzer.h"
 #include "pinMapping.h"
+
+#define NB_ANIMATISKIP    4 // refresh screen every SKIP
+#define NB_ANIMATION_STEP 8
+
 /**
  * 
  * @param p
@@ -27,6 +31,7 @@ public:
                 _state=Start;
                 _triggerSource=source;
                 _animationStep=0;
+                _animationSkip=NB_ANIMATISKIP;
             }
     virtual ~GoBase()
             {

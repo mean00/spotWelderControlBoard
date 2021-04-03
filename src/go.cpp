@@ -5,8 +5,7 @@
 extern bool detectConnection();
 extern int pulseWidth;
 
-#define NB_ANIMATISKIP    4 // refresh screen every SKIP
-#define NB_ANIMATION_STEP 8
+
 const uint8_t *animation[NB_ANIMATION_STEP]={c4,c3,c2,c1,c1,c2,c3,c4};
 /*
   int a=0;
@@ -56,6 +55,7 @@ void GoBase::pulseBuzz()
         bz.buzz(3*1000,100);
         xDelay(100);
     }
+    bz.buzz(2000,200);
 }
 
 void GoBase::goToStart()

@@ -8,6 +8,7 @@ Navigate *spawnGoPedal(Navigate *parent, Pedal &p)
 }
 bool GoPedal::start()
 {
+     _animationSkip=NB_ANIMATISKIP;
     _pedal.arm();
     return true;
 }
@@ -32,7 +33,6 @@ void   GoPedal::automaton()
         case Start:
             start();
             _state=Idle;
-            return;
             break;   
         case  Idle:
             if(triggered())
