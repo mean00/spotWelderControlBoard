@@ -18,7 +18,7 @@ L MCU_ST_STM32F1:STM32F103CBTx U1
 U 1 1 6052EF82
 P 2500 3600
 F 0 "U1" H 2450 2011 50  0000 C CNN
-F 1 "STM32F103CBTx" H 2450 1920 50  0000 C CNN
+F 1 "BLUEPILL-STM32F103CBTx" H 2700 1900 50  0000 C CNN
 F 2 "Package_QFP:LQFP-48_7x7mm_P0.5mm" H 1900 2200 50  0001 R CNN
 F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/CD00161566.pdf" H 2500 3600 50  0001 C CNN
 	1    2500 3600
@@ -334,17 +334,6 @@ F 3 "" H 800 5850 50  0001 C CNN
 	1    800  5850
 	1    0    0    -1  
 $EndComp
-$Comp
-L Display_Graphic:EA_DOGXL160-7 U2
-U 1 1 6058DB7E
-P 4000 1500
-F 0 "U2" H 4644 1496 50  0000 L CNN
-F 1 "SSD1306-I2C-OLED-128x64" H 4644 1405 50  0000 L CNN
-F 2 "Display:EA_DOGXL160-7" H 4000 500 50  0001 C CNN
-F 3 "http://www.lcd-module.com/eng/pdf/grafik/dogxl160-7e.pdf" H 1650 2650 50  0001 C CNN
-	1    4000 1500
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	1500 3900 1800 3900
 $Comp
@@ -358,17 +347,15 @@ F 3 "" H 3700 2400 50  0001 C CNN
 	1    3700 2400
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	3700 2300 3700 2400
 $Comp
 L power:+3.3V #PWR06
 U 1 1 605967BF
-P 3200 700
-F 0 "#PWR06" H 3200 550 50  0001 C CNN
-F 1 "+3.3V" H 3215 873 50  0000 C CNN
-F 2 "" H 3200 700 50  0001 C CNN
-F 3 "" H 3200 700 50  0001 C CNN
-	1    3200 700 
+P 3450 2200
+F 0 "#PWR06" H 3450 2050 50  0001 C CNN
+F 1 "+3.3V" H 3465 2373 50  0000 C CNN
+F 2 "" H 3450 2200 50  0001 C CNN
+F 3 "" H 3450 2200 50  0001 C CNN
+	1    3450 2200
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -396,26 +383,11 @@ $EndComp
 Wire Wire Line
 	5350 5950 5350 6150
 Wire Wire Line
-	3700 2300 3900 2300
-Connection ~ 3900 2300
-Wire Wire Line
-	3900 2300 4000 2300
-Wire Wire Line
-	4000 800  4000 700 
-Wire Wire Line
-	4000 700  3200 700 
-Wire Wire Line
 	1500 3900 1500 1200
-Wire Wire Line
-	1500 1200 3400 1200
-Wire Wire Line
-	3400 1600 3100 1600
 Wire Wire Line
 	1350 1600 1350 4000
 Wire Wire Line
 	1350 4000 1800 4000
-Wire Wire Line
-	3400 1500 2750 1500
 Wire Wire Line
 	1250 1500 1250 4100
 Wire Wire Line
@@ -699,5 +671,63 @@ Wire Wire Line
 	3550 6750 3500 6750
 Connection ~ 3500 6750
 Wire Wire Line
-	3550 4150 7500 4150
+	3550 4150 4750 4150
+$Comp
+L Device:C C?
+U 1 1 6068B873
+P 4750 3900
+F 0 "C?" H 4865 3946 50  0000 L CNN
+F 1 "100n" H 4865 3855 50  0000 L CNN
+F 2 "" H 4788 3750 50  0001 C CNN
+F 3 "~" H 4750 3900 50  0001 C CNN
+	1    4750 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 6068C6CA
+P 4750 3600
+F 0 "#PWR?" H 4750 3350 50  0001 C CNN
+F 1 "GND" H 4755 3427 50  0000 C CNN
+F 2 "" H 4750 3600 50  0001 C CNN
+F 3 "" H 4750 3600 50  0001 C CNN
+	1    4750 3600
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	4750 3600 4750 3750
+Wire Wire Line
+	4750 4050 4750 4150
+Connection ~ 4750 4150
+Wire Wire Line
+	4750 4150 7500 4150
+Text Notes 4850 3650 0    50   ~ 0
+Put near PA3 to avoid buzzer/I2C parasites
+$Comp
+L SSD1306-128x64_OLED:SSD1306 Brd?
+U 1 1 606A4189
+P 4050 1650
+F 0 "Brd?" V 4096 1372 50  0000 R CNN
+F 1 "SSD1306" V 4005 1372 50  0000 R CNN
+F 2 "" H 4050 1900 50  0001 C CNN
+F 3 "" H 4050 1900 50  0001 C CNN
+	1    4050 1650
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3450 2200 3600 2200
+Wire Wire Line
+	3600 2200 3600 1700
+Wire Wire Line
+	3600 1700 3700 1700
+Wire Wire Line
+	3700 1800 3700 2400
+Wire Wire Line
+	2750 1500 3700 1500
+Wire Wire Line
+	3100 1600 3700 1600
+Text GLabel 3850 1200 2    50   Input ~ 0
+SSD1306RESET
+Wire Wire Line
+	1500 1200 3850 1200
 $EndSCHEMATC
