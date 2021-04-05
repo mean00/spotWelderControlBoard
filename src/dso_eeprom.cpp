@@ -15,8 +15,9 @@ static uint16_t pulseWidth=5;
     #define CHECK_READ(x) if(!(x)) return false;
 #endif
 
-#define PULSE_INDEX 1
-#define VOLTAGE_INDEX 2
+#define PULSE_INDEX     1
+#define VOLTAGE_INDEX   2
+#define TRIGGER_INDEX   3
 
 /**
  * 
@@ -41,13 +42,7 @@ bool DSOEeprom::readPulse(int &pulse)
     {
         return false;
     }
-    
-    if(EEPROM_OK==e2.read(PULSE_INDEX,&pulseWidth))
-    {
-        pulse=pulseWidth;
-        return true;
-    }
-    return false;
+    return readVal(PULSE_INDEX,pulse);  
 }
 /**
  * 
@@ -55,12 +50,7 @@ bool DSOEeprom::readPulse(int &pulse)
  */
 bool  DSOEeprom::writePulse(int pulse)
 {
-    EEPROMClass e2;
-    addressInit(e2);
-    uint16_t p16=pulse;
-    e2.update(PULSE_INDEX,p16);
-    
-    return true;
+    return writeVal(PULSE_INDEX,pulse);
 }
 
 /**
@@ -68,6 +58,59 @@ bool  DSOEeprom::writePulse(int pulse)
  * @return 
  */
 bool DSOEeprom::readVoltageOffset(int &offset)
+{
+    return readVal(VOLTAGE_INDEX,offset);    
+}
+
+
+/**
+ * 
+ * @return 
+ */
+bool  DSOEeprom::writeVoltageOffset(int pulse)
+{
+    return writeVal(VOLTAGE_INDEX,pulse);
+}
+//--
+
+/**
+ * 
+ * @return 
+ */
+bool DSOEeprom::readTriggerSource(int &offset)
+{
+    return readVal(TRIGGER_INDEX,offset);
+}
+
+
+/**
+ * 
+ * @return 
+ */
+bool  DSOEeprom::writeTriggerSource(int pulse)
+{
+    return writeVal(TRIGGER_INDEX,pulse);
+}
+
+
+/**
+ * 
+ * @return 
+ */
+bool  DSOEeprom::writeVal(int index, int pulse)
+{
+    EEPROMClass e2;
+    addressInit(e2);
+    uint16_t p16=pulse;
+    e2.update(index,p16);
+    
+    return true;
+}
+/**
+ * 
+ * @return 
+ */
+bool DSOEeprom::readVal(int index, int &offset)
 {
     EEPROMClass e2;
     addressInit(e2);
@@ -77,27 +120,13 @@ bool DSOEeprom::readVoltageOffset(int &offset)
         return false;
     }
     uint16_t po;
-    if(EEPROM_OK==e2.read(VOLTAGE_INDEX,&po))
+    if(EEPROM_OK==e2.read(index,&po))
     {
         offset=po;
         return true;
     }
     return false;
 }
-/**
- * 
- * @return 
- */
-bool  DSOEeprom::writeVoltageOffset(int pulse)
-{
-    EEPROMClass e2;
-    addressInit(e2);
-    uint16_t p16=pulse;
-    e2.update(VOLTAGE_INDEX,p16);
-    
-    return true;
-}
-
 
 /**
  */

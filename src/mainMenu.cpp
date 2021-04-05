@@ -41,8 +41,7 @@ protected:
     std::vector<menuItem *>menu;
     int                   _dex;
     Welder::Selection     _selection;
-    float                 _voltage;
-    Welder::TriggerSource _triggerType;    
+    float                 _voltage;    
     
 };
 /**
@@ -64,7 +63,6 @@ MainMenu::MainMenu(Navigate *p): Navigate(p)
     one->str="BB calib";
     menu.push_back(one);
     _selection=Welder::GO;
-    _triggerType=Welder::Pedal;
     _voltage=12.;
     redraw();
 }
@@ -128,7 +126,7 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
  */
 void MainMenu::redraw()
 {
-    myScreen->redrawStockScreen(_selection, _triggerType,pulseWidth);
+    myScreen->redrawStockScreen(_selection, triggerSource,pulseWidth);
 }
 /**
  * 

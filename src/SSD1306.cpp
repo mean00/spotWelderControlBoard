@@ -176,7 +176,7 @@ void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource
     const char *lb;    
     switch(triggerType)
     {
-        case Welder::Auto: lb="Manual";break;
+        case Welder::Auto: lb="Auto";break;
         case Welder::Pedal: lb="Pedal";break;
     }
     setText(0,"GO!");
@@ -225,7 +225,7 @@ void Screen1306::redrawArmScreen( int count, Welder::TriggerSource triggerType, 
     const char *lb;    
     switch(triggerType)
     {
-        case Welder::Auto: lb="Manual";break;
+        case Welder::Auto: lb="Auto";break;
         case Welder::Pedal: lb="Pedal";break;
     }
     myOLED->print(64,48,lb);

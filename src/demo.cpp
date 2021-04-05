@@ -35,6 +35,7 @@ uint8_t ucHeap[configTOTAL_HEAP_SIZE];
 int pulseWidth=5;
 int voltageOffset=1000;
 Measurement *measure;
+extern Welder::TriggerSource triggerSource;
 
 int getVBat10(int offset);
 
@@ -78,8 +79,12 @@ void MainTask(void *)
     DSOEeprom::format();
     DSOEeprom::writePulse(pulseWidth);
     DSOEeprom::writeVoltageOffset(voltageOffset);
+    DSOEeprom::writeTriggerSource(triggerSource);
   }  
   DSOEeprom::readVoltageOffset(voltageOffset);
+  int ts=(int)triggerSource;
+  DSOEeprom::readTriggerSource(ts);
+  triggerSource=(Welder::TriggerSource )ts;
   measure=new Measurement(PIN_VBAT,PIN_DETECT);
   
   
@@ -133,7 +138,9 @@ void MainTask(void *)
                }
                else
                {
-                   delete currentMenu;                   
+                   // Go back to parent
+                   delete currentMenu; 
+                   z->redraw();
                }
                currentMenu=z;
                // Purge pending push button if any

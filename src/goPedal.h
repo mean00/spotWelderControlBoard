@@ -4,7 +4,7 @@
 class GoPedal : public GoBase
 {
     public:
-        GoPedal(Navigate *n,Pedal &pedal) : GoBase(n,Welder::Auto),_pedal(pedal)
+        GoPedal(Navigate *n,Pedal &pedal) : GoBase(n,Welder::Pedal),_pedal(pedal)
         {
             _pedal.pushed(); // clear 
             _detectionCounter=0;

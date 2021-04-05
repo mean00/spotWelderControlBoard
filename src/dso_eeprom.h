@@ -11,6 +11,12 @@ public:
         static bool writePulse(int p);
         static bool readVoltageOffset(int &p);
         static bool writeVoltageOffset(int p);
+        static bool readTriggerSource(int &p);
+        static bool writeTriggerSource(int p);
         
         static bool format(); 
+        
+protected:
+        static bool writeVal(int index, int value);
+        static bool readVal(int index, int &value);
 };

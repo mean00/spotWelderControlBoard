@@ -53,6 +53,7 @@ Navigate *TriggerSelection::handleEvent(Event evt,bool &subMenu)
         case Navigate::E_PUSH:
             triggerSource=_source;
             subMenu=false;
+            DSOEeprom::writeTriggerSource(triggerSource);
             return _parent;
         case Navigate::E_TIMER:
             redraw();
