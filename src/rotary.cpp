@@ -51,6 +51,7 @@ Rotary::Rotary(int left, int right, int push)
     _state = R_START;
     _pushed=0;
     _lastPush=0;
+    _counter=0;
       
     
 #define SETUP_PIN(x)    pinMode(x,OUTPUT); digitalWrite(x,1);pinMode(x,INPUT_PULLUP);
