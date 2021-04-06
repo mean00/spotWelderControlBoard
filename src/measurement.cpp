@@ -25,6 +25,7 @@ Measurement::Measurement(int pinV,int pinD) : xTask("MEASURE",  4, 300)
 /**
  * 
  */
+int skip=0;
 void Measurement::run()
 {
   while(1)
@@ -45,7 +46,13 @@ void Measurement::run()
       _valueV=vbat;
       _valueD=detect;
       // Detect..
-      //Logger("DTETC=%d\n",_valueD);
+      skip++;
+      if(skip>10)
+      {
+        skip=0;
+        Logger("DTETC=%d",_valueD);  
+      }
+      //;
       _avgDetect[_dex]=_valueD;
       _dex=(_dex+1)%NB_DETECT;
       int ok=0,ko=0;
