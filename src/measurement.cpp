@@ -45,7 +45,7 @@ void Measurement::run()
       _valueV=vbat;
       _valueD=detect;
       // Detect..
-      Logger("DTETC=%d\n",_valueD);
+      //Logger("DTETC=%d\n",_valueD);
       _avgDetect[_dex]=_valueD;
       _dex=(_dex+1)%NB_DETECT;
       int ok=0,ko=0;

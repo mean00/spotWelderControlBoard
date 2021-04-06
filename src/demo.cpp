@@ -103,10 +103,13 @@ void MainTask(void *)
   myScreen->rleDisplay(splash_width, splash_height, 2 , 6, splash);
   myScreen->print(WELDER_VERSION,70,20);
   myScreen->update();
+  
+  Logger("Splash\n");
+  
   xDelay(1000);
   
   Navigate *currentMenu= spawnMainMenu();
-  
+  Logger("Entering loop\n");
   while(1)
   {
       bool dirty=false;
