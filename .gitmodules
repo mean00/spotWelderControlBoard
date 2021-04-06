@@ -7,9 +7,6 @@
 [submodule "Arduino_STM32"]
 	path = Arduino_STM32
 	url = https://github.com/rogerclarkmelbourne/Arduino_STM32
-[submodule "printf"]
-	path = printf
-	url = https://github.com/mpaland/printf
 [submodule "adc"]
 	path = adc
 	url = https://github.com/mean00/stm32duino_adc.git

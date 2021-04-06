@@ -39,6 +39,7 @@ include_directories(.)
 include_directories(adc)
 include_directories(src)
 include_directories(assets)
+include_directories(embedded_printf)
 
 # FreeRTOS
 # Other modules
