@@ -10,7 +10,7 @@ Navigate *spawnTrigger(Navigate *parent);
 Navigate *spawnPulseWidth(Navigate *parent);
 Navigate *spawnGoAuto(Navigate *parent);
 Navigate *spawnGoPedal(Navigate *parent, Pedal &p);
-
+bool detectConnection();
 extern int voltageOffset;
 extern int pulseWidth;
 int getVBat10(int offset);
@@ -126,7 +126,8 @@ Navigate *MainMenu::handleEvent(Event evt,bool &subMenu)
  */
 void MainMenu::redraw()
 {
-    myScreen->redrawStockScreen(_selection, triggerSource,pulseWidth);
+    bool contact=detectConnection();
+    myScreen->redrawStockScreen(_selection, triggerSource,pulseWidth,contact);
 }
 /**
  * 

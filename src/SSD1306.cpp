@@ -57,7 +57,7 @@ public:
             myOLED->begin();     
             
         }
-        void redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource triggerType, int durationMs);
+        void redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource triggerType, int durationMs,bool contact);
         void redrawArmScreen( int count,  Welder::TriggerSource triggerType, int durationMs);
         virtual void invertText(bool t)
         {
@@ -161,14 +161,19 @@ void Screen1306::setSelection(int dex)
  * @param triggerType
  * @param durationMs
  */
-void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource triggerType, int durationMs)
+void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource triggerType, int durationMs,bool contact)
 {
     char st[5];
     sprintf(st,"%02d",durationMs);
     myOLED->clrScr();
+        
     myOLED->setFontSize(OLEDCore::MediumFont); //MediumFont); BigFont
     
+    if(contact)
+        myOLED->invertText(true);
     myOLED->print(1,40,st);
+    myOLED->invertText(false);
+    
     
     myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
     sprintf(st,"%02.1fV",getCurrentVbat());
