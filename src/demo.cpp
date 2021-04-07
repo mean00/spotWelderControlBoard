@@ -101,7 +101,10 @@ void MainTask(void *)
   
   myScreen->clear();
   myScreen->rleDisplay(splash_width, splash_height, 2 , 6, splash);
-  myScreen->print(WELDER_VERSION,70,20);
+  
+  myScreen->print("Spot",70,20);
+  myScreen->print("Weldr",70,40);
+  myScreen->print(WELDER_VERSION,70,60);
   myScreen->update();
   
   Logger("Splash\n");
