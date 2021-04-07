@@ -48,7 +48,7 @@ ADD_SUBDIRECTORY(MapleFreeRTOS1000)
 ADD_SUBDIRECTORY(simpler_SSD1306)
 #
 generate_arduino_firmware(spotWelder${EXTENSION} 
-                SKETCH OLED_I2C_3D_Cube.ino
+                SKETCH spotWelder.ino
                 SRCS    src/demo.cpp 
                         embedded_printf/printf.c  
                         stubs/usb_stubs.cpp
