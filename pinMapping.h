@@ -4,11 +4,11 @@
 #define PIN_VBAT     PA1
 #define PIN_DETECT   PA2
 #define PIN_PEDAL    PA3
-#define PIN_GATE     PA6
+#define PIN_GATE     PB1
 
 
 #define GATE_TIMER   3 //T3C1
-#define GATE_CHANNEL 1
+#define GATE_CHANNEL 4
 
 #define SCREEN_DATA  PB7
 #define SCREEN_SCL   PB6

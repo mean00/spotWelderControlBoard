@@ -152,8 +152,6 @@ $EndComp
 Wire Wire Line
 	2350 6450 2650 6450
 Wire Wire Line
-	3100 4000 3500 4000
-Wire Wire Line
 	2350 6350 3350 6350
 Wire Wire Line
 	3350 6350 3350 3600
@@ -529,8 +527,6 @@ F 3 "~" H 3500 6900 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 Connection ~ 3250 7050
-Wire Wire Line
-	3500 4000 3500 6750
 $Comp
 L Transistor_FET:ZXMN2A01F Q?
 U 1 1 6062FDB3
@@ -603,8 +599,6 @@ Connection ~ 7500 4700
 Wire Wire Line
 	7500 4200 7500 4150
 Wire Wire Line
-	3150 3700 3500 3700
-Wire Wire Line
 	3500 3700 3500 3900
 Wire Wire Line
 	3500 3900 3550 3900
@@ -669,7 +663,6 @@ Wire Wire Line
 	3500 7050 3250 7050
 Wire Wire Line
 	3550 6750 3500 6750
-Connection ~ 3500 6750
 Wire Wire Line
 	3550 4150 4750 4150
 $Comp
@@ -817,4 +810,15 @@ Wire Wire Line
 	4900 2400 4900 1450
 Wire Wire Line
 	4900 1450 5300 1450
+Wire Wire Line
+	3100 3700 3500 3700
+Wire Wire Line
+	1800 3500 1650 3500
+Wire Wire Line
+	1650 3500 1650 5600
+Wire Wire Line
+	1650 5600 3500 5600
+Wire Wire Line
+	3500 5600 3500 6750
+Connection ~ 3500 6750
 $EndSCHEMATC

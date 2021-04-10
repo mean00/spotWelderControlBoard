@@ -13,6 +13,7 @@ Pics
 
 ![screenshot](web/welder_casing.jpg?raw=true "front")
 ![screenshot](web/welder_pcb.jpg?raw=true "front")
+[Small Youtube demo ](https://www.youtube.com/watch?v=iqqSZQ6BELQ)
 
  Shopping list (~ 10 $ )
  -----
