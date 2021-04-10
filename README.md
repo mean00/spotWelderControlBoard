@@ -8,12 +8,16 @@ It completely replaces the original top board.
 It is written in c++/Arduino using Roger Clark Stm32duino + cmake build system + FreeRTOS.
 (Yes , it is overkill, but it's free, we have plenty of ram/flash so no need to be a cheap bastard here).
 
+Small demo video
+-----
+
+[Small Youtube demo ](https://www.youtube.com/watch?v=iqqSZQ6BELQ)
+
 Pics
 -----
 
 ![screenshot](web/welder_casing.jpg?raw=true "front")
 ![screenshot](web/welder_pcb.jpg?raw=true "front")
-[Small Youtube demo ](https://www.youtube.com/watch?v=iqqSZQ6BELQ)
 
  Shopping list (~ 10 $ )
  -----
