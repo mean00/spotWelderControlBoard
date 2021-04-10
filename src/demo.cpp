@@ -74,7 +74,8 @@ void MainTask(void *)
   Logger("Initializing eeprom\n");
   
   myLeds=new WelderLeds();
-  //--
+  digitalWrite(PIN_GATE,0);
+  pinMode(PIN_GATE,OUTPUT);   
   
   
   if(!DSOEeprom::readPulse(pulseWidth))
