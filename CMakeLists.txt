@@ -39,6 +39,7 @@ include_directories(.)
 include_directories(adc)
 include_directories(src)
 include_directories(assets)
+include_directories(WS2812)
 include_directories(embedded_printf)
 
 # FreeRTOS
@@ -46,6 +47,7 @@ include_directories(embedded_printf)
 ADD_SUBDIRECTORY(adc) 
 ADD_SUBDIRECTORY(MapleFreeRTOS1000)
 ADD_SUBDIRECTORY(simpler_SSD1306)
+ADD_SUBDIRECTORY(WS2812)
 #
 generate_arduino_firmware(spotWelder${EXTENSION} 
                 SKETCH spotWelder.ino
@@ -68,12 +70,14 @@ generate_arduino_firmware(spotWelder${EXTENSION}
                         src/bench.cpp
                         src/pedal.cpp
                         src/goPedal.cpp
+                        src/Leds.cpp
                         assets/assets.cpp
                 PORT ${ARDUINO_DEFAULT_PORT}
                 BOARD_CPU ${ARDUINO_CPU}
                 )
 TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}FreeRTOS)
 TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}adc ${libPrefix}ssd1306)
+TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}WS2812 )
 #TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}tests)
 
 

@@ -19,6 +19,8 @@
 #include "assets.h"
 #include "welderVersion.h"
 #include "pedal.h"
+#include "Leds.h"
+
 extern void pulseDemo();
 
 void MainTask( void *a );
@@ -30,6 +32,7 @@ MyScreen *myScreen;
 simpleAdc *adc;
 Rotary *rotary;
 Pedal *myPedal;
+WelderLeds *myLeds;
 uint8_t ucHeap[configTOTAL_HEAP_SIZE];
 
 int pulseWidth=5;
@@ -69,6 +72,9 @@ void MainTask(void *)
 {
   LoggerInit();
   Logger("Initializing eeprom\n");
+  
+  myLeds=new WelderLeds();
+  //--
   
   
   if(!DSOEeprom::readPulse(pulseWidth))
@@ -184,5 +190,12 @@ float getCurrentVbat()
 }
 bool detectConnection()
 {
-    return measure->detected();
+    static bool oldConnect=false;
+    bool s= measure->detected();
+    if(s!=oldConnect)
+    {
+        oldConnect=s;
+        myLeds->setProbeDetectState(s);
+    }
+    return s;
 }

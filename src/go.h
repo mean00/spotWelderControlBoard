@@ -4,10 +4,11 @@
 #include "welderUi.h"
 #include "buzzer.h"
 #include "pinMapping.h"
+#include "Leds.h"
 
 #define NB_ANIMATISKIP    4 // refresh screen every SKIP
 #define NB_ANIMATION_STEP 8
-
+extern WelderLeds *myLeds;
 /**
  * 
  * @param p
@@ -26,17 +27,9 @@ public:
             };
   
     
-            GoBase(Navigate *p, Welder::TriggerSource  source) : Navigate(p), bz(BUZZER_GATE)
-            {
-                _state=Start;
-                _triggerSource=source;
-                _animationStep=0;
-                _animationSkip=NB_ANIMATISKIP;
-            }
-    virtual ~GoBase()
-            {
-
-            }
+            GoBase(Navigate *p, Welder::TriggerSource  source) ;           
+    virtual ~GoBase();
+           
     virtual bool        triggered()=0;
     virtual Navigate    *handleEvent(Event evt,bool &subMenu);
     virtual void        handleRotary(int inc) {}

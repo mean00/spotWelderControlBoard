@@ -24,8 +24,10 @@ const uint8_t *animation[NB_ANIMATION_STEP]={c4,c3,c2,c1,c1,c2,c3,c4};
 void    GoBase::sendPulse()
 {
     // Send pulse
+    myLeds->setEnable(false);
     Pulse pulse(GATE_TIMER,GATE_CHANNEL,PIN_GATE); 
     pulse.pulse(pulseWidth);    
+    myLeds->setEnable(true);
 }
 /**
  * 
@@ -101,4 +103,22 @@ Navigate *GoBase::handleEvent(Event evt,bool &subMenu)
             
     }
     return NULL;
+}
+/**
+ * 
+ * @param p
+ * @param source
+ */
+ GoBase::GoBase(Navigate *p, Welder::TriggerSource  source) : Navigate(p), bz(BUZZER_GATE)
+            {
+                _state=Start;
+                _triggerSource=source;
+                _animationStep=0;
+                _animationSkip=NB_ANIMATISKIP;
+                myLeds->setArmState(true);
+            }
+ 
+GoBase::~GoBase()
+{
+    myLeds->setArmState(false);
 }
