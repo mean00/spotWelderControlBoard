@@ -15,6 +15,7 @@ bool GoPedal::start()
 
 bool GoPedal::triggered()
 {
+    detectConnection(); // refresh
     bool detected=_pedal.pushed();
     return detected;
 }
