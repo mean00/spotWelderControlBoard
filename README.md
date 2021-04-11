@@ -16,8 +16,9 @@ Small demo video
 Pics
 -----
 
-![screenshot](web/welder_casing.jpg?raw=true "front")
-![screenshot](web/welder_pcb.jpg?raw=true "front")
+![screenshot](web/welder_casing.jpg?raw=true "top")
+![screenshot](web/welder_pcb.jpg?raw=true "pcb")
+![screenshot](web/redBooard.jpg?raw=true "red")
 
  Shopping list (~ 10 $ )
  -----
