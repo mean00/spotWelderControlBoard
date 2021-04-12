@@ -89,6 +89,17 @@ void GoBase::animate()
 }
 Navigate *GoBase::handleEvent(Event evt,bool &subMenu)
 {
+    if( getCurrentVbat()< MIN_VBAT)
+    {
+        myScreen->clear();
+        myScreen->print("Low Volt",8,40);
+        myScreen->update();
+        errorBuzz();
+        errorBuzz();
+        subMenu=false;
+        return _parent;
+    }
+    
     switch(evt)
     {
         case Navigate::E_PUSH:

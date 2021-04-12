@@ -20,3 +20,5 @@
 #define ROTARY_LEFT  PA10
 #define ROTARY_RIGHT PA9
 #define ROTARY_PUSH  PA8
+
+#define MIN_VBAT 11. // 11 v minimum !
