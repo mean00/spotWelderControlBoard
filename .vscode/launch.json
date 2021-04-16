@@ -1,0 +1,37 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "BMP (gdb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "MIDebuggerPath": "/home/fx/Arduino_stm32/arm-none-eabi-gcc/download/gcc-arm-none-eabi-8.2.1-1.7/bin/arm-none-eabi-gdb-py",
+            "targetArchitecture": "arm",
+            "program": "${workspaceFolder}/build/spotWelderSTM32F103_M.elf",
+            "logging": {
+                "engineLogging": true
+            },
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/build/",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "customLaunchSetupCommands": [
+
+                    { "text" : "cd ${workspaceFolder}/build"},
+                    { "text" : "target extended-remote /dev/ttyBmpGdb"},
+                    { "text" : "monitor swdp_scan"},
+                    { "text" : "attach 1"},
+                    { "text" : "file spotWelderSTM32F103_M.elf"},                    
+                    { "text" : "load"},
+                    { "text" : "compare-sections"},
+                    { "text" : "set confirm off"},
+                    { "text" : "b MainTask"},
+            ],
+        },      
+    ]
+}
