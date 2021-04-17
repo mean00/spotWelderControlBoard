@@ -183,7 +183,7 @@ void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource
     
     myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
     sprintf(st,"%02.1fV",getCurrentVbat());
-    myOLED->print(2,TEXTOFFSET+TEXTHEIGHT*2+TEXTHEIGHT,st);    
+    myOLED->print(10,TEXTOFFSET+TEXTHEIGHT*2+TEXTHEIGHT+1,st);    
     const char *lb;    
     switch(triggerType)
     {
@@ -197,7 +197,8 @@ void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource
     switch(sel)
     {
         case   Welder::Duration:     
-                myRoundSquare(2,2,56,46);
+                myRoundSquare(0,  12,
+                              56, 32);
                 break;
         case   Welder::Trigger:     setSelection(1);break;
         case   Welder::Settings:    setSelection(2);break;
