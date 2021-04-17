@@ -157,7 +157,7 @@ void Screen1306::setText(int dex, const char *txt)
 void Screen1306::setSelection(int dex)
 {
      myRoundSquare(58,TEXTHEIGHT*dex-TEXTBORDER+BORDEROFFSET,
-                          62,TEXTHEIGHT+2*TEXTBORDER-1
+                          62,TEXTHEIGHT+2*TEXTBORDER-2
                           );
 }
 /**
@@ -183,7 +183,7 @@ void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource
     
     myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
     sprintf(st,"%02.1fV",getCurrentVbat());
-    myOLED->print(2,63,st);    
+    myOLED->print(2,TEXTOFFSET+TEXTHEIGHT*2+TEXTHEIGHT,st);    
     const char *lb;    
     switch(triggerType)
     {
@@ -192,7 +192,7 @@ void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource
     }
     setText(0,"GO!");
     setText(1,lb);
-    setText(2,"Setting");
+    setText(2,"Settng");
 
     switch(sel)
     {

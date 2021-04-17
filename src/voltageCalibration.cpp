@@ -32,7 +32,7 @@ void Calibration::redraw()
     char tmp[16];
     sprintf(tmp,"%02.1f",v);    
     myScreen->clear();
-    myScreen->print("Adjust voltage",2,20);        
+    myScreen->print("Adjust volt",2,20);        
     myScreen->printBig(tmp,4,60);
     myScreen->update();
 }
