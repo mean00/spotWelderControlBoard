@@ -110,7 +110,7 @@ void Rotary::interruptPush()
     {
         return;
     }
-    _lastPush=now;
+    _lastPush=now&ROUNDUP;
     this->_pushed++;
 }
 

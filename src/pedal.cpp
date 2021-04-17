@@ -49,7 +49,7 @@ void Pedal::interrupt()
     {
         return;
     }
-    _lastPush=now;
+    _lastPush=now&ROUNDUP;
     detachInterrupt(_pin);
     this->_pushed=1;
 }
