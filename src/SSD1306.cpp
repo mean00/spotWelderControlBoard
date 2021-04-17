@@ -14,7 +14,7 @@
 #include "screen.h"
 //#include "oled/fonts/Fonts/FreeSansBold9pt7b.h"
 #include "assets/fonts/Fonts/FreeSans9pt7b.h"
-#include "assets/fonts/Fonts/FreeSansBold24pt7b.h"
+#include "assets/fonts/Fonts/FreeSansBold20pt7b.h"
 
 extern float getCurrentVbat();
 extern "C" unsigned char MediumNumbers[];
@@ -52,7 +52,7 @@ public:
             
             myWire->begin();
             myOLED=new  OLED_stm32duino(*myWire, SCREEN_RESET);
-            myOLED->setFontFamily(&FreeSans9pt7b,&FreeSansBold24pt7b,&FreeSansBold24pt7b);            
+            myOLED->setFontFamily(&FreeSans9pt7b,&FreeSansBold20pt7b,&FreeSansBold20pt7b);            
             myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
             myOLED->begin();     
             
@@ -224,7 +224,7 @@ void Screen1306::redrawArmScreen( int count, Welder::TriggerSource triggerType, 
         myOLED->invertText(false);
     }
     sprintf(st,"%02d",durationMs);
-    myOLED->print(64,40,st);
+    myOLED->print(64,32,st);
     
     myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
     const char *lb;    
