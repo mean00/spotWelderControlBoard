@@ -12,8 +12,14 @@
 #include "printf.h"
 #include "dso_debug.h"
 #include "screen.h"
+
+#define MKFONT(x) "assets/fonts/" #x ".h"
+
+#define MEDFONT FontsFree_Net_Nurom_Bold9pt7b
+
 //#include "oled/fonts/Fonts/FreeSansBold9pt7b.h"
 #include "assets/fonts/Fonts/FreeSans9pt7b.h"
+#include "assets/fonts/Fonts/FontsFree_Net_Nurom_Bold9pt7b.h"
 #include "assets/fonts/Fonts/FreeSansBold20pt7b.h"
 
 extern float getCurrentVbat();
@@ -52,7 +58,7 @@ public:
             
             myWire->begin();
             myOLED=new  OLED_stm32duino(*myWire, SCREEN_RESET);
-            myOLED->setFontFamily(&FreeSans9pt7b,&FreeSansBold20pt7b,&FreeSansBold20pt7b);            
+            myOLED->setFontFamily(&MEDFONT,&FreeSansBold20pt7b,&FreeSansBold20pt7b);            
             myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
             myOLED->begin();     
             
