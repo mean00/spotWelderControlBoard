@@ -50,8 +50,9 @@ void GoBase::armingBuzz()
  */
 void GoBase::pulseBuzz()
 {
-    
-   
+    myScreen->clear();
+    myScreen->print("PULSE",20,32+10);
+    myScreen->update();
     for(int i=0;i<3;i++)
     {
         bz.buzz(3*1000,100);
