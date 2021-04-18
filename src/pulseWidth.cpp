@@ -1,7 +1,7 @@
 #include "navigate.h"
 #include "dso_eeprom.h"
 #include "pulseWidth.h"
-
+#include "pinMapping.h"
 extern int pulseWidth;
 /**
  * 
@@ -42,8 +42,8 @@ void  PulseWidth::handleRotary(int inc)
 {
     int tmp=_pulseWidth;
     tmp+=inc;
-    if(tmp<5) tmp=5;
-    if(tmp>30) tmp=30;
+    if(tmp<MIN_PULSE) tmp=MIN_PULSE;
+    if(tmp>MAX_PULSE) tmp=MAX_PULSE;
     _pulseWidth=tmp;
     redraw();
 }

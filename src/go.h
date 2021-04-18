@@ -36,6 +36,7 @@ public:
     virtual bool        contact()=0;
     virtual bool        start()=0;
     virtual void        redraw();
+    virtual bool        endPulse();
 
 protected:
     void        animate();

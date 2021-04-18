@@ -49,12 +49,7 @@ void   GoPedal::automaton()
             _state=Pulsed;
             break;
         case  Pulsed:
-            if(detectConnection())
-            {
-                myScreen->disconnectMessage();
-                return;
-            }
-            goToStart();           
+            if(endPulse()) return;
             break;
         case WaitingToRearm:
             xDelay(200);

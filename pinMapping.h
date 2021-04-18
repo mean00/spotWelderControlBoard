@@ -21,4 +21,6 @@
 #define ROTARY_RIGHT PA9
 #define ROTARY_PUSH  PA8
 
-#define MIN_VBAT 11. // 11 v minimum !
+#define MIN_VBAT     11. // 11 v minimum !
+#define MAX_PULSE    40 // in ms
+#define MIN_PULSE    5  // in ms

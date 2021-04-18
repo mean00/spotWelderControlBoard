@@ -45,6 +45,21 @@ void GoBase::armingBuzz()
     bz.buzz(1*1000,300);
    
 }
+
+bool GoBase::endPulse()
+{
+    if(detectConnection())
+    {
+        myScreen->disconnectMessage();
+        return true;
+    }
+
+    myScreen->clear();
+    xDelay(1000); // Let voltage recover
+    goToStart();           
+    return false;
+}
+
 /**
  * 
  */
