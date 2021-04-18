@@ -5,3 +5,14 @@
 #include "generated/c3_compressed.h"
 #include "generated/c4_compressed.h"
 #include "generated/splash_compressed.h"
+
+
+#include "generated/sp0001_compressed.h"
+#include "generated/sp0002_compressed.h"
+#include "generated/sp0003_compressed.h"
+#include "generated/sp0004_compressed.h"
+#include "generated/sp0005_compressed.h"
+#include "generated/sp0006_compressed.h"
+#include "generated/sp0007_compressed.h"
+#include "generated/sp0008_compressed.h"
+#include "generated/sp0009_compressed.h"

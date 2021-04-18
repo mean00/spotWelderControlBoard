@@ -6,7 +6,8 @@ extern bool detectConnection();
 extern int pulseWidth;
 
 
-const uint8_t *animation[NB_ANIMATION_STEP]={c4,c3,c2,c1,c1,c2,c3,c4};
+const uint8_t *animation[NB_ANIMATION_STEP]={sp0001,sp0002,sp0003,sp0004,
+sp0005,sp0006,sp0007,sp0008,sp0009};
 /*
   int a=0;
   while(1)
@@ -98,9 +99,12 @@ void GoBase::animate()
         _animationSkip=NB_ANIMATISKIP;
         myScreen->clear();
         myScreen->redrawArmScreen( -1,  _triggerSource, pulseWidth);
-        myScreen->rleDisplay(c1_width,c1_height,1,1,animation[_animationStep]);
+        myScreen->rleDisplay(sp0002_width,sp0002_height-1,
+                             2,2,animation[_animationStep]
+                            );
         myScreen->update();
-        _animationStep=(_animationStep+1)%NB_ANIMATION_STEP;
+        _animationStep=(_animationStep+1);
+        if(_animationStep>=NB_ANIMATION_STEP) _animationStep=0;
     }
 }
 Navigate *GoBase::handleEvent(Event evt,bool &subMenu)

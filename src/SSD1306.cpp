@@ -50,7 +50,8 @@ public:
             sw->end();
             delete sw;
 #endif            
-            TwoWire *tw=new TwoWire(1,0,800*1000);
+            TwoWire *tw;
+            tw=new TwoWire(1,0,800*1000);
             myWire=tw;
 #endif            
             
@@ -215,6 +216,7 @@ void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource
  * @param triggerType
  * @param durationMs
  */
+#define RIGHT_SIDE 68
 void Screen1306::redrawArmScreen( int count, Welder::TriggerSource triggerType, int durationMs)
 {
     char st[5];
@@ -231,7 +233,7 @@ void Screen1306::redrawArmScreen( int count, Welder::TriggerSource triggerType, 
         myOLED->invertText(false);
     }
     sprintf(st,"%02d",durationMs);
-    myOLED->print(64,32,st);
+    myOLED->print(RIGHT_SIDE,32,st);
     
     myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
     const char *lb;    
@@ -240,10 +242,10 @@ void Screen1306::redrawArmScreen( int count, Welder::TriggerSource triggerType, 
         case Welder::Auto: lb="Auto";break;
         case Welder::Pedal: lb="Pedal";break;
     }
-    myOLED->print(64,48,lb);
+    myOLED->print(RIGHT_SIDE,48,lb);
     
-    sprintf(st,"%02.1fV",getCurrentVbat());
-    myOLED->print(64,64,st);    
+    sprintf(st,"%02.1fv",getCurrentVbat());
+    myOLED->print(RIGHT_SIDE,64,st);    
 }
 
 

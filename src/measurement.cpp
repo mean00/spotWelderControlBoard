@@ -32,7 +32,7 @@ void Measurement::run()
   {   
       int nb=64;
       uint16_t *data;
-      _adc->timeSample(nb, &data,400);
+      _adc->timeSample(nb, &data,400); //160ms
       int vbat=0, detect=0;
       
       for(int i=0;i<nb/2;i++)
@@ -50,11 +50,11 @@ void Measurement::run()
       if(skip>10)
       {
         skip=0;
-        Logger("DTETC=%d",_valueD);  
+        Logger("DETD=%d",_valueD);  
       }
       //;
       _avgDetect[_dex]=_valueD;
-      _dex=(_dex+1)%NB_DETECT;
+      _dex=(_dex+1)%NB_DETECT; // 0.5s
       int ok=0,ko=0;
       for(int i=0;i<NB_DETECT;i++)
       {
