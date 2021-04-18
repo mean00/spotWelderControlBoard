@@ -155,10 +155,12 @@ void Screen1306::setText(int dex, const char *txt)
  * 
  * @param dex
  */
+#define RIGHT_SIDE 68
 void Screen1306::setSelection(int dex)
 {
-     myRoundSquare(58,TEXTHEIGHT*dex-TEXTBORDER+BORDEROFFSET,
-                          62,TEXTHEIGHT+2*TEXTBORDER-2
+     myRoundSquare(       128-RIGHT_SIDE-2,
+                          TEXTHEIGHT*dex-TEXTBORDER+BORDEROFFSET,
+                          66,TEXTHEIGHT+2*TEXTBORDER-2
                           );
 }
 /**
@@ -168,6 +170,7 @@ void Screen1306::setSelection(int dex)
  * @param triggerType
  * @param durationMs
  */
+
 void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource triggerType, int durationMs,bool contact)
 {
     char st[5];
@@ -184,7 +187,7 @@ void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource
     
     myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
     sprintf(st,"%02.1fV",getCurrentVbat());
-    myOLED->print(10,TEXTOFFSET+TEXTHEIGHT*2+TEXTHEIGHT+1,st);    
+    myOLED->print(2,TEXTOFFSET+TEXTHEIGHT*2+TEXTHEIGHT+1,st);    
     const char *lb;    
     switch(triggerType)
     {
@@ -216,7 +219,7 @@ void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource
  * @param triggerType
  * @param durationMs
  */
-#define RIGHT_SIDE 68
+
 void Screen1306::redrawArmScreen( int count, Welder::TriggerSource triggerType, int durationMs)
 {
     char st[5];
