@@ -1,4 +1,5 @@
 #pragma once
+#include "lnTimer.h"
 /**
  * 
  * @param timer
@@ -13,7 +14,7 @@ public:
     void interrupt();
 protected:
     
-    HardwareTimer *_timer;
+    lnTimer         *_timer;
     int            _channel;
     int            _pin;
     

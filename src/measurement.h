@@ -1,5 +1,4 @@
-#include "adc/simpleADC.h"
-#include "MapleFreeRTOS1000_pp.h"
+#include "lnADC.h"
 /**
  */
 #define NB_DETECT 4
@@ -15,7 +14,7 @@ class Measurement: public xTask
     protected:
                      int  _pinV,_pinD;
                      int  _valueV,_valueD;
-                     simpleAdc *_adc;
+                     lnSimpleADC *_adc;
                      float     _vcc;
                      int       _avgDetect[NB_DETECT];
                      int       _dex;

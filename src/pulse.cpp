@@ -20,12 +20,10 @@
     {
         _pin=pin;
         digitalWrite(_pin,0);
-        pinMode(_pin,OUTPUT);        
-        _timer=new HardwareTimer(timer);
-        _timer->init();
-        _timer->pause();
-        _timer->setPeriod(CYCLE_IN_MS*1000); // CYCLE_IN_MS ms end to end
-        _channel=channel;
+        lnPinMode(_pin,lnOUTPUT);        
+        _timer=new lnTimer(timer,channel);
+        _timer->setTimerFrequency(1000/CYCLE_IN_MS); // CYCLE_IN_MS ms end to end
+        _channel=channel;        
     }
 
 /**
@@ -36,21 +34,13 @@ void Pulse::pulse(int durationMs)
 {
     if(durationMs>=(CYCLE_IN_MS*3/4))
         xAssert(0);
-    _timer->pause();
-    int ovf=_timer->getOverflow();
-   
-    int count=(durationMs*ovf)/CYCLE_IN_MS;
-    
+
     noInterrupts();
-    _timer->setCompare(_channel,count);
-    _timer->refresh();
-    pinMode(_pin,PWM);
-    _timer->resume();
+    _timer->singleShot(durationMs);
     interrupts();
     xDelay((CYCLE_IN_MS*3)/4);
-    _timer->pause();
     digitalWrite(_pin,0);
-    pinMode(_pin,OUTPUT);
+    lnPinMode(_pin,lnOUTPUT);
 }
 /**
  * 

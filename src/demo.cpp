@@ -2,13 +2,10 @@
 //
 //
 
-#include <Wire.h>
-#include "adc/simpleADC.h"
-#include "MapleFreeRTOS1000_pp.h"
-#include "rotary.h"
+#include "lnArduino.h"
+#include "libraries/RotaryEncoder/RotaryEncoder.h"
 #include "pinMapping.h"
-#include "printf.h"
-#include "dso_debug.h"
+#include "lnArduino.h"
 #include "dso_eeprom.h"
 #include "measurement.h"
 #include "navigate.h"
@@ -29,8 +26,8 @@ extern Navigate * spawnMainMenu(void);
 extern void bench();
 
 MyScreen *myScreen;
-simpleAdc *adc;
-Rotary *rotary;
+lnSimpleADC *adc;
+lnRotary *rotary;
 Pedal *myPedal;
 WelderLeds *myLeds;
 uint8_t ucHeap[configTOTAL_HEAP_SIZE];
@@ -49,13 +46,7 @@ void setup()
 {
   // turn off gate asap
   digitalWrite(PIN_GATE,0);
-  pinMode(PIN_GATE,OUTPUT);  
-  afio_cfg_debug_ports( AFIO_DEBUG_SW_ONLY); // Unlock PB3 & PB4
-  Serial.end();
-  // shutdown usb & spi
-  rcc_clk_disable(RCC_SPI1);
-  rcc_clk_disable(RCC_SPI2);
-  rcc_clk_disable(RCC_USB);
+  lnPinMode(PIN_GATE,lnOUTPUT);  
   xTaskCreate( MainTask, "MainTask", 350, NULL, DSO_MAIN_TASK_PRIORITY, NULL );   
   vTaskStartScheduler();      
 }
@@ -75,7 +66,7 @@ void MainTask(void *)
   
   myLeds=new WelderLeds();
   digitalWrite(PIN_GATE,0);
-  pinMode(PIN_GATE,OUTPUT);   
+  lnPinMode(PIN_GATE,lnOUTPUT);   
   
   
   if(!DSOEeprom::readPulse(pulseWidth))
@@ -98,8 +89,8 @@ void MainTask(void *)
   myPedal=new Pedal(PIN_PEDAL);
   
   
-  rotary=new Rotary(ROTARY_LEFT,ROTARY_RIGHT,ROTARY_PUSH);
-  rotary->setup();
+  rotary=new lnRotary(ROTARY_PUSH, ROTARY_LEFT,ROTARY_RIGHT);
+  rotary->start();
   
   myScreen=createScreen();
   interrupts();
@@ -123,19 +114,22 @@ void MainTask(void *)
   while(1)
   {
       bool dirty=false;
-      int inc=rotary->getRotaryValue();
-      if(inc)
+      lnRotary::EVENTS ev=rotary->readEvent();
+      if(ev & lnRotary::ROTARY_CHANGE)
       {
-            currentMenu->handleRotary(inc);
-            dirty=true;
+        int inc=rotary->getCount();
+        if(inc)
+        {
+              currentMenu->handleRotary(inc);
+              dirty=true;
+        }
       }
       if(!dirty)
       {
           Navigate::Event event;
-          bool subMenu=false;
-          bool push=(int)rotary->getPush();
+          bool subMenu=false;          
           Navigate *z;
-          if(push)
+          if(ev & lnRotary::SHORT_PRESS)
           {
               event=Navigate::E_PUSH;
           }else
@@ -157,8 +151,7 @@ void MainTask(void *)
                }
                currentMenu=z;
                // Purge pending push button if any
-               rotary->getPush();
-                   
+               rotary->readEvent();                   
            }
       }
      xDelay(20);

@@ -1,8 +1,8 @@
 
 
-
+#include "lnArduino.h"
 #include "measurement.h"
-#include "dso_debug.h"
+
 #define DETECT_THRESHOLD 1000
 /**
  * 
@@ -12,13 +12,14 @@
 Measurement::Measurement(int pinV,int pinD) : xTask("MEASURE",  4, 300)
 {
 
-  pinMode(pinV,INPUT_ANALOG);
-  pinMode(pinD,INPUT_ANALOG);
-  _adc=new simpleAdc(pinV);
-  int pins[2]={pinV,pinD};
-  _adc->setPins(2,pins);
+  lnPinMode(pinV,lnADC_MODE);
+  lnPinMode(pinD,lnADC_MODE);
+  _adc=new lnSimpleADC(0,pinV);
   _vcc=_adc->getVcc();  
-  for(int i=0;i<NB_DETECT;i++)  _avgDetect[i]=0;
+  _pinV=pinV;
+  _pinD=pinD;
+  for(int i=0;i<NB_DETECT;i++)  
+      _avgDetect[i]=0;
   _dex=0;
   _detected=false;
 }
@@ -28,11 +29,13 @@ Measurement::Measurement(int pinV,int pinD) : xTask("MEASURE",  4, 300)
 int skip=0;
 void Measurement::run()
 {
+  lnPin pins[2]={_pinV,_pinD};
+  int   out[128];
   while(1)
   {   
-      int nb=64;
+      int nb=2;
       uint16_t *data;
-      _adc->timeSample(nb, &data,400); //160ms
+      xAssert(_adc->multiRead(2,pins,out));
       int vbat=0, detect=0;
       
       for(int i=0;i<nb/2;i++)

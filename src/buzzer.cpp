@@ -1,7 +1,8 @@
-#include "Arduino.h"
+#include "lnArduino.h"
+#include "lnTimer.h"
 #include "buzzer.h"
-#include "MapleFreeRTOS1000_pp.h"
-#include "myPwm.h"
+
+
 /**
  * 
  * @param pin
@@ -9,7 +10,7 @@
 Buzzer::Buzzer(int pin)
 {
     _pin=pin;
-    pinMode(_pin,OUTPUT);
+    lnPinMode(_pin,lnOUTPUT);
     digitalWrite(_pin,0);
 }
 /**
@@ -27,29 +28,16 @@ Buzzer::~Buzzer()
  */
 bool Buzzer::buzz(int frequency, int durationMs)
 {   
-#if 0
-    int halfCyle=500000/frequency; // number of us
-    if(!halfCyle) halfCyle=1;
-    int m=millis();
-    m&=0xffff;
-    while(1)
-    {
-        digitalWrite(_pin,1);
-        delayMicroseconds(halfCyle);
-        digitalWrite(_pin,0);
-        delayMicroseconds(halfCyle);
-        int t=millis()&0xffff;
-        if(t<m) t+=0x10000;
-        if((t-m)>durationMs)
-            return true;
-    }
-#else
-     pinMode(_pin,PWM);
-     myPwm(_pin,frequency);
-     pwmRestart(_pin);
+     lnPinMode(_pin,lnPWM);
+     
+     lnTimer pwm(_pin);
+     pwm.setTimerFrequency(frequency);
+     pwm.setPwmMode(512);
+     pwm.enable();
      xDelay(durationMs);
-     pwmWrite(_pin,0);
-#endif
+     pwm.setPwmMode(0);
+     pwm.disable();
+     
     return true;
 }
 

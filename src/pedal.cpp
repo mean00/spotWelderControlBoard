@@ -1,14 +1,11 @@
 
-
-#include <Wire.h>
-#include "MapleFreeRTOS1000_pp.h"
+#include "lnArduino.h"
 #include "pedal.h"
-#include "dso_debug.h"
 
 
 #define THRESHOLD 200 // in ms
 
-static void _myInterruptPedal(void *a)
+static void _myInterruptPedal(lnPin pin,void *a)
 {
     Pedal *r=(Pedal *)a;
     r->interrupt();
@@ -23,7 +20,7 @@ Pedal::Pedal(int pin)
     _state = 0;
     _pushed=0;
     _lastPush=0;
-    pinMode(_pin,INPUT);
+    lnPinMode(_pin,lnFLOATING);
 }
 
 /**
@@ -32,7 +29,7 @@ Pedal::Pedal(int pin)
  */
 bool Pedal::arm()
 {
-    attachInterrupt(_pin,_myInterruptPedal,this,RISING ); //void attachInterrupt(uint8 pin, voidArgumentFuncPtr handler, void *arg, ExtIntTriggerMode mode) {
+    lnExtiAttachInterrupt(_pin, LN_EDGE_RISING, _myInterruptPedal, this);
     return true;
 }
 /**

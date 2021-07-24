@@ -1,12 +1,8 @@
 
 #pragma once
 
-
-#include <Wire.h>
+#include "lnArduino.h"
 #include "screen.h"
-#include "MapleFreeRTOS1000_pp.h"
-#include "printf.h"
-#include "dso_debug.h"
 #include "navigate.h"
 #include "vector"
 
