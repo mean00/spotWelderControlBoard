@@ -3,14 +3,9 @@
 
 #define HWIRE I2C1
 
-#include "Wire.h"
-#include "SoftWire.h"
-#include "adc/simpleADC.h"
-#include "ssd1306_i2c_f1.h"
-#include "MapleFreeRTOS1000_pp.h"
+#include "lnArduino.h"
+#include "ssd1306_i2c_lnGd32vf103.h"
 #include "pinMapping.h"
-#include "printf.h"
-#include "dso_debug.h"
 #include "screen.h"
 
 #define MKFONT(x) "assets/fonts/" #x ".h"
@@ -31,34 +26,15 @@ extern "C" unsigned char BigNumbers[];
 /**
  * 
  */
+#define SPEED (400*1000)
 class Screen1306 : public MyScreen
 {
 public:
         Screen1306()
         {            
-#if 0
-           SoftWire *sw=new SoftWire(SCREEN_SCL,SCREEN_DATA);
-           // pinMode(SCREEN_SCL, OUTPUT);
-            myWire=sw;
-#else
-#if 1
-            // Bug somwhere when using hw i2c
-            // need to init it first as sw, then switch to hw
-            // missing pinmode ?
-            SoftWire *sw=new SoftWire(SCREEN_SCL,SCREEN_DATA);
-            sw->begin();
-            sw->end();
-            delete sw;
-#endif            
-            TwoWire *tw;
-            tw=new TwoWire(1,0,800*1000);
-            myWire=tw;
-#endif            
-            
-            
-            
-            myWire->begin();
-            myOLED=new  OLED_stm32duino(*myWire, SCREEN_RESET);
+            lnI2C *i2c=new lnI2C(0,SPEED);
+            i2c->begin(0x3c);
+            myOLED=new OLED_lnGd32( *i2c, -1);
             myOLED->setFontFamily(&MEDFONT,&FreeSansBold20pt7b,&FreeSansBold20pt7b);            
             myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
             myOLED->begin();     
@@ -104,8 +80,7 @@ protected:
         void setSelection(int dex);
         void myRoundSquare(int x, int y, int w, int h);
 protected:        
-        OLED_stm32duino  *myOLED;
-        WireBase         *myWire;
+        OLEDCore         *myOLED;
 };
 /**
  * 

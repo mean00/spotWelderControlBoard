@@ -22,6 +22,7 @@ Measurement::Measurement(int pinV,int pinD) : xTask("MEASURE",  4, 300)
       _avgDetect[i]=0;
   _dex=0;
   _detected=false;
+  start();
 }
 /**
  * 
@@ -35,7 +36,7 @@ void Measurement::run()
   {   
       int nb=2;
       uint16_t *data;
-      xAssert(_adc->multiRead(2,pins,out));
+      xAssert(_adc->multiRead(1,pins,out));
       int vbat=0, detect=0;
       
       for(int i=0;i<nb/2;i++)

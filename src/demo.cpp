@@ -20,7 +20,6 @@
 
 extern void pulseDemo();
 
-void MainTask( void *a );
 extern Navigate * spawnMainMenu(void);
 #define DSO_MAIN_TASK_PRIORITY 10
 extern void bench();
@@ -30,7 +29,6 @@ lnSimpleADC *adc;
 lnRotary *rotary;
 Pedal *myPedal;
 WelderLeds *myLeds;
-uint8_t ucHeap[configTOTAL_HEAP_SIZE];
 
 int pulseWidth=5;
 int voltageOffset=1000;
@@ -44,25 +42,37 @@ int getVBat10(int offset);
  */
 void setup()
 {
-  // turn off gate asap
   digitalWrite(PIN_GATE,0);
-  lnPinMode(PIN_GATE,lnOUTPUT);  
-  xTaskCreate( MainTask, "MainTask", 350, NULL, DSO_MAIN_TASK_PRIORITY, NULL );   
-  vTaskStartScheduler();      
+  lnPinMode(PIN_GATE,lnOUTPUT);   
 }
 
-void loop()
-{
-
-}
 /**
  * 
  * @param 
  */
-void MainTask(void *)
-{
-  LoggerInit();
+void loop()
+{  
+  Logger("Initializing screen\n");
+    
+  myScreen=createScreen();
+  
+  
+  //bench();
+  
+  myScreen->clear();
+  myScreen->rleDisplay(splash_width, splash_height, 2 , 6, splash);
+  
+  myScreen->print("Spot",70,20);
+  myScreen->print("Weldr",70,40);
+  myScreen->print(WELDER_VERSION,70,60);
+  myScreen->update();
+  
+  Logger("Splash\n");
+    
+    
+   // turn off gate asap
   Logger("Initializing eeprom\n");
+  
   
   myLeds=new WelderLeds();
   digitalWrite(PIN_GATE,0);
@@ -92,20 +102,8 @@ void MainTask(void *)
   rotary=new lnRotary(ROTARY_PUSH, ROTARY_LEFT,ROTARY_RIGHT);
   rotary->start();
   
-  myScreen=createScreen();
-  interrupts();
+  Logger("Initializing screen\n");
   
-  //bench();
-  
-  myScreen->clear();
-  myScreen->rleDisplay(splash_width, splash_height, 2 , 6, splash);
-  
-  myScreen->print("Spot",70,20);
-  myScreen->print("Weldr",70,40);
-  myScreen->print(WELDER_VERSION,70,60);
-  myScreen->update();
-  
-  Logger("Splash\n");
   
   xDelay(1000);
   
