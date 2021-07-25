@@ -17,9 +17,10 @@
 #define BUZZER_GATE  PB0 //t3c3
 
 
-#define ROTARY_LEFT  PA10
-#define ROTARY_RIGHT PA9
-#define ROTARY_PUSH  PA8
+#define ROTARY_LEFT  PB13
+#define ROTARY_RIGHT PB12
+#define ROTARY_PUSH  PB14
+
 
 #define MIN_VBAT     11. // 11 v minimum !
 #define MAX_PULSE    40 // in ms

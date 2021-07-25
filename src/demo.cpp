@@ -52,11 +52,13 @@ void setup()
  */
 void loop()
 {  
+  digitalWrite(PIN_GATE,0);
+  lnPinMode(PIN_GATE,lnOUTPUT);   
+  
   Logger("Initializing screen\n");
     
   myScreen=createScreen();
-  
-  
+    
   //bench();
   
   myScreen->clear();
@@ -75,9 +77,6 @@ void loop()
   
   
   myLeds=new WelderLeds();
-  digitalWrite(PIN_GATE,0);
-  lnPinMode(PIN_GATE,lnOUTPUT);   
-  
   
   if(!DSOEeprom::readPulse(pulseWidth))
   {
@@ -95,16 +94,14 @@ void loop()
   triggerSource=(Welder::TriggerSource )ts;
   measure=new Measurement(PIN_VBAT,PIN_DETECT);
   
-  
+  Logger("Initializing Pedal\n");
   myPedal=new Pedal(PIN_PEDAL);
   
-  
+  Logger("Initializing Rotary\n");
   rotary=new lnRotary(ROTARY_PUSH, ROTARY_LEFT,ROTARY_RIGHT);
   rotary->start();
-  
-  Logger("Initializing screen\n");
-  
-  
+   
+  Logger("Wait\n");
   xDelay(1000);
   
   Navigate *currentMenu= spawnMainMenu();

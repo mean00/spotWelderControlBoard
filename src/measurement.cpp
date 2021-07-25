@@ -54,7 +54,8 @@ void Measurement::run()
       if(skip>10)
       {
         skip=0;
-        Logger("DETD=%d",_valueD);  
+        Logger("DETD=%d ",_valueD);  
+        delay(100);
       }
       //;
       _avgDetect[_dex]=_valueD;
