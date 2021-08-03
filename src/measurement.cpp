@@ -14,14 +14,18 @@ Measurement::Measurement(int pinV,int pinD) : xTask("MEASURE",  4, 300)
 
   lnPinMode(pinV,lnADC_MODE);
   lnPinMode(pinD,lnADC_MODE);
-  _adc=new lnSimpleADC(0,pinV);
-  _vcc=_adc->getVcc();  
+  _adc=new lnTimingAdc(0);
+  
   _pinV=pinV;
   _pinD=pinD;
   for(int i=0;i<NB_DETECT;i++)  
       _avgDetect[i]=0;
   _dex=0;
   _detected=false;
+  _pins[0]=_pinV;
+  _pins[1]=_pinD;
+  _adc->setSource(3,3,1000,2,_pins);
+  _vcc=_adc->getVcc();  
   start();
 }
 /**
@@ -30,23 +34,22 @@ Measurement::Measurement(int pinV,int pinD) : xTask("MEASURE",  4, 300)
 int skip=0;
 void Measurement::run()
 {
-  lnPin pins[2]={_pinV,_pinD};
-  int   out[128];
+  
+  uint16_t   out[48];
   while(1)
   {   
-      int nb=2;
-      uint16_t *data;
-      xAssert(_adc->multiRead(1,pins,out));
+      int nb=32;
+      xAssert(_adc->multiRead(nb,out));
       int vbat=0, detect=0;
-      
-      for(int i=0;i<nb/2;i++)
+      uint16_t *data=out;
+      for(int i=0;i<nb;i++)
       {
           vbat+=data[0];
           detect+=data[1];
           data+=2;
       }
-      vbat=(vbat*2)/nb;
-      detect=(detect*2)/nb;
+      vbat=(vbat)/nb;
+      detect=(detect)/nb;
       _valueV=vbat;
       _valueD=detect;
       // Detect..
