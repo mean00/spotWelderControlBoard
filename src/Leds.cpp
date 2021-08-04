@@ -20,9 +20,13 @@ WelderLeds::WelderLeds()
     _ws=(void *)w;
     w->begin();
     w->setGlobalBrightness(127);
-    w->setLedColor(0,0,0,0);
-    w->setLedColor(1,0,0,0);
-    w->setLedColor(2,0,0,0);
+    w->setLedColor(0,255,0,0);
+    w->setLedColor(1,0,255,0);
+    w->setLedColor(2,0,0,255);
+    w->update();
+    delay(500);
+    for(int i=0;i<3;i++)
+        w->setLedColor(i,0,0,0);
     w->update();
 }
 /**

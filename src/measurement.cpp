@@ -25,7 +25,12 @@ Measurement::Measurement(int pinV,int pinD) : xTask("MEASURE",  4, 300)
   _pins[0]=_pinV;
   _pins[1]=_pinD;
   _adc->setSource(3,3,1000,2,_pins);
+#warning VREF seems unreliable
+#if 0
   _vcc=_adc->getVcc();  
+#else
+  _vcc=3300;  
+#endif
   start();
 }
 /**
@@ -35,7 +40,7 @@ int skip=0;
 void Measurement::run()
 {
   
-  uint16_t   out[48];
+  uint16_t   out[48*2];
   while(1)
   {   
       int nb=32;
