@@ -1,4 +1,6 @@
 
+/!\ there is a gd32 branch used for gd32 chip only /!\
+
 This is under development
 
 Description
