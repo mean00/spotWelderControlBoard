@@ -1,12 +1,11 @@
 
-This is under development
+This is the GD32 version of spotWelder
 
 Description
 -----
-This is a STM32F103 based replacement control board for the cheap red spot welder.
+This is a GD32F1/F3/VF103 based replacement control board for the cheap red spot welder.
 It completely replaces the original top board.
-It is written in c++/Arduino using Roger Clark Stm32duino + cmake build system + FreeRTOS.
-(Yes , it is overkill, but it's free, we have plenty of ram/flash so no need to be a cheap bastard here).
+It is written  using the lnArduino framework
 
 Small demo video
 -----
