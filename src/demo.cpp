@@ -77,21 +77,32 @@ void loop()
   
   
   myLeds=new WelderLeds();
-  
-  if(!DSOEeprom::readPulse(pulseWidth))
+  if(!DSOEeprom::init())
   {
-    Logger("Formating eeprom\n");    
+       DSOEeprom::format();
+  }
+  if(!DSOEeprom::readPulse(pulseWidth))
+  {   
     pulseWidth=5;
-    voltageOffset=1000;
-    DSOEeprom::format();
     DSOEeprom::writePulse(pulseWidth);
+  }
+  if(!DSOEeprom::readVoltageOffset(pulseWidth))
+  {   
+    voltageOffset=1000;
     DSOEeprom::writeVoltageOffset(voltageOffset);
-    DSOEeprom::writeTriggerSource(triggerSource);
-  }  
-  DSOEeprom::readVoltageOffset(voltageOffset);
-  int ts=(int)triggerSource;
-  DSOEeprom::readTriggerSource(ts);
-  triggerSource=(Welder::TriggerSource )ts;
+  }
+  int ts;
+  if(!DSOEeprom::readTriggerSource(ts))
+  {   
+    triggerSource=Welder::Auto;
+    DSOEeprom::writeTriggerSource((int)triggerSource);
+  }
+  else
+  {
+    triggerSource=(Welder::TriggerSource)(ts);
+  }
+  
+  
   measure=new Measurement(PIN_VBAT,PIN_DETECT);
   
   Logger("Initializing Pedal\n");

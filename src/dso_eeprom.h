@@ -7,6 +7,7 @@
 class DSOEeprom
 {
 public:
+        static bool init();
         static bool readPulse(int &p);
         static bool writePulse(int p);
         static bool readVoltageOffset(int &p);
@@ -15,6 +16,14 @@ public:
         static bool writeTriggerSource(int p);
         
         static bool format(); 
+        ~DSOEeprom()
+        {
+            
+        }
+        DSOEeprom()
+        {
+            
+        }
         
 protected:
         static bool writeVal(int index, int value);

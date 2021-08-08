@@ -13,7 +13,7 @@
 #define MEDFONT FontsFree_Net_Nurom_Bold9pt7b
 
 //#include "oled/fonts/Fonts/FreeSansBold9pt7b.h"
-#include "assets/fonts/Fonts/FreeSans9pt7b.h"
+//#include "assets/fonts/Fonts/FreeSans9pt7b.h"
 #include "assets/fonts/Fonts/FontsFree_Net_Nurom_Bold9pt7b.h"
 #include "assets/fonts/Fonts/FreeSansBold20pt7b.h"
 
