@@ -12,3 +12,6 @@ build*
 pyUsb/__pycache__/
 pyUsb/*.csv
 bins
+schematic/spotWelder/*cache*
+schematic/spotWelder/*rescue.*
+
