@@ -86,7 +86,7 @@ void loop()
     pulseWidth=5;
     DSOEeprom::writePulse(pulseWidth);
   }
-  if(!DSOEeprom::readVoltageOffset(pulseWidth))
+  if(!DSOEeprom::readVoltageOffset(voltageOffset))
   {   
     voltageOffset=1000;
     DSOEeprom::writeVoltageOffset(voltageOffset);
@@ -95,7 +95,8 @@ void loop()
   if(!DSOEeprom::readTriggerSource(ts))
   {   
     triggerSource=Welder::Auto;
-    DSOEeprom::writeTriggerSource((int)triggerSource);
+    ts=(int)triggerSource;
+    DSOEeprom::writeTriggerSource(ts);
   }
   else
   {
