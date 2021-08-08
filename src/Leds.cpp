@@ -18,16 +18,23 @@ WelderLeds::WelderLeds()
     
     WS2812B *w=new WS2812B(3,spi);
     _ws=(void *)w;
-    w->begin();
+    w->begin();    
     w->setGlobalBrightness(127);
-    w->setLedColor(0,255,0,0);
-    w->setLedColor(1,0,255,0);
-    w->setLedColor(2,0,0,255);
-    w->update();
-    delay(500);
-    for(int i=0;i<3;i++)
-        w->setLedColor(i,0,0,0);
-    w->update();
+//----    
+#define ZZ(x,y,z)        w->setLedColor(0,255*x,0,0); \
+    w->setLedColor(1,0,255*y,0); \
+    w->setLedColor(2,0,0,255*z); \
+    w->update(); \
+    delay(100);
+//----
+    ZZ(1,1,1);
+    ZZ(0,0,0);
+    ZZ(1,1,1);
+
+    ZZ(1,0,0);
+    ZZ(0,1,0);
+    ZZ(0,0,1);
+    ZZ(0,0,0);
 }
 /**
  * 

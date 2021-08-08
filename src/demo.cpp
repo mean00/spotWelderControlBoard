@@ -42,6 +42,9 @@ int getVBat10(int offset);
  */
 void setup()
 {
+   
+  LoggerChangeSerial(2);
+  Logger("Booting\n");
   digitalWrite(PIN_GATE,0);
   lnPinMode(PIN_GATE,lnOUTPUT);   
 }
