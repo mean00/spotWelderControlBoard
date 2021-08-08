@@ -195,23 +195,7 @@ Wire Wire Line
 Wire Wire Line
 	4850 4950 5000 4950
 Wire Wire Line
-	3100 4300 4750 4300
-Wire Wire Line
-	4750 4300 4750 4850
-Wire Wire Line
 	4750 4850 5000 4850
-Wire Wire Line
-	3100 4400 4300 4400
-Wire Wire Line
-	4300 4400 4300 5250
-Wire Wire Line
-	4300 5250 5000 5250
-Wire Wire Line
-	5000 5250 5000 5050
-Wire Wire Line
-	3100 4200 5850 4200
-Wire Wire Line
-	5850 4200 5850 4850
 Wire Wire Line
 	5850 4850 5600 4850
 $Comp
@@ -697,7 +681,7 @@ Wire Wire Line
 Text Notes 4850 3650 0    50   ~ 0
 Put near PA3 to avoid buzzer/I2C parasites
 $Comp
-L SSD1306-128x64_OLED:SSD1306 Brd?
+L spotWelder-rescue:SSD1306-SSD1306-128x64_OLED Brd?
 U 1 1 606A4189
 P 4050 1650
 F 0 "Brd?" V 4096 1372 50  0000 R CNN
@@ -821,4 +805,32 @@ Wire Wire Line
 Wire Wire Line
 	3500 5600 3500 6750
 Connection ~ 3500 6750
+Wire Wire Line
+	1800 4200 1700 4200
+Wire Wire Line
+	1700 4200 1700 5500
+Wire Wire Line
+	1700 5500 5000 5500
+Wire Wire Line
+	5000 5050 5000 5500
+Wire Wire Line
+	1800 4300 1750 4300
+Wire Wire Line
+	1750 4300 1750 5400
+Wire Wire Line
+	1750 5400 4750 5400
+Wire Wire Line
+	4750 5400 4750 4850
+Wire Wire Line
+	1800 4500 2700 4500
+Wire Wire Line
+	2700 4500 2700 5150
+Wire Wire Line
+	2700 5150 4500 5150
+Wire Wire Line
+	4500 5150 4500 4350
+Wire Wire Line
+	4500 4350 5850 4350
+Wire Wire Line
+	5850 4350 5850 4850
 $EndSCHEMATC

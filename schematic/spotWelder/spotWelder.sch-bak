@@ -152,8 +152,6 @@ $EndComp
 Wire Wire Line
 	2350 6450 2650 6450
 Wire Wire Line
-	3100 4000 3500 4000
-Wire Wire Line
 	2350 6350 3350 6350
 Wire Wire Line
 	3350 6350 3350 3600
@@ -197,19 +195,7 @@ Wire Wire Line
 Wire Wire Line
 	4850 4950 5000 4950
 Wire Wire Line
-	3100 4300 4750 4300
-Wire Wire Line
-	4750 4300 4750 4850
-Wire Wire Line
 	4750 4850 5000 4850
-Wire Wire Line
-	3100 4400 4300 4400
-Wire Wire Line
-	4300 4400 4300 5250
-Wire Wire Line
-	4300 5250 5000 5250
-Wire Wire Line
-	5000 5250 5000 5050
 Wire Wire Line
 	3100 4200 5850 4200
 Wire Wire Line
@@ -529,8 +515,6 @@ F 3 "~" H 3500 6900 50  0001 C CNN
 	-1   0    0    1   
 $EndComp
 Connection ~ 3250 7050
-Wire Wire Line
-	3500 4000 3500 6750
 $Comp
 L Transistor_FET:ZXMN2A01F Q?
 U 1 1 6062FDB3
@@ -667,7 +651,6 @@ Wire Wire Line
 	3500 7050 3250 7050
 Wire Wire Line
 	3550 6750 3500 6750
-Connection ~ 3500 6750
 Wire Wire Line
 	3550 4150 4750 4150
 $Comp
@@ -702,7 +685,7 @@ Wire Wire Line
 Text Notes 4850 3650 0    50   ~ 0
 Put near PA3 to avoid buzzer/I2C parasites
 $Comp
-L SSD1306-128x64_OLED:SSD1306 Brd?
+L spotWelder-rescue:SSD1306-SSD1306-128x64_OLED Brd?
 U 1 1 606A4189
 P 4050 1650
 F 0 "Brd?" V 4096 1372 50  0000 R CNN
@@ -817,4 +800,29 @@ Wire Wire Line
 	4900 1450 5300 1450
 Wire Wire Line
 	3100 3700 3500 3700
+Wire Wire Line
+	1800 3500 1650 3500
+Wire Wire Line
+	1650 3500 1650 5600
+Wire Wire Line
+	1650 5600 3500 5600
+Wire Wire Line
+	3500 5600 3500 6750
+Connection ~ 3500 6750
+Wire Wire Line
+	1800 4200 1700 4200
+Wire Wire Line
+	1700 4200 1700 5500
+Wire Wire Line
+	1700 5500 5000 5500
+Wire Wire Line
+	5000 5050 5000 5500
+Wire Wire Line
+	1800 4300 1750 4300
+Wire Wire Line
+	1750 4300 1750 5400
+Wire Wire Line
+	1750 5400 4750 5400
+Wire Wire Line
+	4750 5400 4750 4850
 $EndSCHEMATC
