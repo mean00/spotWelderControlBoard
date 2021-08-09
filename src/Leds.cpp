@@ -78,7 +78,7 @@ void WelderLeds::single(bool value, int dex, int r, int g , int b)
 /**
  * 
  */
-#define MK(x,y,z) x,y,z
+#define MK(x,y,z) x*255,y*255,z*255
 
 void    WelderLeds::update(void)
 {
