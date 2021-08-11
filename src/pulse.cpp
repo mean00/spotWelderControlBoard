@@ -21,9 +21,7 @@
         _pin=pin;
         digitalWrite(_pin,0);
         lnPinMode(_pin,lnOUTPUT);        
-        _timer=new lnTimer(timer,channel);
-        _timer->setTimerFrequency(1000/CYCLE_IN_MS); // CYCLE_IN_MS ms end to end
-        _channel=channel;        
+        _timer=new lnTimer(timer,channel);        
     }
 
 /**
@@ -34,11 +32,9 @@ void Pulse::pulse(int durationMs)
 {
     if(durationMs>=(CYCLE_IN_MS*3/4))
         xAssert(0);
-
-    noInterrupts();
-    _timer->singleShot(durationMs);
-    interrupts();
-    xDelay((CYCLE_IN_MS*3)/4);
+    
+    lnPinMode(_pin,lnALTERNATE_PP);   
+    _timer->singleShot(durationMs); // off by 2%
     digitalWrite(_pin,0);
     lnPinMode(_pin,lnOUTPUT);
 }
@@ -47,11 +43,19 @@ void Pulse::pulse(int durationMs)
  */
 void pulseDemo()
 {    
-    Pulse *p=new Pulse(3,1,PA6); // Timer 3  channel 1 PA6    
+    Pulse *p=new Pulse(2,3,PB1); // Timer 3  channel 1 PA6    
+    
     while(1)
     {
-        p->pulse(30);
-        xDelay(10);
+        lnPinMode(PB1,lnALTERNATE_PP);   
+        p->pulse(5);    
+        xDelay(200);
+
+        p->pulse(60);    
+        xDelay(200);
+        p->pulse(30);    
+        xDelay(200);
+
     }
     
 }

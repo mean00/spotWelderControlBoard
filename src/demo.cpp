@@ -47,7 +47,7 @@ void setup()
   digitalWrite(PIN_GATE,0);
   lnPinMode(PIN_GATE,lnOUTPUT);   
 }
-
+extern void pulseDemo();
 /**
  * 
  * @param 
@@ -104,8 +104,13 @@ void loop()
   {
     triggerSource=(Welder::TriggerSource)(ts);
   }
-  
-  
+#if 0  
+  pulseDemo();
+  while(1)
+  {
+      __asm__("nop"::);
+  }
+#endif  
   measure=new Measurement(PIN_VBAT,PIN_DETECT);
   
   Logger("Initializing Pedal\n");

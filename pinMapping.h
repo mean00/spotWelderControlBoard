@@ -7,8 +7,8 @@
 #define PIN_GATE     PB1
 
 
-#define GATE_TIMER   3 //T3C1
-#define GATE_CHANNEL 4
+#define GATE_TIMER   2 //T3C1
+#define GATE_CHANNEL 3
 
 #define SCREEN_DATA  PB7
 #define SCREEN_SCL   PB6
