@@ -49,11 +49,11 @@ void pulseDemo()
     {
         lnPinMode(PB1,lnALTERNATE_PP);   
         p->pulse(5);    
-        xDelay(200);
+        xDelay(100);
 
-        p->pulse(60);    
-        xDelay(200);
-        p->pulse(30);    
+        p->pulse(5);    
+        xDelay(100);
+        p->pulse(5);    
         xDelay(200);
 
     }

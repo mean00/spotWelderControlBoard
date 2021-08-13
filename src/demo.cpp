@@ -17,6 +17,7 @@
 #include "welderVersion.h"
 #include "pedal.h"
 #include "Leds.h"
+#include "pulse.h"
 
 extern void pulseDemo();
 
@@ -104,6 +105,19 @@ void loop()
   {
     triggerSource=(Welder::TriggerSource)(ts);
   }
+  
+#if 0
+    Pulse *p=new Pulse(GATE_TIMER,GATE_CHANNEL,PIN_GATE); 
+    Buzzer *bz=new Buzzer(BUZZER_GATE);
+
+    while(1)
+    {
+        bz->buzz(400,50);
+        p->pulse(5);
+        delay(100);
+    }
+#endif  
+  
 #if 0  
   pulseDemo();
   while(1)
