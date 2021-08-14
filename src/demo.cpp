@@ -113,8 +113,8 @@ void loop()
     while(1)
     {
         bz->buzz(400,50);
-        p->pulse(5);
-        delay(100);
+        p->pulse(20);
+        delay(50);
     }
 #endif  
   

@@ -31,7 +31,7 @@ bool Buzzer::buzz(int frequency, int durationMs)
      lnPinMode(_pin,lnPWM);
      
      lnTimer pwm(_pin);
-     pwm.setTimerFrequency(frequency);
+     pwm.setPwmFrequency(frequency);
      pwm.setPwmMode(512);
      pwm.enable();
      xDelay(durationMs);
