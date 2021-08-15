@@ -8,14 +8,8 @@
 #include "pinMapping.h"
 #include "screen.h"
 
-#define MKFONT(x) "assets/fonts/" #x ".h"
 
-#define MEDFONT FontsFree_Net_Nurom_Bold9pt7b
-
-//#include "oled/fonts/Fonts/FreeSansBold9pt7b.h"
-//#include "assets/fonts/Fonts/FreeSans9pt7b.h"
-#include "assets/fonts/Fonts/FontsFree_Net_Nurom_Bold9pt7b.h"
-#include "assets/fonts/Fonts/FreeSansBold20pt7b.h"
+extern const GFXfont *getFont(int index);
 
 extern float getCurrentVbat();
 extern "C" unsigned char MediumNumbers[];
@@ -35,7 +29,7 @@ public:
             lnI2C *i2c=new lnI2C(0,SPEED);
             i2c->begin(0x3c);
             myOLED=new OLED_lnGd32( *i2c, -1);
-            myOLED->setFontFamily(&MEDFONT,&FreeSansBold20pt7b,&FreeSansBold20pt7b);            
+            myOLED->setFontFamily(getFont(0),getFont(1),getFont(2));            
             myOLED->setFontSize(OLEDCore::SmallFont); //MediumFont); BigFont
             myOLED->begin();     
             

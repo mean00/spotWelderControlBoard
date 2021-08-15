@@ -43,6 +43,7 @@ GENERATE_GD32_FIRMWARE(spotWelder
                         src/mainMenu.cpp
                         src/voltageCalibration.cpp
                         src/SSD1306.cpp
+                        src/SSD1306_font.cpp
                         src/buzzer.cpp
                         src/trigger.cpp
                         src/pulseWidth.cpp
