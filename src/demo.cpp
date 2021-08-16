@@ -79,7 +79,7 @@ void loop()
   Logger("Initializing eeprom\n");
   
   
-  myLeds=new WelderLeds();
+
   if(!DSOEeprom::init())
   {
        DSOEeprom::format();
@@ -136,7 +136,8 @@ void loop()
    
   Logger("Wait\n");
   xDelay(1000);
-  
+  Logger("Leds\n");
+  myLeds=new WelderLeds();
   Navigate *currentMenu= spawnMainMenu();
   Logger("Entering loop\n");
   while(1)
