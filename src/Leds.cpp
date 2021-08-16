@@ -14,7 +14,7 @@ WelderLeds::WelderLeds()
     _armed=false;
     _voltageDetect=false;
     
-    hwlnSPIClass *spi=new hwlnSPIClass(1);
+    hwlnSPIClass *spi=new hwlnSPIClass(0);
     
     WS2812B *w=new WS2812B(3,spi);
     _ws=(void *)w;
