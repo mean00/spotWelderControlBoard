@@ -8,8 +8,9 @@ IF(1)
 # To use spare broken GD32F1
 # if you use a STM32 you HAVE to lower the MCU_SPEED
 # The STM32 does not have the needed multiplier
-    SET(LN_USE_INTERNAL_CLOCK True CACHE INTERNAL "") # No need for external crystal
+#    SET(LN_USE_INTERNAL_CLOCK True CACHE INTERNAL "") # No need for external crystal
     SET(LN_MCU_SPEED 72000000 True CACHE INTERNAL "")
+    SET(LN_USE_INTERNAL_CLOCK True CACHE INTERNAL "") # No need for external crystal
 ELSE()
     SET(LN_ARCH "RISCV" CACHE INTERNAL "")
     SET(LN_MCU  "VF103" CACHE INTERNAL "")
