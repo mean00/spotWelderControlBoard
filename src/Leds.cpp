@@ -1,22 +1,23 @@
 
 #include "lnArduino.h"
 #include "lnSPI.h"
-#include "libraries/WS2812B/lnWS2812B.h"
+#include "libraries/WS2812B/lnWS2812B_timer.h"
 #include "Leds.h"
 
-#define WW ((WS2812B *)_ws)
+#define WW ((WS2812B_timer *)_ws)
 /**
  * 
  */
-WelderLeds::WelderLeds()
+WelderLeds::WelderLeds(lnPin pin)
 {
+    _pin=pin;
     _enabled=true;
     _armed=false;
     _voltageDetect=false;
     
-    hwlnSPIClass *spi=new hwlnSPIClass(0);
     
-    WS2812B *w=new WS2812B(3,spi);
+    
+    WS2812B_timer *w=new WS2812B_timer(3,_pin);
     _ws=(void *)w;
     w->begin();    
     w->setGlobalBrightness(127);
@@ -68,7 +69,7 @@ void    WelderLeds::setEnable(bool onoff)
  */
 void WelderLeds::single(bool value, int dex, int r, int g , int b)
 {
-    WS2812B *w=WW;
+    WS2812B_timer *w=WW;
     if(value) 
         w->setLedColor(dex,r,g,b);
     else 
@@ -82,7 +83,7 @@ void WelderLeds::single(bool value, int dex, int r, int g , int b)
 
 void    WelderLeds::update(void)
 {
-    WS2812B *w=WW;
+    WS2812B_timer *w=WW;
     if(!_enabled)
     {
         w->setLedColor(0,0,0,0);

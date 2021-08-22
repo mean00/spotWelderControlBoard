@@ -3,7 +3,7 @@
 class WelderLeds
 {
 public:
-                WelderLeds();               
+                WelderLeds(lnPin pin);               
         void    setProbeDetectState(bool onoff);
         void    setArmState(bool onoff);    
         void    setEnable(bool onoff);    
@@ -13,5 +13,6 @@ protected:
         bool    _enabled;
         bool    _armed;
         bool    _voltageDetect;
+        lnPin   _pin;
         void    *_ws;
 };
