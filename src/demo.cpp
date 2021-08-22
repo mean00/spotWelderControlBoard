@@ -137,7 +137,7 @@ void loop()
   Logger("Wait\n");
   xDelay(1000);
   Logger("Leds\n");
-  myLeds=new WelderLeds();
+  myLeds=new WelderLeds(PIN_LED);
   Navigate *currentMenu= spawnMainMenu();
   Logger("Entering loop\n");
   while(1)
@@ -196,12 +196,17 @@ void loop()
  * @param offset
  * @return 
  */
+#define UP_REZ   4.62  //4.7k
+#define DOWN_REZ 1.0  // 1.0k
+
+#define MUL ((UP_REZ+DOWN_REZ)/DOWN_REZ)
+
 int getVBat10(int offset)
 {
       int vbat=measure->getPinV();
       
       float f=vbat;
-      f=f*measure->vcc()*5.65/4095.;
+      f=f*measure->vcc()*MUL/4095.;
       f+=offset;
       int raw=(int)((f+49.)/100.);
       return raw;
