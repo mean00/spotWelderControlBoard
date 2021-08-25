@@ -781,18 +781,6 @@ Wire Wire Line
 Wire Wire Line
 	6800 1450 7100 1450
 Wire Wire Line
-	3100 4100 3300 4100
-Wire Wire Line
-	3300 4100 3300 2950
-Wire Wire Line
-	3300 2950 3950 2950
-Wire Wire Line
-	3950 2950 3950 2400
-Wire Wire Line
-	3950 2400 4900 2400
-Wire Wire Line
-	4900 2400 4900 1450
-Wire Wire Line
 	4900 1450 5300 1450
 Wire Wire Line
 	3100 3700 3500 3700
@@ -833,4 +821,14 @@ Wire Wire Line
 	4500 4350 5850 4350
 Wire Wire Line
 	5850 4350 5850 4850
+Wire Wire Line
+	4900 1450 4900 850 
+Wire Wire Line
+	4900 850  950  850 
+Wire Wire Line
+	950  850  950  3700
+Wire Wire Line
+	950  3700 1800 3700
+Text Label 750  3200 0    50   ~ 0
+PB3
 $EndSCHEMATC
