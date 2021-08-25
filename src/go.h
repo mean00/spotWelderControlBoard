@@ -7,7 +7,7 @@
 #include "Leds.h"
 
 #define NB_ANIMATISKIP    4 // refresh screen every SKIP
-#define NB_ANIMATION_STEP 9
+#define NB_ANIMATION_STEP 5
 extern WelderLeds *myLeds;
 /**
  * 
