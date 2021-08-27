@@ -20,7 +20,8 @@ Pedal::Pedal(int pin)
     _state = 0;
     _pushed=0;
     _lastPush=0;
-    lnPinMode(_pin,lnFLOATING);
+    lnPinMode(_pin,lnINPUT_PULLDOWN);
+    lnExtiAttachInterrupt(_pin, LN_EDGE_RISING, _myInterruptPedal, this);
 }
 
 /**
@@ -29,7 +30,7 @@ Pedal::Pedal(int pin)
  */
 bool Pedal::arm()
 {
-    lnExtiAttachInterrupt(_pin, LN_EDGE_RISING, _myInterruptPedal, this);
+    lnExtiEnableInterrupt(_pin);
     return true;
 }
 /**
@@ -47,7 +48,7 @@ void Pedal::interrupt()
         return;
     }
     _lastPush=now&ROUNDUP;
-    detachInterrupt(_pin);
+    lnExtiDisableInterrupt(_pin);
     this->_pushed=1;
 }
 
