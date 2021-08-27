@@ -12,3 +12,8 @@ build*
 pyUsb/__pycache__/
 pyUsb/*.csv
 bins
+schematic/spotWelder/*cache*
+schematic/spotWelder/*rescue.*
+schematic/spotWelder/*.pro
+schematic/spotWelder/*.sch*
+schematic/spotWelder/sym-lib-table

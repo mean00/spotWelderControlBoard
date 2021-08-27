@@ -44,7 +44,7 @@ void  Calibration::handleRotary(int inc)
 {
     voltageCalibration+=inc*100; // it's in mv, so *100 = 0.1 v increment
     if(voltageCalibration<0) voltageCalibration=0;
-    if(voltageCalibration>2000) voltageCalibration=2000;
+    if(voltageCalibration>4000) voltageCalibration=4000;
     redraw();
 }
 

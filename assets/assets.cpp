@@ -1,4 +1,4 @@
-#include "Arduino.h"
+//#include "Arduino.h"
 #include "assets.h"
 #include "generated/c1_compressed.h"
 #include "generated/c2_compressed.h"

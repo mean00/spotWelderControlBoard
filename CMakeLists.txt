@@ -1,67 +1,49 @@
-#-----------------------------------------------------------------------------
 #
-# CMakeLists for spotWelder-stm32
 #
-#-----------------------------------------------------------------------------
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-include(select_mcu_stm32)
-include(applyPatch)
-# Patch Arduino_stm32 if needed to add gd32f303 support
 #
-include(./platformConfig.cmake)
-APPLY_PATCH_IF_NEEDED(patched gd32_patch.diff              "add gd32f303 support") 
-APPLY_PATCH_IF_NEEDED(patchedm4 m4_activate_fpu.diff       "activate m4 fpu (gd32f303)") 
-
-include_directories(Arduino_STM32/STM32F1/libraries/Wire/)
-include_directories(simpler_SSD1306)
-cmake_minimum_required(VERSION 2.8)
 #
-SET(CMAKE_TOOLCHAIN_FILE cmake/ArduinoToolchain.cmake)
-Project("spotWelder-stm32" C CXX ASM)
-
-set(ARDUINO_DEFAULT_BOARD ${X_ARDUINO_DEFAULT_BOARD})        # Default Board ID, when not specified
-set(ARDUINO_CPU           ${X_ARDUINO_CPU})
-SET(ARDUINO_UPLOAD_METHOD ${X_ARDUINO_UPLOAD_METHOD}) # Use blackmagic link, if you comment it out you'll use DFU => 8kB flash
-set(ARDUINO_DEFAULT_PORT ttyACM0) # Default Port, when not specified
+SET(AF_FOLDER  ${CMAKE_SOURCE_DIR}/lnArduino CACHE INTERNAL "")
+include(./mcuSelect.cmake)
+SET(CMAKE_TOOLCHAIN_FILE ${AF_FOLDER}/lnArduino.cmake)
+cmake_minimum_required(VERSION 3.0)
 
 
-SET(libPrefix ${ARDUINO_DEFAULT_BOARD}_)
+PROJECT(spotWelder C CXX ASM)
 
+include_directories(${CMAKE_SOURCE_DIR})        
+add_subdirectory(${AF_FOLDER})
+include(${AF_FOLDER}/setup.cmake)
+  
 
-MESSAGE(STATUS "Starting spotWelder-stm32")
-SET(EXTENSION "${EXTENSION}_${MCU_SPEED_M}M")
+USE_LIBRARY(RotaryEncoder)
+USE_LIBRARY(WS2812B)
 
- 
- 
-include_directories(MapleFreeRTOS1000//Source/include)
-include_directories(MapleFreeRTOS1000//)
-include_directories(.)
-include_directories(adc)
-include_directories(src)
 include_directories(assets)
-include_directories(WS2812)
-include_directories(embedded_printf)
 
-# FreeRTOS
-# Other modules
-ADD_SUBDIRECTORY(adc) 
-ADD_SUBDIRECTORY(MapleFreeRTOS1000)
-ADD_SUBDIRECTORY(simpler_SSD1306)
-ADD_SUBDIRECTORY(WS2812)
-#
-generate_arduino_firmware(spotWelder${EXTENSION} 
-                SKETCH spotWelder.ino
-                SRCS    src/demo.cpp 
-                        embedded_printf/printf.c  
-                        stubs/usb_stubs.cpp
-                        src/rotary.cpp 
-                        src/dso_logger.cpp 
+SET(SSD1306 ${AF_FOLDER}/libraries/simplerSSD1306)
+include_directories(${SSD1306})
+SET(LIBSSD1306 ${SSD1306}/ssd1306_base.cpp ${SSD1306}/ssd1306_ex.cpp ${SSD1306}/ssd1306_i2c_lnGd32vf103.cpp)
+
+ADD_LIBRARY(SSD1306 STATIC ${LIBSSD1306})
+        
+SET( NVM ${AF_FOLDER}/libraries/NeVerMind)
+include_directories(${NVM})
+include_directories(${NVM}/gd32)
+
+ADD_LIBRARY(NVM_LIB STATIC  ${NVM}/nvmCore.cpp  ${NVM}/gd32/nvm_gd32.cpp)        
+
+GENERATE_GD32_FIRMWARE(spotWelder
+                        src/demo.cpp 
+                        #src/rotary.cpp 
+                        #src/dso_logger.cpp 
                         src/pulse.cpp
-                        src/dso_eeprom.cpp
+                        #src/dso_eeprom.cpp
+                        src/dso_eeprom_nvm.cpp
                         src/measurement.cpp
                         src/mainMenu.cpp
                         src/voltageCalibration.cpp
                         src/SSD1306.cpp
+                        src/SSD1306_font.cpp
                         src/buzzer.cpp
                         src/trigger.cpp
                         src/pulseWidth.cpp
@@ -72,16 +54,7 @@ generate_arduino_firmware(spotWelder${EXTENSION}
                         src/goPedal.cpp
                         src/Leds.cpp
                         assets/assets.cpp
-                PORT ${ARDUINO_DEFAULT_PORT}
-                BOARD_CPU ${ARDUINO_CPU}
-                )
-TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}FreeRTOS)
-TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}adc ${libPrefix}ssd1306)
-TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}WS2812 )
-#TARGET_LINK_LIBRARIES( spotWelder${EXTENSION}  ${libPrefix}tests)
-
-
-# Summary
-MESSAGE(STATUS "Configuration:")
-#
-MESSAGE(STATUS "\tUsing ${EXTENSION} MCU at ${MCU_SPEED} Hz")
+                        )
+ 
+target_link_libraries(spotWelder NVM_LIB SSD1306 RotaryEncoder WS2812B)
+        

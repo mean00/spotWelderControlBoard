@@ -1,25 +1,41 @@
 
-#include "Arduino.h"
-#include "WS2812B.h"
+#include "lnArduino.h"
+#include "lnSPI.h"
+#include "libraries/WS2812B/lnWS2812B_timer.h"
 #include "Leds.h"
 
-#define WW ((WS2812B *)_ws)
+#define WW ((WS2812B_timer *)_ws)
 /**
  * 
  */
-WelderLeds::WelderLeds()
+WelderLeds::WelderLeds(lnPin pin)
 {
+    _pin=pin;
     _enabled=true;
     _armed=false;
     _voltageDetect=false;
-    WS2812B *w=new WS2812B(3);
+    
+    
+    
+    WS2812B_timer *w=new WS2812B_timer(3,_pin);
     _ws=(void *)w;
-    w->begin();
-    w->setBrightness(127);
-    w->setPixelColor(0,0);
-    w->setPixelColor(1,0);
-    w->setPixelColor(2,0);
-    w->show();
+    w->begin();    
+    w->setGlobalBrightness(127);
+//----    
+#define ZZ(x,y,z)        w->setLedColor(0,255*x,0,0); \
+    w->setLedColor(1,0,255*y,0); \
+    w->setLedColor(2,0,0,255*z); \
+    w->update(); \
+    delay(100);
+//----
+    ZZ(1,1,1);
+    ZZ(0,0,0);
+    ZZ(1,1,1);
+
+    ZZ(1,0,0);
+    ZZ(0,1,0);
+    ZZ(0,0,1);
+    ZZ(0,0,0);
 }
 /**
  * 
@@ -51,33 +67,33 @@ void    WelderLeds::setEnable(bool onoff)
 /**
  * 
  */
-void WelderLeds::single(bool value, int dex, uint32_t color)
+void WelderLeds::single(bool value, int dex, int r, int g , int b)
 {
-    WS2812B *w=WW;
+    WS2812B_timer *w=WW;
     if(value) 
-        w->setPixelColor(dex,color);
+        w->setLedColor(dex,r,g,b);
     else 
-        w->setPixelColor(dex,0);
+        w->setLedColor(dex,0,0,0);
         
 }
 /**
  * 
  */
-#define MK(x,y,z) ((x*255)<<16)+((y*255)<<8)+(z*255)
+#define MK(x,y,z) x*255,y*255,z*255
 
 void    WelderLeds::update(void)
 {
-    WS2812B *w=WW;
+    WS2812B_timer *w=WW;
     if(!_enabled)
     {
-        w->setPixelColor(0,0);
-        w->setPixelColor(1,0);
-        w->setPixelColor(2,0);
-        w->show();
+        w->setLedColor(0,0,0,0);
+        w->setLedColor(1,0,0,0);
+        w->setLedColor(2,0,0,0);
+        w->update();
         return;
     }
     single(_voltageDetect,0,MK(1,0,0)) ;
     single(_armed,1,MK(0,1,0)) ;
-    w->show();
+    w->update();
 }
       

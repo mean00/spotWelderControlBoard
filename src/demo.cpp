@@ -2,13 +2,10 @@
 //
 //
 
-#include <Wire.h>
-#include "adc/simpleADC.h"
-#include "MapleFreeRTOS1000_pp.h"
-#include "rotary.h"
+#include "lnArduino.h"
+#include "libraries/RotaryEncoder/RotaryEncoder.h"
 #include "pinMapping.h"
-#include "printf.h"
-#include "dso_debug.h"
+#include "lnArduino.h"
 #include "dso_eeprom.h"
 #include "measurement.h"
 #include "navigate.h"
@@ -20,20 +17,19 @@
 #include "welderVersion.h"
 #include "pedal.h"
 #include "Leds.h"
+#include "pulse.h"
 
 extern void pulseDemo();
 
-void MainTask( void *a );
 extern Navigate * spawnMainMenu(void);
 #define DSO_MAIN_TASK_PRIORITY 10
 extern void bench();
 
 MyScreen *myScreen;
-simpleAdc *adc;
-Rotary *rotary;
+lnSimpleADC *adc;
+lnRotary *rotary;
 Pedal *myPedal;
 WelderLeds *myLeds;
-uint8_t ucHeap[configTOTAL_HEAP_SIZE];
 
 int pulseWidth=5;
 int voltageOffset=1000;
@@ -47,63 +43,25 @@ int getVBat10(int offset);
  */
 void setup()
 {
-  // turn off gate asap
+   
+  Logger("Booting\n");
   digitalWrite(PIN_GATE,0);
-  pinMode(PIN_GATE,OUTPUT);  
-  afio_cfg_debug_ports( AFIO_DEBUG_SW_ONLY); // Unlock PB3 & PB4
-  Serial.end();
-  // shutdown usb & spi
-  rcc_clk_disable(RCC_SPI1);
-  rcc_clk_disable(RCC_SPI2);
-  rcc_clk_disable(RCC_USB);
-  xTaskCreate( MainTask, "MainTask", 350, NULL, DSO_MAIN_TASK_PRIORITY, NULL );   
-  vTaskStartScheduler();      
+  lnPinMode(PIN_GATE,lnOUTPUT);   
 }
-
-void loop()
-{
-
-}
+extern void pulseDemo();
 /**
  * 
  * @param 
  */
-void MainTask(void *)
-{
-  LoggerInit();
-  Logger("Initializing eeprom\n");
-  
-  myLeds=new WelderLeds();
+void loop()
+{  
   digitalWrite(PIN_GATE,0);
-  pinMode(PIN_GATE,OUTPUT);   
+  lnPinMode(PIN_GATE,lnOUTPUT);   
   
-  
-  if(!DSOEeprom::readPulse(pulseWidth))
-  {
-    Logger("Formating eeprom\n");    
-    pulseWidth=5;
-    voltageOffset=1000;
-    DSOEeprom::format();
-    DSOEeprom::writePulse(pulseWidth);
-    DSOEeprom::writeVoltageOffset(voltageOffset);
-    DSOEeprom::writeTriggerSource(triggerSource);
-  }  
-  DSOEeprom::readVoltageOffset(voltageOffset);
-  int ts=(int)triggerSource;
-  DSOEeprom::readTriggerSource(ts);
-  triggerSource=(Welder::TriggerSource )ts;
-  measure=new Measurement(PIN_VBAT,PIN_DETECT);
-  
-  
-  myPedal=new Pedal(PIN_PEDAL);
-  
-  
-  rotary=new Rotary(ROTARY_LEFT,ROTARY_RIGHT,ROTARY_PUSH);
-  rotary->setup();
-  
+  Logger("Initializing screen\n");
+    
   myScreen=createScreen();
-  interrupts();
-  
+    
   //bench();
   
   myScreen->clear();
@@ -115,27 +73,92 @@ void MainTask(void *)
   myScreen->update();
   
   Logger("Splash\n");
+    
+    
+   // turn off gate asap
+  Logger("Initializing eeprom\n");
   
+  
+
+  if(!DSOEeprom::init())
+  {
+       DSOEeprom::format();
+  }
+  if(!DSOEeprom::readPulse(pulseWidth))
+  {   
+    pulseWidth=5;
+    DSOEeprom::writePulse(pulseWidth);
+  }
+  if(!DSOEeprom::readVoltageOffset(voltageOffset))
+  {   
+    voltageOffset=1000;
+    DSOEeprom::writeVoltageOffset(voltageOffset);
+  }
+  int ts;
+  if(!DSOEeprom::readTriggerSource(ts))
+  {   
+    triggerSource=Welder::Auto;
+    ts=(int)triggerSource;
+    DSOEeprom::writeTriggerSource(ts);
+  }
+  else
+  {
+    triggerSource=(Welder::TriggerSource)(ts);
+  }
+  
+#if 0
+    Pulse *p=new Pulse(GATE_TIMER,GATE_CHANNEL,PIN_GATE); 
+    Buzzer *bz=new Buzzer(BUZZER_GATE);
+
+    while(1)
+    {
+        bz->buzz(400,50);
+        p->pulse(20);
+        delay(50);
+    }
+#endif  
+  
+#if 0  
+  pulseDemo();
+  while(1)
+  {
+      __asm__("nop"::);
+  }
+#endif  
+  measure=new Measurement(PIN_VBAT,PIN_DETECT);
+  
+  Logger("Initializing Pedal\n");
+  myPedal=new Pedal(PIN_PEDAL);
+  
+  Logger("Initializing Rotary\n");
+  rotary=new lnRotary(ROTARY_PUSH, ROTARY_LEFT,ROTARY_RIGHT);
+  rotary->start();
+   
+  Logger("Wait\n");
   xDelay(1000);
-  
+  Logger("Leds\n");
+  myLeds=new WelderLeds(PIN_LED);
   Navigate *currentMenu= spawnMainMenu();
   Logger("Entering loop\n");
   while(1)
   {
       bool dirty=false;
-      int inc=rotary->getRotaryValue();
-      if(inc)
+      lnRotary::EVENTS ev=rotary->readEvent();
+      if(ev & lnRotary::ROTARY_CHANGE)
       {
-            currentMenu->handleRotary(inc);
-            dirty=true;
+        int inc=rotary->getCount();
+        if(inc)
+        {
+              currentMenu->handleRotary(inc);
+              dirty=true;
+        }
       }
       if(!dirty)
       {
           Navigate::Event event;
-          bool subMenu=false;
-          bool push=(int)rotary->getPush();
+          bool subMenu=false;          
           Navigate *z;
-          if(push)
+          if(ev & lnRotary::SHORT_PRESS)
           {
               event=Navigate::E_PUSH;
           }else
@@ -157,8 +180,7 @@ void MainTask(void *)
                }
                currentMenu=z;
                // Purge pending push button if any
-               rotary->getPush();
-                   
+               rotary->readEvent();                   
            }
       }
      xDelay(20);
@@ -174,12 +196,17 @@ void MainTask(void *)
  * @param offset
  * @return 
  */
+#define UP_REZ   4.62  //4.7k
+#define DOWN_REZ 1.0  // 1.0k
+
+#define MUL ((UP_REZ+DOWN_REZ)/DOWN_REZ)
+
 int getVBat10(int offset)
 {
       int vbat=measure->getPinV();
       
       float f=vbat;
-      f=f*measure->vcc()*5.65/4095.;
+      f=f*measure->vcc()*MUL/4095.;
       f+=offset;
       int raw=(int)((f+49.)/100.);
       return raw;
