@@ -4,7 +4,11 @@
 // ADC is using                Timer 3 channel 3
 // MOSFET pin is using  PB1 => Timer 2 channel 3
 // Buzzer is using      PB0 => Timer 2 channel 2
-// LED:                 PB3 => Timer 1 channel 1
+
+// ARM:
+//      LED:                 PB3 => Timer 1 channel 1
+// RISCV
+//      LED                  PB10 => Timer 1 Channel 2
 //                      
 
 
@@ -12,7 +16,12 @@
 #define PIN_DETECT   PA2
 #define PIN_PEDAL    PA3
 #define PIN_GATE     PB1
-#define PIN_LED      PB3
+
+#ifdef __riscv
+    #define PIN_LED      PB10
+#else
+    #define PIN_LED      PB3
+#endif
 
 #define GATE_TIMER   2 
 #define GATE_CHANNEL 3
