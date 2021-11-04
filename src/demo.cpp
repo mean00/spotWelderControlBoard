@@ -47,6 +47,9 @@ void setup()
   Logger("Booting\n");
   digitalWrite(PIN_GATE,0);
   lnPinMode(PIN_GATE,lnOUTPUT);   
+#ifdef __riscv
+  lnRemapTimerPin(1); // remap timer1 ch2/3 to PB10/PB11
+#endif
 }
 extern void pulseDemo();
 /**
