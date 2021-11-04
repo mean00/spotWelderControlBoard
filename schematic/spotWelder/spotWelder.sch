@@ -925,10 +925,10 @@ F 3 "http://www.st.com/st-web-ui/static/active/en/resource/technical/document/da
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3800 2200 3900 2200
-Wire Wire Line
 	4400 2200 4400 1950
 Connection ~ 3900 2200
 Wire Wire Line
 	3900 2200 4400 2200
+Text Notes 3500 1150 0    50   ~ 0
+On the VF103 use PB10 instead of PB3!\nPB3 is used by jtag
 $EndSCHEMATC
