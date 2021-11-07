@@ -22,7 +22,7 @@ include_directories(assets)
 
 SET(SSD1306 ${AF_FOLDER}/libraries/simplerSSD1306)
 include_directories(${SSD1306})
-SET(LIBSSD1306 ${SSD1306}/ssd1306_base.cpp ${SSD1306}/ssd1306_ex.cpp ${SSD1306}/ssd1306_i2c_lnGd32vf103.cpp)
+SET(LIBSSD1306 ${SSD1306}/ssd1306_base.cpp ${SSD1306}/ssd1306_ex.cpp ${SSD1306}/ssd1306_ex_ll.cpp  ${SSD1306}/ssd1306_i2c_lnGd32vf103.cpp)
 
 ADD_LIBRARY(SSD1306 STATIC ${LIBSSD1306})
         
