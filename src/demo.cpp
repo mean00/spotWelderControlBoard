@@ -187,13 +187,8 @@ void loop()
            }
       }
      xDelay(20);
-     Logger("*\n");
+   //  Logger("*\n");
   }
-  
-
-    //  pulseDemo();
-  
-  
 }
 /**
  * 
