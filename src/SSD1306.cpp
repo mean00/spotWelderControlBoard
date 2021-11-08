@@ -70,7 +70,7 @@ public:
         }
         virtual      ~Screen1306() {}
 protected:
-        void setText(int dex, const char *txt);
+        void setText(int dex, const char *txt, bool inverted);
         void setSelection(int dex);
         void myRoundSquare(int x, int y, int w, int h);
 protected:        
@@ -116,9 +116,11 @@ void Screen1306::myRoundSquare(int x, int y, int w, int h)
  * @param dex
  * @param txt
  */
-void Screen1306::setText(int dex, const char *txt)
+void Screen1306::setText(int dex, const char *txt, bool inverted)
 {
-     myOLED->print(60,TEXTOFFSET+TEXTHEIGHT*dex+TEXTHEIGHT,txt);
+    myOLED->invertText(inverted);
+    myOLED->print(60,TEXTOFFSET+TEXTHEIGHT*dex+TEXTHEIGHT,txt);
+    myOLED->invertText(false);
 }
 /**
  * 
@@ -163,22 +165,30 @@ void Screen1306::redrawStockScreen(Welder::Selection sel,  Welder::TriggerSource
         case Welder::Auto: lb="Auto";break;
         case Welder::Pedal: lb="Pedal";break;
     }
-    setText(0,"GO!");
-    setText(1,lb);
-    setText(2,"Settng");
-
+    
+#if 0  
+    setText(0,"GO!",sel==Welder::GO);    
+    setText(1,lb,sel==Welder::Trigger);    
+    setText(2,"Settng",sel==Welder::Settings);
+    
+#else
+    
+    setText(0,"GO!",false);
+    setText(1,lb,false);    
+    setText(2,"Settng",false);
+    
     switch(sel)
     {
         case   Welder::Duration:     
-                myRoundSquare(0,  12,
-                              56, 32);
-                break;
+                                    myRoundSquare(0,  12,
+                                                  56, 32);
+                                    break;
         case   Welder::Trigger:     setSelection(1);break;
         case   Welder::Settings:    setSelection(2);break;
         case   Welder::GO:          setSelection(0);break;            
         default: xAssert(0);break;
     }
-
+#endif
 
     myOLED->update();
 }

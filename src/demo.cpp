@@ -138,7 +138,7 @@ void loop()
   rotary->start();
    
   Logger("Wait\n");
-  xDelay(1000);
+  //xDelay(1000);
   Logger("Leds\n");
   myLeds=new WelderLeds(PIN_LED);
   Navigate *currentMenu= spawnMainMenu();
@@ -187,6 +187,7 @@ void loop()
            }
       }
      xDelay(20);
+     Logger("*\n");
   }
   
 

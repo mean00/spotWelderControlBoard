@@ -11,7 +11,7 @@ Buzzer::Buzzer(int pin)
 {
     _pin=pin;
     lnPinMode(_pin,lnOUTPUT);
-    digitalWrite(_pin,0);
+    lnDigitalWrite(_pin,0);
 }
 /**
  * 
@@ -37,8 +37,9 @@ bool Buzzer::buzz(int frequency, int durationMs)
      xDelay(durationMs);
      pwm.setPwmMode(0);
      pwm.disable();
-     
-    return true;
+     lnPinMode(_pin,lnOUTPUT);
+     lnDigitalWrite(_pin,0);
+     return true;
 }
 
 // EOF
