@@ -93,10 +93,17 @@ MyScreen *createScreen()
  * @param triggerType
  * @param durationMs
  */
-#define TEXTHEIGHT 19
-#define TEXTOFFSET 3
+#define TEXTHEIGHT 18
+#define TEXTOFFSET 4
 #define TEXTBORDER 1
 #define BORDEROFFSET 8
+
+
+const int yOffset[3]={  BORDEROFFSET+1,
+                    TEXTHEIGHT*1-TEXTBORDER+BORDEROFFSET,
+                    TEXTHEIGHT*2-TEXTBORDER+BORDEROFFSET-1    
+};
+
 /**
  * 
  * @param x
@@ -127,11 +134,14 @@ void Screen1306::setText(int dex, const char *txt, bool inverted)
  * @param dex
  */
 #define RIGHT_SIDE 68
+
 void Screen1306::setSelection(int dex)
 {
      myRoundSquare(       128-RIGHT_SIDE-2,
-                          TEXTHEIGHT*dex-TEXTBORDER+BORDEROFFSET,
-                          66,TEXTHEIGHT+2*TEXTBORDER-2
+                          //TEXTHEIGHT*dex-TEXTBORDER+BORDEROFFSET,
+                          yOffset[dex],
+                          66,
+                          TEXTHEIGHT+2*TEXTBORDER-2
                           );
 }
 /**
