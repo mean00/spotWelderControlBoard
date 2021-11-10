@@ -19,6 +19,7 @@ Pics
 ![screenshot](web/welder_pcb.jpg?raw=true "pcb")
 ![screenshot](web/redBoard.jpg?raw=true "red")
 ![screenshot](web/new_board.jpg?raw=true "raw_mcu")
+![screenshot](web/welder_ln.jpg?raw=true "raw_mcu")
 
  Shopping list (~ 10 $ )
  -----
