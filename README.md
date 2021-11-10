@@ -14,12 +14,16 @@ Small demo video
 
 Pics
 -----
-
+Overall:
 ![screenshot](web/welder_casing.jpg?raw=true "top")
+With a bluepill:
 ![screenshot](web/welder_pcb.jpg?raw=true "pcb")
-![screenshot](web/redBoard.jpg?raw=true "red")
+With a GD32F1
 ![screenshot](web/new_board.jpg?raw=true "raw_mcu")
+With a Longan Nano
 ![screenshot](web/welder_ln.jpg?raw=true "raw_mcu")
+The original power board
+![screenshot](web/redBoard.jpg?raw=true "red")
 
  Shopping list (~ 10 $ )
  -----
